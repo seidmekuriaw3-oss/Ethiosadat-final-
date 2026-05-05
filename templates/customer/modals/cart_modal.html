@@ -163,7 +163,7 @@
             <button onclick="closeCartModal()" class="btn btn-outline" style="flex: 1;">
                 {% if lang == 'am' %}ቀጥል{% else %}Continue{% endif %}
             </button>
-            <a href="{{ url_for('cart.checkout') }}" class="btn btn-primary" style="flex: 1; text-align: center; text-decoration: none;">
+            <a href="{{ url_for('checkout') }}" class="btn btn-primary" style="flex: 1; text-align: center; text-decoration: none;">
                 🛒 {% if lang == 'am' %}ግዢ አስገባ{% else %}Checkout{% endif %}
             </a>
         </div>
@@ -372,7 +372,7 @@
     function fetchCartData() {
         showCartLoading();
         
-        fetch('{{ url_for("api.get_cart") }}')
+        fetch('{{ url_for("api_get_cart") }}')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -522,7 +522,7 @@
             return;
         }
         
-        fetch('{{ url_for("api.cart_update") }}', {
+        fetch('{{ url_for("api_cart_update") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -551,7 +551,7 @@
             itemElement.classList.add('cart-item-removing');
         }
         
-        fetch('{{ url_for("api.cart_remove") }}', {
+        fetch('{{ url_for("api_cart_remove") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -137,12 +137,12 @@
     <!-- Header -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
         <div>
-            <a href="{{ url_for('admin.products') }}" class="btn btn-outline" style="margin-bottom: 12px; display: inline-block;">← Back to Products</a>
+            <a href="{{ url_for('admin_products') }}" class="btn btn-outline" style="margin-bottom: 12px; display: inline-block;">← Back to Products</a>
             <h1 style="margin: 8px 0 4px;">📦 Product Details</h1>
             <p style="color: var(--text-muted, #666); margin: 0;">View and manage product information</p>
         </div>
         <div class="action-buttons no-print">
-            <a href="{{ url_for('admin.product_edit', pid=product.id) }}" class="btn btn-primary">✏️ Edit Product</a>
+            <a href="{{ url_for('admin_product_edit', pid=product.id) }}" class="btn btn-primary">✏️ Edit Product</a>
             <button onclick="duplicateProduct({{ product.id }})" class="btn btn-outline">📋 Duplicate</button>
             <button onclick="window.print()" class="btn btn-outline">🖨️ Print</button>
             <button onclick="deleteProduct({{ product.id }}, '{{ product.name_am|escapejs }}')" class="btn btn-danger">🗑️ Delete</button>
@@ -390,7 +390,7 @@
         <div class="detail-row">
             <div class="detail-label">Product URL:</div>
             <div class="detail-value">
-                <a href="{{ url_for('customer.product_detail', product_id=product.id) }}" target="_blank" style="color: #1a73e8;">
+                <a href="{{ url_for('product_detail', product_id=product.id) }}" target="_blank" style="color: #1a73e8;">
                     /product/{{ product.id }}
                 </a>
             </div>
@@ -404,12 +404,12 @@
             <span>⚡</span> Quick Actions
         </h3>
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-            <a href="{{ url_for('customer.product_detail', product_id=product.id) }}" target="_blank" class="btn btn-outline">👁️ View on Store</a>
+            <a href="{{ url_for('product_detail', product_id=product.id) }}" target="_blank" class="btn btn-outline">👁️ View on Store</a>
             <button onclick="toggleFeatured({{ product.id }})" class="btn btn-outline">
                 {% if product.is_featured %}☆ Remove Featured{% else %}⭐ Make Featured{% endif %}
             </button>
             <button onclick="updateStock({{ product.id }})" class="btn btn-outline">📦 Update Stock</button>
-            <a href="{{ url_for('admin.product_edit', pid=product.id) }}" class="btn btn-primary">✏️ Edit Product</a>
+            <a href="{{ url_for('admin_product_edit', pid=product.id) }}" class="btn btn-primary">✏️ Edit Product</a>
         </div>
     </div>
 </div>
@@ -427,7 +427,7 @@
     function deleteProduct(productId, productName) {
         const confirmFn = window.showConfirm || confirm;
         const callback = () => {
-            window.location.href = '{{ url_for("admin.product_delete", pid=0) }}'.replace('/0', '/' + productId);
+            window.location.href = '{{ url_for("admin_product_delete", pid=0) }}'.replace('/0', '/' + productId);
         };
         
         if (window.showConfirm) {
@@ -443,7 +443,7 @@
         const callback = () => {
             if (window.showLoading) window.showLoading(true);
             
-            fetch('{{ url_for("admin.product_delete_image", pid=0) }}'.replace('/0', '/' + productId), {
+            fetch('{{ url_for("admin_product_edit", pid=0) }}'.replace('/0', '/' + productId), {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -482,7 +482,7 @@
     function duplicateProduct(productId) {
         if (window.showLoading) window.showLoading(true);
         
-        fetch('{{ url_for("admin.duplicate_product", pid=0) }}'.replace('/0', '/' + productId), {
+        fetch('{{ url_for("admin_product_create", pid=0) }}'.replace('/0', '/' + productId), {
             method: 'POST',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -498,7 +498,7 @@
                     window.showToast('Product duplicated successfully', 'success');
                 }
                 setTimeout(() => {
-                    window.location.href = '{{ url_for("admin.product_edit", pid=0) }}'.replace('/0', '/' + data.new_id);
+                    window.location.href = '{{ url_for("admin_product_edit", pid=0) }}'.replace('/0', '/' + data.new_id);
                 }, 1000);
             } else {
                 if (window.showError) window.showError(data.error || 'Failed to duplicate');
@@ -516,7 +516,7 @@
     function toggleFeatured(productId) {
         if (window.showLoading) window.showLoading(true);
         
-        fetch('{{ url_for("admin.toggle_featured", pid=0) }}'.replace('/0', '/' + productId), {
+        fetch('{{ url_for("admin_product_toggle_featured", pid=0) }}'.replace('/0', '/' + productId), {
             method: 'POST',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -550,7 +550,7 @@
         if (newStock !== null && !isNaN(parseInt(newStock))) {
             if (window.showLoading) window.showLoading(true);
             
-            fetch('{{ url_for("admin.update_stock", pid=0) }}'.replace('/0', '/' + productId), {
+            fetch('{{ url_for("admin_product_update_stock", pid=0) }}'.replace('/0', '/' + productId), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

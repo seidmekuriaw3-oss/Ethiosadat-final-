@@ -250,7 +250,7 @@
             <span>👤</span> Personal Information
         </h3>
         
-        <form method="post" action="{{ url_for('customer.update_profile') }}" id="profileForm" onsubmit="return validateProfileForm()">
+        <form method="post" action="{{ url_for('update_profile') }}" id="profileForm" onsubmit="return validateProfileForm()">
             <div class="form-row">
                 <div class="form-group">
                     <label>Full Name <span style="color: #f44336;">*</span></label>
@@ -336,7 +336,7 @@
             </div>
         </div>
         <div style="margin-top: 20px; text-align: center;">
-            <a href="{{ url_for('customer.user_orders') }}" class="btn-outline">View All Orders →</a>
+            <a href="{{ url_for('user_orders') }}" class="btn-outline">View All Orders →</a>
         </div>
     </div>
     
@@ -347,7 +347,7 @@
         </h3>
         
         <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-            <a href="{{ url_for('customer.change_password') }}" class="btn-outline">
+            <a href="{{ url_for('change_password') }}" class="btn-outline">
                 🔒 Change Password
             </a>
             <button onclick="logout()" class="btn-outline" style="border-color: #f44336; color: #f44336;">
@@ -447,7 +447,7 @@
     // Logout function
     function logout() {
         if (confirm('Are you sure you want to logout?')) {
-            window.location.href = '{{ url_for("customer.user_logout") }}';
+            window.location.href = '{{ url_for('user_logout') }}';
         }
     }
     
@@ -462,7 +462,7 @@
             if (password) {
                 if (window.showLoading) window.showLoading(true);
                 
-                fetch('{{ url_for("customer.delete_account") }}', {
+                fetch('{{ url_for('delete_account') }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -474,7 +474,7 @@
                 .then(data => {
                     if (data.success) {
                         alert('Your account has been deleted. We are sad to see you go.');
-                        window.location.href = '{{ url_for("customer.index") }}';
+                        window.location.href = '{{ url_for('index') }}';
                     } else {
                         alert(data.error || 'Failed to delete account. Please check your password.');
                     }

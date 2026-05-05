@@ -23,11 +23,11 @@ def login_required(f):
                 return jsonify({
                     'success': False,
                     'error': 'Authentication required',
-                    'redirect': url_for('customer_routes.admin_login')
+                    'redirect': url_for('admin_login')
                 }), 401
             
             flash('Please log in to access this page.', 'warning')
-            return redirect(url_for('customer_routes.admin_login', next=request.url))
+            return redirect(url_for('admin_login', next=request.url))
         return f(*args, **kwargs)
     return decorated_function
 
@@ -55,11 +55,11 @@ def user_login_required(f):
                 return jsonify({
                     'success': False,
                     'error': 'User authentication required',
-                    'redirect': url_for('customer_routes.user_login')
+                    'redirect': url_for('user_login')
                 }), 401
             
             flash('Please login to access this page.', 'warning')
-            return redirect(url_for('customer_routes.user_login', next=request.url))
+            return redirect(url_for('user_login', next=request.url))
         return f(*args, **kwargs)
     return decorated_function
 
@@ -86,11 +86,11 @@ def admin_or_user_required(f):
                 return jsonify({
                     'success': False,
                     'error': 'Authentication required',
-                    'redirect': url_for('customer_routes.user_login')
+                    'redirect': url_for('user_login')
                 }), 401
             
             flash('Please login to access this page.', 'warning')
-            return redirect(url_for('customer_routes.user_login', next=request.url))
+            return redirect(url_for('user_login', next=request.url))
         
         return f(*args, **kwargs)
     return decorated_function

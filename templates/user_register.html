@@ -208,7 +208,7 @@
         {% endwith %}
         
         <!-- Registration Form -->
-        <form method="post" action="{{ url_for('customer.user_register') }}" id="registerForm" onsubmit="return validateAndSubmit(event)">
+        <form method="post" action="{{ url_for('user_register') }}" id="registerForm" onsubmit="return validateAndSubmit(event)">
             <div class="form-group">
                 <label>👤 Full Name <span class="required-star">*</span></label>
                 <input type="text" name="full_name" id="fullName" class="form-control" required placeholder="John Doe" autofocus>
@@ -247,8 +247,8 @@
             <div class="form-group">
                 <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                     <input type="checkbox" name="agree_terms" id="agreeTerms" required style="width: 18px; height: 18px;">
-                    I agree to the <a href="{{ url_for('customer.terms') }}" target="_blank" style="color: #1a73e8;">Terms of Service</a> and 
-                    <a href="{{ url_for('customer.privacy') }}" target="_blank" style="color: #1a73e8;">Privacy Policy</a>
+                    I agree to the <a href="{{ url_for('terms') }}" target="_blank" style="color: #1a73e8;">Terms of Service</a> and 
+                    <a href="{{ url_for('privacy') }}" target="_blank" style="color: #1a73e8;">Privacy Policy</a>
                     <span class="required-star">*</span>
                 </label>
                 <div class="error-message" id="termsError"></div>
@@ -261,12 +261,12 @@
         
         <!-- Login Link -->
         <div class="login-link">
-            Already have an account? <a href="{{ url_for('customer.user_login') }}">Login here</a>
+            Already have an account? <a href="{{ url_for('user_login') }}">Login here</a>
         </div>
         
         <!-- Terms -->
         <div class="terms">
-            By registering, you agree to our <a href="{{ url_for('customer.terms') }}">Terms of Service</a> and <a href="{{ url_for('customer.privacy') }}">Privacy Policy</a>
+            By registering, you agree to our <a href="{{ url_for('terms') }}">Terms of Service</a> and <a href="{{ url_for('privacy') }}">Privacy Policy</a>
         </div>
     </div>
 </div>

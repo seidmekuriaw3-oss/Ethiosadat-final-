@@ -238,7 +238,7 @@
         {% endwith %}
         
         <!-- Login Form -->
-        <form method="post" action="{{ url_for('customer.user_login') }}" id="loginForm" onsubmit="return handleSubmit(event)">
+        <form method="post" action="{{ url_for('user_login') }}" id="loginForm" onsubmit="return handleSubmit(event)">
             <div class="form-group">
                 <label>📧 Email Address</label>
                 <input type="email" 
@@ -266,12 +266,12 @@
             <span>or</span>
         </div>
         
-        <a href="{{ url_for('customer.user_register') }}" class="btn-register">
+        <a href="{{ url_for('user_register') }}" class="btn-register">
             Create New Account
         </a>
         
         <div>
-            <a href="{{ url_for('customer.forgot_password') }}" class="forgot-link">
+            <a href="{{ url_for('forgot_password') }}" class="forgot-link">
                 Forgot Password?
             </a>
         </div>

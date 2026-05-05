@@ -79,13 +79,13 @@
 {% block content %}
 <div class="notification-container">
     <div style="margin-bottom: 24px;">
-        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline" style="margin-bottom: 12px; display: inline-block;">← Back to Dashboard</a>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline" style="margin-bottom: 12px; display: inline-block;">← Back to Dashboard</a>
         <h1 style="margin: 8px 0 4px;">📢 Send Push Notification</h1>
         <p style="color: var(--text-muted, #666); margin: 0;">Send real-time notifications to your customers</p>
     </div>
     
     <div class="notification-card">
-        <form method="post" action="{{ url_for('admin.send_notification') }}" id="notificationForm" onsubmit="return validateForm()">
+        <form method="post" action="{{ url_for('admin_send_notification') }}" id="notificationForm" onsubmit="return validateForm()">
             <div class="form-group">
                 <label>📌 Title <span style="color: #f44336;">*</span></label>
                 <input type="text" 

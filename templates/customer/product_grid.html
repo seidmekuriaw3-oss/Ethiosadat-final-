@@ -484,7 +484,7 @@
     });
     
     function fetchProducts() {
-        fetch('{{ url_for("api.get_all_products") }}')
+        fetch('{{ url_for("api_products") }}')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -564,7 +564,7 @@
                 `<span class="discount-badge">-${Math.round((parseFloat(product.compare_price) - parseFloat(product.price)) / parseFloat(product.compare_price) * 100)}%</span>` : '';
             
             return `
-            <div class="product-card" onclick="location.href='{{ url_for('customer.product_detail', product_id=0) }}'.replace('/0', '/' + ${product.id})">
+            <div class="product-card" onclick="location.href='{{ url_for('product_detail', product_id=0) }}'.replace('/0', '/' + ${product.id})">
                 <div class="product-image">
                     ${hasImage ? 
                         `<img src="${imageUrl}" alt="${escapeHtml(product.name_am)}" loading="lazy"

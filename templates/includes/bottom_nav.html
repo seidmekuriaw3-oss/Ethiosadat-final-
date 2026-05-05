@@ -3,7 +3,7 @@
 
 <nav class="bottom-nav" id="bottomNav">
     <!-- Home -->
-    <a href="{{ url_for('customer.index') }}" class="nav-item {% if request.endpoint == 'customer.index' %}active{% endif %}" 
+    <a href="{{ url_for('index') }}" class="nav-item {% if request.endpoint == 'customer.index' %}active{% endif %}" 
        data-tooltip="{% if lang == 'am' %}መነሻ{% else %}Home{% endif %}">
         <span class="nav-icon">🏠</span>
         <span class="nav-label">{% if lang == 'am' %}መነሻ{% else %}Home{% endif %}</span>
@@ -16,7 +16,7 @@
     </div>
     
     <!-- Cart -->
-    <a href="{{ url_for('cart.view_cart') }}" class="nav-item {% if request.endpoint == 'cart.view_cart' %}active{% endif %}" 
+    <a href="{{ url_for('view_cart') }}" class="nav-item {% if request.endpoint == 'cart.view_cart' %}active{% endif %}" 
        style="position: relative;" data-tooltip="{% if lang == 'am' %}ጋሪ{% else %}Cart{% endif %}">
         <span class="nav-icon">🛒</span>
         <span class="nav-label">{% if lang == 'am' %}ጋሪ{% else %}Cart{% endif %}</span>
@@ -46,12 +46,12 @@
         <button class="close-categories" onclick="closeCategories()">&times;</button>
     </div>
     <div class="categories-modal-body">
-        <a href="{{ url_for('customer.products') }}" class="category-item">
+        <a href="{{ url_for('products') }}" class="category-item">
             <span class="category-icon">🔄</span>
             <span class="category-name">{% if lang == 'am' %}ሁሉም{% else %}All Products{% endif %}</span>
         </a>
         {% for cat in categories %}
-        <a href="{{ url_for('customer.products', category=cat.id) }}" class="category-item">
+        <a href="{{ url_for('products', category=cat.id) }}" class="category-item">
             <span class="category-icon">
                 {% if cat.name_am == 'ሶፋ' %}🛋️
                 {% elif cat.name_am == 'አልጋ' %}🛏️
@@ -430,7 +430,7 @@
     
     // Initialize cart count on page load
     document.addEventListener('DOMContentLoaded', function() {
-        fetch('{{ url_for("api.cart_count") }}')
+        fetch('{{ url_for("api_cart_count") }}')
             .then(res => res.json())
             .then(data => {
                 if (data.success) {

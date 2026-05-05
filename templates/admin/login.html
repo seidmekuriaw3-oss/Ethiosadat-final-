@@ -312,7 +312,7 @@
         {% endwith %}
         
         <!-- Login Form -->
-        <form method="post" action="{{ url_for('admin.admin_login') }}" id="loginForm" onsubmit="return handleSubmit(event)">
+        <form method="post" action="{{ url_for('admin_login') }}" id="loginForm" onsubmit="return handleSubmit(event)">
             <div class="input-group">
                 <label>🔒 Password</label>
                 <input type="password" 
@@ -326,8 +326,8 @@
         </form>
         
         <div class="footer-links">
-            <a href="{{ url_for('customer.index') }}">← Back to Store</a> | 
-            <a href="{{ url_for('customer.contact') }}">Need Help?</a>
+            <a href="{{ url_for('index') }}">← Back to Store</a> | 
+            <a href="{{ url_for('contact') }}">Need Help?</a>
         </div>
     </div>
     

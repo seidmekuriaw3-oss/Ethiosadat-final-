@@ -4,7 +4,7 @@
 <div class="search-bar-container" style="position: relative;">
     
     <!-- Search Form -->
-    <form action="{{ url_for('customer.search') }}" method="get" class="search-form" onsubmit="return handleSearchSubmit(event)" style="position: relative;">
+    <form action="{{ url_for('search') }}" method="get" class="search-form" onsubmit="return handleSearchSubmit(event)" style="position: relative;">
         <div class="search-input-wrapper" style="
             display: flex;
             align-items: center;
@@ -389,7 +389,7 @@
     
     // Fetch search suggestions from API
     function fetchSearchSuggestions(query) {
-        fetch('{{ url_for("api.search_products") }}?q=' + encodeURIComponent(query) + '&limit=5')
+        fetch('{{ url_for("api_search_products") }}?q=' + encodeURIComponent(query) + '&limit=5')
             .then(response => response.json())
             .then(data => {
                 renderSuggestions(data.products || []);
@@ -459,7 +459,7 @@
     function performSearch(query) {
         if (query && query.trim()) {
             saveRecentSearch(query);
-            window.location.href = '{{ url_for("customer.search") }}?q=' + encodeURIComponent(query);
+            window.location.href = '{{ url_for('search') }}?q=' + encodeURIComponent(query);
         }
     }
     

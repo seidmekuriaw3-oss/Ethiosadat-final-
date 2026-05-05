@@ -258,7 +258,7 @@
                 <span>📝</span> Personal Information
             </h3>
             
-            <form id="profileForm" method="post" action="{{ url_for('customer.update_profile') }}" onsubmit="return validateForm()">
+            <form id="profileForm" method="post" action="{{ url_for('update_profile') }}" onsubmit="return validateForm()">
                 <div class="form-group">
                     <label>Full Name</label>
                     <input type="text" name="full_name" id="fullName" class="form-control" 
@@ -289,7 +289,7 @@
                 </button>
             </form>
             
-            <a href="{{ url_for('customer.user_logout') }}" class="logout-btn">
+            <a href="{{ url_for('user_logout') }}" class="logout-btn">
                 🚪 Logout
             </a>
         </div>
@@ -336,7 +336,7 @@
                 
                 {% if orders|length > 5 %}
                 <div style="text-align: center; margin-top: 16px;">
-                    <a href="{{ url_for('customer.user_orders') }}" class="btn btn-outline">View All Orders →</a>
+                    <a href="{{ url_for('user_orders') }}" class="btn btn-outline">View All Orders →</a>
                 </div>
                 {% endif %}
                 
@@ -344,7 +344,7 @@
                 <div class="empty-orders">
                     <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
                     <p>You haven't placed any orders yet.</p>
-                    <a href="{{ url_for('customer.products') }}" class="btn btn-primary" style="margin-top: 16px; text-decoration: none;">Start Shopping →</a>
+                    <a href="{{ url_for('products') }}" class="btn btn-primary" style="margin-top: 16px; text-decoration: none;">Start Shopping →</a>
                 </div>
             {% endif %}
         </div>
@@ -412,7 +412,7 @@
     }
     
     function viewOrderDetails(orderNumber) {
-        window.location.href = '{{ url_for("customer.order_detail", order_id=0) }}'.replace('/0', '/' + orderNumber);
+        window.location.href = '{{ url_for("order_detail", order_id=0) }}'.replace('/0', '/' + orderNumber);
     }
     
     function changePassword() {
@@ -420,7 +420,7 @@
         if (newPassword && newPassword.length >= 6) {
             if (window.showLoading) window.showLoading(true);
             
-            fetch('{{ url_for("customer.change_password") }}', {
+            fetch('{{ url_for('change_password') }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -193,29 +193,29 @@
 
     <!-- Statistics Cards -->
     <div class="stats-grid">
-        <div class="stat-card" onclick="location.href='{{ url_for('admin.products') }}'">
+        <div class="stat-card" onclick="location.href='{{ url_for('admin_products') }}'">
             <div class="stat-icon">📦</div>
             <div class="stat-value">{{ stats.products_count|default(0) }}</div>
             <div class="stat-label">Total Products</div>
-            <a href="{{ url_for('admin.products') }}" class="btn btn-outline btn-small">Manage →</a>
+            <a href="{{ url_for('admin_products') }}" class="btn btn-outline btn-small">Manage →</a>
         </div>
-        <div class="stat-card" onclick="location.href='{{ url_for('admin.ads') }}'">
+        <div class="stat-card" onclick="location.href='{{ url_for('admin_ads') }}'">
             <div class="stat-icon">📢</div>
             <div class="stat-value">{{ stats.ads_count|default(0) }}</div>
             <div class="stat-label">Advertisements</div>
-            <a href="{{ url_for('admin.ads') }}" class="btn btn-outline btn-small">Manage →</a>
+            <a href="{{ url_for('admin_ads') }}" class="btn btn-outline btn-small">Manage →</a>
         </div>
-        <div class="stat-card" onclick="location.href='{{ url_for('admin.orders') }}'">
+        <div class="stat-card" onclick="location.href='{{ url_for('admin_orders') }}'">
             <div class="stat-icon">🛒</div>
             <div class="stat-value">{{ stats.total_orders|default(0) }}</div>
             <div class="stat-label">Total Orders</div>
-            <a href="{{ url_for('admin.orders') }}" class="btn btn-outline btn-small">View →</a>
+            <a href="{{ url_for('admin_orders') }}" class="btn btn-outline btn-small">View →</a>
         </div>
-        <div class="stat-card" onclick="location.href='{{ url_for('admin.reports') }}'">
+        <div class="stat-card" onclick="location.href='{{ url_for('admin_reports') }}'">
             <div class="stat-icon">💰</div>
             <div class="stat-value" id="totalRevenue">{{ stats.total_revenue|default(0)|format_price_number }} ETB</div>
             <div class="stat-label">Total Revenue</div>
-            <a href="{{ url_for('admin.reports') }}" class="btn btn-outline btn-small">Reports →</a>
+            <a href="{{ url_for('admin_reports') }}" class="btn btn-outline btn-small">Reports →</a>
         </div>
     </div>
 
@@ -226,7 +226,7 @@
             <span style="font-weight: bold;">⏳ {{ stats.pending_orders }} Pending Order(s)</span>
             <span style="margin-left: 10px; color: #666;">Requires your attention</span>
         </div>
-        <a href="{{ url_for('admin.orders') }}" class="btn btn-small" style="background: #ff9800; color: white;">View Pending Orders →</a>
+        <a href="{{ url_for('admin_orders') }}" class="btn btn-small" style="background: #ff9800; color: white;">View Pending Orders →</a>
     </div>
     {% endif %}
 
@@ -249,7 +249,7 @@
                 <div style="text-align: center; padding: 30px; color: #999;">No products yet</div>
             {% endif %}
             <div class="view-all">
-                <a href="{{ url_for('admin.products') }}" class="btn btn-outline btn-small">View All Products →</a>
+                <a href="{{ url_for('admin_products') }}" class="btn btn-outline btn-small">View All Products →</a>
             </div>
         </div>
 
@@ -270,7 +270,7 @@
                 <div style="text-align: center; padding: 30px; color: #999;">No orders yet</div>
             {% endif %}
             <div class="view-all">
-                <a href="{{ url_for('admin.orders') }}" class="btn btn-outline btn-small">View All Orders →</a>
+                <a href="{{ url_for('admin_orders') }}" class="btn btn-outline btn-small">View All Orders →</a>
             </div>
         </div>
     </div>
@@ -288,7 +288,7 @@
         </div>
         {% endfor %}
         <div class="view-all">
-            <a href="{{ url_for('admin.products') }}" class="btn btn-outline btn-small">Update Stock →</a>
+            <a href="{{ url_for('admin_products') }}" class="btn btn-outline btn-small">Update Stock →</a>
         </div>
     </div>
     {% endif %}
@@ -297,25 +297,25 @@
     <div class="admin-menu">
         <h3 style="margin-top: 0; margin-bottom: 20px;">⚡ Quick Actions</h3>
         <div class="action-buttons">
-            <a href="{{ url_for('admin.product_create') }}" class="btn btn-primary">
+            <a href="{{ url_for('admin_product_create') }}" class="btn btn-primary">
                 <span>➕</span> Add Product
             </a>
-            <a href="{{ url_for('admin.ad_create') }}" class="btn" style="background: #ff9800; color: white;">
+            <a href="{{ url_for('admin_ad_create') }}" class="btn" style="background: #ff9800; color: white;">
                 <span>📢</span> Create Ad
             </a>
-            <a href="{{ url_for('admin.orders') }}" class="btn btn-outline">
+            <a href="{{ url_for('admin_orders') }}" class="btn btn-outline">
                 <span>🛒</span> View Orders
             </a>
-            <a href="{{ url_for('admin.reports') }}" class="btn btn-outline">
+            <a href="{{ url_for('admin_reports') }}" class="btn btn-outline">
                 <span>📊</span> Reports
             </a>
-            <a href="{{ url_for('admin.settings') }}" class="btn btn-outline">
+            <a href="{{ url_for('admin_settings') }}" class="btn btn-outline">
                 <span>⚙️</span> Settings
             </a>
-            <a href="{{ url_for('admin.send_notification') }}" class="btn btn-outline">
+            <a href="{{ url_for('admin_send_notification') }}" class="btn btn-outline">
                 <span>🔔</span> Send Notification
             </a>
-            <a href="{{ url_for('admin.admin_logout') }}" class="btn btn-outline" style="border-color: #f44336; color: #f44336;">
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-outline" style="border-color: #f44336; color: #f44336;">
                 <span>🚪</span> Logout
             </a>
         </div>
@@ -362,7 +362,7 @@
 
     // Load total revenue
     function loadTotalRevenue() {
-        fetch('{{ url_for("api.total_revenue") }}')
+        fetch('{{ url_for("admin_reports") }}')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -379,7 +379,7 @@
 
     // Load database info
     function loadDbInfo() {
-        fetch('{{ url_for("api.db_info") }}')
+        fetch('{{ url_for("admin_dashboard") }}')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -395,7 +395,7 @@
 
     // Check system status
     function checkSystemStatus() {
-        fetch('{{ url_for("api.health") }}')
+        fetch('{{ url_for("health") }}')
             .then(response => {
                 const statusSpan = document.getElementById('systemStatus');
                 if (statusSpan) {

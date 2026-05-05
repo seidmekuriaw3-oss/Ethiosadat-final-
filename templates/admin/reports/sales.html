@@ -154,7 +154,7 @@
     <!-- Header -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
         <div>
-            <a href="{{ url_for('admin.reports') }}" class="btn btn-outline" style="margin-bottom: 12px; display: inline-block;">← Back to Reports</a>
+            <a href="{{ url_for('admin_reports') }}" class="btn btn-outline" style="margin-bottom: 12px; display: inline-block;">← Back to Reports</a>
             <h1 style="margin: 8px 0 4px;">💰 Sales Report</h1>
             <p style="color: var(--text-muted, #666); margin: 0;">Track sales performance and revenue analysis</p>
         </div>
@@ -309,7 +309,7 @@
     function loadSalesData(start = null, end = null) {
         showLoading(true);
         
-        let url = '{{ url_for("api.sales_data") }}';
+        let url = '{{ url_for("admin_reports") }}';
         const params = new URLSearchParams();
         
         if (start && end) {
@@ -427,7 +427,7 @@
         
         tbody.innerHTML = pageOrders.map(order => `
             <tr>
-                <td><a href="{{ url_for('admin.order_detail', oid=0) }}".replace('/0', '/' + order.id) style="color: #1a73e8;">${escapeHtml(order.order_number)}</a></td>
+                <td><a href="{{ url_for('admin_order_detail', oid=0) }}".replace('/0', '/' + order.id) style="color: #1a73e8;">${escapeHtml(order.order_number)}</a></td>
                 <td>${escapeHtml(order.customer_name)}</td>
                 <td>${escapeHtml(order.date)}</td>
                 <td>${order.items_count || 0}</td>

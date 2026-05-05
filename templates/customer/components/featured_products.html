@@ -15,7 +15,7 @@
                 {% if lang == 'am' %}በጣም የተወደዱ እና የተመረጡ ምርቶቻችን{% else %}Our most loved and selected products{% endif %}
             </p>
         </div>
-        <a href="{{ url_for('customer.products') }}" class="btn btn-outline" style="display: flex; align-items: center; gap: 6px; text-decoration: none;">
+        <a href="{{ url_for('products') }}" class="btn btn-outline" style="display: flex; align-items: center; gap: 6px; text-decoration: none;">
             <span>{% if lang == 'am' %}ሁሉንም ይመልከቱ{% else %}View All{% endif %}</span>
             <span>→</span>
         </a>
@@ -38,7 +38,7 @@
             cursor: pointer;
         " onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)'"
            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.08)'"
-           onclick="location.href='{{ url_for('customer.product_detail', product_id=product.id) }}'">
+           onclick="location.href='{{ url_for('product_detail', product_id=product.id) }}'">
             
             <!-- Product Image -->
             <div class="product-image-wrapper" style="position: relative; height: 220px; overflow: hidden; background: var(--bg-hover, #f8f9fa);">
@@ -319,7 +319,7 @@
         {% if lang == 'am' %}በቅርቡ አዳዲስ ምርቶችን ይጠብቁ{% else %}Check back soon for featured products{% endif %}
     </p>
     {% if session.get('admin') %}
-    <a href="{{ url_for('admin.product_create') }}" class="btn btn-primary" style="margin-top: 16px; display: inline-block; text-decoration: none;">
+    <a href="{{ url_for('admin_product_create') }}" class="btn btn-primary" style="margin-top: 16px; display: inline-block; text-decoration: none;">
         {% if lang == 'am' %}ምርት ይጨምሩ{% else %}Add Product{% endif %}
     </a>
     {% endif %}

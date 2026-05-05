@@ -69,7 +69,7 @@
                 color: rgba(255,255,255,0.4);
             ">MAIN</div>
             
-            <a href="{{ url_for('admin.dashboard') }}" class="nav-item {% if request.endpoint == 'admin.dashboard' %}active{% endif %}" style="
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-item {% if request.endpoint == 'admin.dashboard' %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -95,7 +95,7 @@
                 margin-top: 8px;
             ">PRODUCTS</div>
             
-            <a href="{{ url_for('admin.products') }}" class="nav-item {% if request.endpoint == 'admin.products' %}active{% endif %}" style="
+            <a href="{{ url_for('admin_products') }}" class="nav-item {% if request.endpoint == 'admin.products' %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -116,7 +116,7 @@
                 ">{{ products_count|default(0) }}</span>
             </a>
             
-            <a href="{{ url_for('admin.product_create') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_product_create') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -130,7 +130,7 @@
                 <span class="nav-text">Add Product</span>
             </a>
             
-            <a href="{{ url_for('admin.categories') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -156,7 +156,7 @@
                 margin-top: 8px;
             ">ORDERS</div>
             
-            <a href="{{ url_for('admin.orders') }}" class="nav-item {% if request.endpoint == 'admin.orders' %}active{% endif %}" style="
+            <a href="{{ url_for('admin_orders') }}" class="nav-item {% if request.endpoint == 'admin.orders' %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -191,7 +191,7 @@
                 margin-top: 8px;
             ">MARKETING</div>
             
-            <a href="{{ url_for('admin.ads') }}" class="nav-item {% if request.endpoint == 'admin.ads' %}active{% endif %}" style="
+            <a href="{{ url_for('admin_ads') }}" class="nav-item {% if request.endpoint == 'admin.ads' %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -212,7 +212,7 @@
                 ">{{ ads_count|default(0) }}</span>
             </a>
             
-            <a href="{{ url_for('admin.ad_create') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_ad_create') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -226,7 +226,7 @@
                 <span class="nav-text">Create Ad</span>
             </a>
             
-            <a href="{{ url_for('admin.promotions') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -240,7 +240,7 @@
                 <span class="nav-text">Promotions</span>
             </a>
             
-            <a href="{{ url_for('admin.send_notification') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_send_notification') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -266,7 +266,7 @@
                 margin-top: 8px;
             ">REPORTS</div>
             
-            <a href="{{ url_for('admin.reports') }}" class="nav-item {% if request.endpoint == 'admin.reports' %}active{% endif %}" style="
+            <a href="{{ url_for('admin_reports') }}" class="nav-item {% if request.endpoint == 'admin.reports' %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -280,7 +280,7 @@
                 <span class="nav-text">Overview</span>
             </a>
             
-            <a href="{{ url_for('admin.reports_sales') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_reports_sales') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -294,7 +294,7 @@
                 <span class="nav-text">Sales Report</span>
             </a>
             
-            <a href="{{ url_for('admin.reports_products') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_reports_products') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -308,7 +308,7 @@
                 <span class="nav-text">Products Report</span>
             </a>
             
-            <a href="{{ url_for('admin.reports_customers') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_reports') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -334,7 +334,7 @@
                 margin-top: 8px;
             ">SYSTEM</div>
             
-            <a href="{{ url_for('admin.settings') }}" class="nav-item {% if request.endpoint == 'admin.settings' %}active{% endif %}" style="
+            <a href="{{ url_for('admin_settings') }}" class="nav-item {% if request.endpoint == 'admin.settings' %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -348,7 +348,7 @@
                 <span class="nav-text">Settings</span>
             </a>
             
-            <a href="{{ url_for('admin.users') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -362,7 +362,7 @@
                 <span class="nav-text">Users</span>
             </a>
             
-            <a href="{{ url_for('admin.backup') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_backup_database') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -376,7 +376,7 @@
                 <span class="nav-text">Backup</span>
             </a>
             
-            <a href="{{ url_for('admin.logs') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -390,7 +390,7 @@
                 <span class="nav-text">System Logs</span>
             </a>
             
-            <a href="{{ url_for('admin.clear_cache') }}" class="nav-item" style="
+            <a href="{{ url_for('admin_clear_cache') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -412,7 +412,7 @@
         border-top: 1px solid rgba(255,255,255,0.1);
         margin-top: auto;
     ">
-        <a href="{{ url_for('customer.index') }}" style="
+        <a href="{{ url_for('index') }}" style="
             display: flex;
             align-items: center;
             gap: 12px;
@@ -425,7 +425,7 @@
             <span class="nav-text">View Store</span>
         </a>
         
-        <a href="{{ url_for('admin.admin_logout') }}" style="
+        <a href="{{ url_for('admin_logout') }}" style="
             display: flex;
             align-items: center;
             gap: 12px;
@@ -566,7 +566,7 @@
     });
     
     function fetchCounts() {
-        fetch('{{ url_for("api.admin_counts") if url_for is defined else "/api/admin/counts" }}')
+        fetch('{{ url_for("api_cart_count") if url_for is defined else "/api/admin/counts" }}')
             .then(res => res.json())
             .then(data => {
                 const productsSpan = document.getElementById('productsCount');

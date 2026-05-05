@@ -269,7 +269,7 @@
         {% endwith %}
         
         <!-- Registration Form -->
-        <form method="post" action="{{ url_for('customer.user_register') }}" id="registerForm" onsubmit="return handleSubmit(event)">
+        <form method="post" action="{{ url_for('user_register') }}" id="registerForm" onsubmit="return handleSubmit(event)">
             <div class="form-row">
                 <div class="form-group">
                     <label>Full Name <span style="color: #f44336;">*</span></label>
@@ -327,8 +327,8 @@
             <div class="checkbox-group">
                 <input type="checkbox" name="agree_terms" id="agree_terms" required>
                 <label for="agree_terms" style="margin: 0; font-weight: normal; font-size: 13px;">
-                    I agree to the <a href="{{ url_for('customer.terms') }}" target="_blank">Terms of Service</a> and 
-                    <a href="{{ url_for('customer.privacy') }}" target="_blank">Privacy Policy</a>
+                    I agree to the <a href="{{ url_for('terms') }}" target="_blank">Terms of Service</a> and 
+                    <a href="{{ url_for('privacy') }}" target="_blank">Privacy Policy</a>
                 </label>
             </div>
             
@@ -341,7 +341,7 @@
             <span>already have an account?</span>
         </div>
         
-        <a href="{{ url_for('customer.user_login') }}" class="btn-login">
+        <a href="{{ url_for('user_login') }}" class="btn-login">
             Sign In Instead
         </a>
     </div>

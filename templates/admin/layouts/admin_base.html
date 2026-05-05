@@ -419,7 +419,7 @@
                 <!-- Dashboard -->
                 <div class="nav-section">
                     <div class="nav-section-title">MAIN</div>
-                    <a href="{{ url_for('admin.dashboard') }}" class="{% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+                    <a href="{{ url_for('admin_dashboard') }}" class="{% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
                         <span class="nav-icon">📊</span>
                         <span class="nav-text">Dashboard</span>
                     </a>
@@ -428,11 +428,11 @@
                 <!-- Products -->
                 <div class="nav-section">
                     <div class="nav-section-title">PRODUCTS</div>
-                    <a href="{{ url_for('admin.products') }}" class="{% if request.endpoint == 'admin.products' %}active{% endif %}">
+                    <a href="{{ url_for('admin_products') }}" class="{% if request.endpoint == 'admin.products' %}active{% endif %}">
                         <span class="nav-icon">📦</span>
                         <span class="nav-text">All Products</span>
                     </a>
-                    <a href="{{ url_for('admin.product_create') }}">
+                    <a href="{{ url_for('admin_product_create') }}">
                         <span class="nav-icon">➕</span>
                         <span class="nav-text">Add Product</span>
                     </a>
@@ -441,11 +441,11 @@
                 <!-- Advertisements -->
                 <div class="nav-section">
                     <div class="nav-section-title">ADVERTISING</div>
-                    <a href="{{ url_for('admin.ads') }}" class="{% if request.endpoint == 'admin.ads' %}active{% endif %}">
+                    <a href="{{ url_for('admin_ads') }}" class="{% if request.endpoint == 'admin.ads' %}active{% endif %}">
                         <span class="nav-icon">📢</span>
                         <span class="nav-text">Advertisements</span>
                     </a>
-                    <a href="{{ url_for('admin.ad_create') }}">
+                    <a href="{{ url_for('admin_ad_create') }}">
                         <span class="nav-icon">✨</span>
                         <span class="nav-text">Create Ad</span>
                     </a>
@@ -454,7 +454,7 @@
                 <!-- Orders -->
                 <div class="nav-section">
                     <div class="nav-section-title">ORDERS</div>
-                    <a href="{{ url_for('admin.orders') }}" class="{% if request.endpoint == 'admin.orders' %}active{% endif %}">
+                    <a href="{{ url_for('admin_orders') }}" class="{% if request.endpoint == 'admin.orders' %}active{% endif %}">
                         <span class="nav-icon">🛒</span>
                         <span class="nav-text">All Orders</span>
                         {% if pending_orders_count and pending_orders_count > 0 %}
@@ -466,7 +466,7 @@
                 <!-- Reports -->
                 <div class="nav-section">
                     <div class="nav-section-title">REPORTS</div>
-                    <a href="{{ url_for('admin.reports') }}" class="{% if request.endpoint == 'admin.reports' %}active{% endif %}">
+                    <a href="{{ url_for('admin_reports') }}" class="{% if request.endpoint == 'admin.reports' %}active{% endif %}">
                         <span class="nav-icon">📈</span>
                         <span class="nav-text">Reports</span>
                     </a>
@@ -475,7 +475,7 @@
                 <!-- Notifications -->
                 <div class="nav-section">
                     <div class="nav-section-title">NOTIFICATIONS</div>
-                    <a href="{{ url_for('admin.send_notification') }}" class="{% if request.endpoint == 'admin.send_notification' %}active{% endif %}">
+                    <a href="{{ url_for('admin_send_notification') }}" class="{% if request.endpoint == 'admin.send_notification' %}active{% endif %}">
                         <span class="nav-icon">🔔</span>
                         <span class="nav-text">Send Notification</span>
                     </a>
@@ -484,7 +484,7 @@
                 <!-- Settings -->
                 <div class="nav-section">
                     <div class="nav-section-title">SYSTEM</div>
-                    <a href="{{ url_for('admin.settings') }}" class="{% if request.endpoint == 'admin.settings' %}active{% endif %}">
+                    <a href="{{ url_for('admin_settings') }}" class="{% if request.endpoint == 'admin.settings' %}active{% endif %}">
                         <span class="nav-icon">⚙️</span>
                         <span class="nav-text">Settings</span>
                     </a>
@@ -492,11 +492,11 @@
             </nav>
             
             <div class="sidebar-footer">
-                <a href="{{ url_for('customer.index') }}">
+                <a href="{{ url_for('index') }}">
                     <span class="nav-icon">🏠</span>
                     <span class="nav-text">View Store</span>
                 </a>
-                <a href="{{ url_for('admin.admin_logout') }}">
+                <a href="{{ url_for('admin_logout') }}">
                     <span class="nav-icon">🚪</span>
                     <span class="nav-text">Logout</span>
                 </a>

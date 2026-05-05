@@ -74,6 +74,8 @@ def format_price(value):
 
 app.jinja_env.filters["format_price_number"] = format_price_number
 app.jinja_env.filters["format_price"] = format_price
+app.jinja_env.globals["format_price"] = format_price
+app.jinja_env.globals["format_price_number"] = format_price_number
 
 app.config.from_object(Config)
 app.secret_key = os.environ.get('SECRET_KEY', 'ethiosadat_default_secret_key_2026')
@@ -5725,7 +5727,18 @@ if os.environ.get('REDIS_URL'):
     cache_config['CACHE_TYPE'] = 'RedisCache'
     cache_config['CACHE_REDIS_URL'] = os.environ.get('REDIS_URL')
 
-#cache = Cache(app, config=cache_config)
+class _NoOpCache:
+    """Simple no-op cache stub (flask-caching not installed)."""
+    def __init__(self):
+        self.config = cache_config
+    def clear(self): pass
+    def get(self, key): return None
+    def set(self, key, value, timeout=None): pass
+    def cached(self, timeout=None, key_prefix=None):
+        def decorator(f): return f
+        return decorator
+
+cache = _NoOpCache()
 
 
 @app.route('/api/cache/clear')
@@ -5734,6 +5747,7 @@ def api_clear_cache():
     """Clear all cache (admin only)."""
     try:
         cache.clear()
+        app.jinja_env.cache = {}
         app.logger.info("Cache cleared by admin")
         return jsonify({'success': True, 'message': 'Cache cleared successfully'})
     except Exception as e:
@@ -5741,10 +5755,8 @@ def api_clear_cache():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
-# Cache frequently accessed data
-@cache.cached(timeout=3600, key_prefix='categories_list')
 def get_cached_categories():
-    """Get categories with caching."""
+    """Get categories (no-op cache stub)."""
     try:
         conn = get_db()
         cursor = conn.cursor()

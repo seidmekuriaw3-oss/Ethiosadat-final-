@@ -293,7 +293,7 @@
         <div class="product-card" data-product-id="{{ product.id }}" 
              data-price="{{ product.price }}" 
              data-name="{{ product.name_am }}"
-             onclick="location.href='{{ url_for('customer.product_detail', product_id=product.id) }}'">
+             onclick="location.href='{{ url_for('product_detail', product_id=product.id) }}'">
             <div class="product-image">
                 {% if product.thumbnail and product.thumbnail|trim != '' and product.thumbnail != 'None' %}
                     <img src="{{ url_for('static', filename=product.thumbnail) }}" 
@@ -332,11 +332,11 @@
         <p style="color: var(--text-muted, #666); margin-bottom: 12px;">💡 Try searching for:</p>
         <div>
             {% for cat in categories %}
-            <a href="{{ url_for('customer.search') }}?q={{ cat.name_am }}" class="suggestion-tag">
+            <a href="{{ url_for('search') }}?q={{ cat.name_am }}" class="suggestion-tag">
                 {% if cat.icon %}{{ cat.icon }}{% endif %} {{ cat.name_am }}
             </a>
             {% endfor %}
-            <a href="{{ url_for('customer.search') }}?q=ቅናሽ" class="suggestion-tag">🏷️ ቅናሽ</a>
+            <a href="{{ url_for('search') }}?q=ቅናሽ" class="suggestion-tag">🏷️ ቅናሽ</a>
         </div>
     </div>
     
@@ -355,7 +355,7 @@
             <li>• Checking the spelling</li>
             <li>• Browsing our categories</li>
         </ul>
-        <a href="{{ url_for('customer.index') }}" class="btn btn-primary" style="text-decoration: none;">← Back to Home</a>
+        <a href="{{ url_for('index') }}" class="btn btn-primary" style="text-decoration: none;">← Back to Home</a>
     </div>
     
     <!-- Search Suggestions (Empty State) -->
@@ -363,7 +363,7 @@
         <p style="color: var(--text-muted, #666); margin-bottom: 12px;">💡 Popular searches:</p>
         <div>
             {% for cat in categories %}
-            <a href="{{ url_for('customer.search') }}?q={{ cat.name_am }}" class="suggestion-tag">
+            <a href="{{ url_for('search') }}?q={{ cat.name_am }}" class="suggestion-tag">
                 {% if cat.icon %}{{ cat.icon }}{% endif %} {{ cat.name_am }}
             </a>
             {% endfor %}
@@ -431,7 +431,7 @@
                     `<span class="discount-badge">-${Math.round((parseFloat(product.compare_price) - parseFloat(product.price)) / parseFloat(product.compare_price) * 100)}%</span>` : '';
                 
                 return `
-                <div class="product-card" onclick="location.href='{{ url_for('customer.product_detail', product_id=0) }}'.replace('/0', '/' + ${product.id})">
+                <div class="product-card" onclick="location.href='{{ url_for('product_detail', product_id=0) }}'.replace('/0', '/' + ${product.id})">
                     <div class="product-image">
                         ${hasImage ? 
                             `<img src="${imageUrl}" alt="${escapeHtml(product.name_am)}" loading="lazy"

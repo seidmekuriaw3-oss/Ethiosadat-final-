@@ -187,7 +187,7 @@
         {% endwith %}
         
         <!-- Login Form -->
-        <form id="loginForm" method="post" action="{{ url_for('customer.user_login') }}" onsubmit="return validateAndSubmit(event)">
+        <form id="loginForm" method="post" action="{{ url_for('user_login') }}" onsubmit="return validateAndSubmit(event)">
             <div class="form-group">
                 <label>📧 Email Address</label>
                 <input type="email" name="email" id="loginEmail" class="form-control" 
@@ -209,7 +209,7 @@
         
         <!-- Register Link -->
         <div class="register-link">
-            Don't have an account? <a href="{{ url_for('customer.user_register') }}">Create Account</a>
+            Don't have an account? <a href="{{ url_for('user_register') }}">Create Account</a>
         </div>
         
         <!-- Demo Info -->
@@ -221,7 +221,7 @@
         
         <!-- Forgot Password Link -->
         <div style="text-align: center; margin-top: 16px;">
-            <a href="{{ url_for('customer.forgot_password') }}" style="color: #1a73e8; text-decoration: none; font-size: 13px;">
+            <a href="{{ url_for('forgot_password') }}" style="color: #1a73e8; text-decoration: none; font-size: 13px;">
                 Forgot Password?
             </a>
         </div>

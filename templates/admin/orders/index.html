@@ -150,7 +150,7 @@
             <p style="color: var(--text-muted, #666); margin: 0;">Manage and track customer orders</p>
         </div>
         <div>
-            <a href="{{ url_for('admin.export_orders') }}" class="btn btn-outline">📥 Export All</a>
+            <a href="{{ url_for('admin_export_order') }}" class="btn btn-outline">📥 Export All</a>
         </div>
     </div>
 
@@ -221,14 +221,14 @@
                         <div class="actions-dropdown">
                             <button class="actions-btn">⋮</button>
                             <div class="actions-dropdown-content">
-                                <a href="{{ url_for('admin.order_detail', oid=order.id) }}">👁️ View Details</a>
+                                <a href="{{ url_for('admin_order_detail', oid=order.id) }}">👁️ View Details</a>
                                 <a href="#" onclick="updateOrderStatus({{ order.id }}, 'confirmed')">✅ Confirm</a>
                                 <a href="#" onclick="updateOrderStatus({{ order.id }}, 'processing')">⚙️ Processing</a>
                                 <a href="#" onclick="updateOrderStatus({{ order.id }}, 'shipped')">🚚 Mark Shipped</a>
                                 <a href="#" onclick="updateOrderStatus({{ order.id }}, 'delivered')">🎉 Mark Delivered</a>
                                 <a href="#" onclick="sendWhatsAppUpdate({{ order.id }})">💬 WhatsApp Update</a>
                                 <a href="#" onclick="printOrder({{ order.id }})">🖨️ Print</a>
-                                <a href="{{ url_for('admin.order_invoice', oid=order.id) }}" target="_blank">🧾 Invoice</a>
+                                <a href="{{ url_for('admin_order_invoice', oid=order.id) }}" target="_blank">🧾 Invoice</a>
                                 {% if order.status != 'cancelled' and order.status != 'delivered' %}
                                 <a href="#" onclick="cancelOrder({{ order.id }})" style="color: #f44336;">❌ Cancel</a>
                                 {% endif %}
@@ -363,7 +363,7 @@
         const callback = () => {
             if (window.showLoading) window.showLoading(true);
             
-            fetch('{{ url_for("admin.order_update_status", oid=0) }}'.replace('/0', '/' + orderId), {
+            fetch('{{ url_for("admin_order_update_status", oid=0) }}'.replace('/0', '/' + orderId), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -415,7 +415,7 @@
 
     // Send WhatsApp update
     function sendWhatsAppUpdate(orderId) {
-        fetch('{{ url_for("api.order_detail", oid=0) }}'.replace('/0', '/' + orderId))
+        fetch('{{ url_for("order_detail", oid=0) }}'.replace('/0', '/' + orderId))
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
@@ -442,7 +442,7 @@
 
     // Print order
     function printOrder(orderId) {
-        window.open('{{ url_for("admin.order_print", oid=0) }}'.replace('/0', '/' + orderId), '_blank');
+        window.open('{{ url_for("admin_order_invoice", oid=0) }}'.replace('/0', '/' + orderId), '_blank');
     }
 
     // Pagination
@@ -504,7 +504,7 @@
         
         // Auto-refresh pending count every 30 seconds
         setInterval(() => {
-            fetch('{{ url_for("api.pending_orders_count") }}')
+            fetch('{{ url_for("api_cart_count") }}')
                 .then(res => res.json())
                 .then(data => {
                     if (data.pending_count > 0) {

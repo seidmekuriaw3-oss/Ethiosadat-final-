@@ -347,7 +347,7 @@
     
     // Fetch product data from API
     function fetchProductData(productId) {
-        fetch('{{ url_for("api.get_product", pid=0) }}'.replace('/0', '/' + productId))
+        fetch('{{ url_for("api_get_product", pid=0) }}'.replace('/0', '/' + productId))
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -469,7 +469,7 @@
         
         // View details link
         if (detailsBtn) {
-            detailsBtn.href = '{{ url_for("customer.product_detail", product_id=0) }}'.replace('/0', '/' + product.id);
+            detailsBtn.href = '{{ url_for('product_detail', product_id=0) }}'.replace('/0', '/' + product.id);
         }
         
         // Reset quantity
@@ -573,7 +573,7 @@
     function shareProduct(platform) {
         if (!currentProduct) return;
         
-        const url = window.location.origin + '{{ url_for("customer.product_detail", product_id=0) }}'.replace('/0', '/' + currentProduct.id);
+        const url = window.location.origin + '{{ url_for('product_detail', product_id=0) }}'.replace('/0', '/' + currentProduct.id);
         const text = `Check out ${currentProduct.name_am || currentProduct.name} at Ethiosadat Furniture!`;
         
         let shareUrl = '';

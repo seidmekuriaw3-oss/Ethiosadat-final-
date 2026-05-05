@@ -226,7 +226,7 @@
             
             <!-- Continue Shopping Link -->
             <div style="margin-top: 16px;">
-                <a href="{{ url_for('customer.products') }}" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+                <a href="{{ url_for('products') }}" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
                     <span>←</span> Continue Shopping
                 </a>
             </div>
@@ -304,7 +304,7 @@
             {% endif %}
             
             <!-- Checkout Buttons -->
-            <a href="{{ url_for('cart.checkout') }}" class="btn btn-primary" style="width: 100%; text-align: center; padding: 14px; font-size: 16px; margin-bottom: 12px; text-decoration: none; display: block;">
+            <a href="{{ url_for('checkout') }}" class="btn btn-primary" style="width: 100%; text-align: center; padding: 14px; font-size: 16px; margin-bottom: 12px; text-decoration: none; display: block;">
                 🛒 Proceed to Checkout
             </a>
             <a href="#" class="btn btn-outline" style="width: 100%; text-align: center; padding: 12px; text-decoration: none; display: block;" 
@@ -323,7 +323,7 @@
             Looks like you haven't added any items to your cart yet.
         </p>
         <p style="margin-bottom: 16px;">✨ Start exploring our products and add your favorites!</p>
-        <a href="{{ url_for('customer.products') }}" class="btn btn-primary" style="padding: 12px 32px; text-decoration: none;">
+        <a href="{{ url_for('products') }}" class="btn btn-primary" style="padding: 12px 32px; text-decoration: none;">
             🛍️ Start Shopping
         </a>
     </div>
@@ -337,7 +337,7 @@
             return;
         }
         
-        fetch('{{ url_for("api.cart_update") }}', {
+        fetch('{{ url_for("api_cart_update") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -389,7 +389,7 @@
     function removeCartItem(productId) {
         const confirmFn = window.showConfirm || confirm;
         const callback = () => {
-            fetch('{{ url_for("api.cart_remove") }}', {
+            fetch('{{ url_for("api_cart_remove") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -448,7 +448,7 @@
     function clearCart() {
         const confirmFn = window.showConfirm || confirm;
         const callback = () => {
-            fetch('{{ url_for("cart.clear_cart") }}', {
+            fetch('{{ url_for("clear_cart") }}', {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -488,7 +488,7 @@
             return;
         }
         
-        fetch('{{ url_for("api.apply_coupon") }}', {
+        fetch('{{ url_for("api_cart_update") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

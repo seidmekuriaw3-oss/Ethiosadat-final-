@@ -315,7 +315,7 @@
     
     // Fetch cart data for checkout
     function fetchCartForCheckout() {
-        fetch('{{ url_for("api.get_cart") }}')
+        fetch('{{ url_for("api_get_cart") }}')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -415,7 +415,7 @@
         };
         
         // Submit order
-        fetch('{{ url_for("api.submit_order") }}', {
+        fetch('{{ url_for("api_submit_order") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

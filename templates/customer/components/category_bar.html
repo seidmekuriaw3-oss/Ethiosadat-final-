@@ -53,7 +53,7 @@
     <div class="category-scroll-wrapper" style="position: relative; overflow-x: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
         <div class="category-chips" style="display: flex; gap: 12px; flex-wrap: nowrap; min-width: min-content;">
             {% for cat in categories %}
-            <a href="{{ url_for('customer.products', category=cat.id) }}" 
+            <a href="{{ url_for('products', category=cat.id) }}" 
                class="category-chip {% if current_category == cat.id %}active{% endif %}"
                data-category="{{ cat.id }}"
                style="
@@ -256,7 +256,7 @@
     // Fetch category counts via AJAX if not provided
     (function() {
         if (typeof category_stats === 'undefined' || !category_stats || Object.keys(category_stats).length === 0) {
-            fetch('{{ url_for("api.category_counts") }}')
+            fetch('{{ url_for("api_categories") }}')
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
