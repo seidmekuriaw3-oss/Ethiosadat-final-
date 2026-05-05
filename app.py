@@ -6098,6 +6098,32 @@ register_error_handlers()
 
 # ==================== 53. APPLICATION READY ====================
 
+# ==================== CUSTOMER BLUEPRINT ALIASES ====================
+# Templates use 'customer.*' endpoint names — register them as aliases
+_customer_endpoint_map = {
+    'customer.index': index,
+    'customer.products': products,
+    'customer.about': about,
+    'customer.contact': contact,
+    'customer.search': search,
+    'customer.faq': faq,
+    'customer.shipping_info': shipping_info,
+    'customer.returns_policy': returns_policy,
+    'customer.terms': terms,
+    'customer.privacy': privacy,
+    'customer.user_login': user_login,
+    'customer.user_register': user_register,
+    'customer.user_logout': user_logout,
+    'customer.user_profile': user_profile,
+    'customer.update_profile': update_profile,
+    'customer.change_password': change_password,
+    'customer.delete_account': delete_account,
+    'customer.user_orders': user_orders,
+    'customer.forgot_password': forgot_password,
+}
+for _alias, _fn in _customer_endpoint_map.items():
+    app.view_functions[_alias] = _fn
+
 app.logger.info("=" * 60)
 app.logger.info("ETHIOSADAT FURNITURE APPLICATION READY")
 app.logger.info(f"Environment: {os.environ.get('FLASK_ENV', 'production')}")

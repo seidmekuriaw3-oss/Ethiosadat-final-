@@ -667,3 +667,425 @@ class Order:
             print(f"Error deleting order {oid}: {e}")
             db.rollback()
             return False
+
+
+class User:
+    """User model for database operations"""
+
+    @staticmethod
+    def get_by_id(uid):
+        try:
+            db = get_db()
+            return db.execute("SELECT * FROM users WHERE id = ?", (uid,)).fetchone()
+        except Exception as e:
+            print(f"Error getting user by ID {uid}: {e}")
+            return None
+
+    @staticmethod
+    def get_by_username(username):
+        try:
+            db = get_db()
+            return db.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+        except Exception as e:
+            print(f"Error getting user by username: {e}")
+            return None
+
+    @staticmethod
+    def get_by_email(email):
+        try:
+            db = get_db()
+            return db.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
+        except Exception as e:
+            print(f"Error getting user by email: {e}")
+            return None
+
+    @staticmethod
+    def get_all():
+        try:
+            db = get_db()
+            return db.execute("SELECT * FROM users ORDER BY id DESC").fetchall()
+        except Exception as e:
+            print(f"Error getting all users: {e}")
+            return []
+
+    @staticmethod
+    def create(data):
+        try:
+            db = get_db()
+            cursor = db.execute(
+                """INSERT INTO users (username, email, password_hash, full_name, phone, address, city, is_admin, is_active)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    data.get('username'),
+                    data.get('email'),
+                    data.get('password_hash'),
+                    data.get('full_name', ''),
+                    data.get('phone', ''),
+                    data.get('address', ''),
+                    data.get('city', ''),
+                    data.get('is_admin', 0),
+                    data.get('is_active', 1),
+                )
+            )
+            db.commit()
+            return cursor.lastrowid
+        except Exception as e:
+            print(f"Error creating user: {e}")
+            db.rollback()
+            return None
+
+    @staticmethod
+    def update(uid, data):
+        try:
+            db = get_db()
+            db.execute(
+                """UPDATE users SET full_name=?, phone=?, address=?, city=?, updated_at=CURRENT_TIMESTAMP
+                   WHERE id=?""",
+                (data.get('full_name'), data.get('phone'), data.get('address'), data.get('city'), uid)
+            )
+            db.commit()
+            return True
+        except Exception as e:
+            print(f"Error updating user {uid}: {e}")
+            db.rollback()
+            return False
+
+    @staticmethod
+    def update_last_login(uid):
+        try:
+            db = get_db()
+            db.execute("UPDATE users SET last_login=CURRENT_TIMESTAMP WHERE id=?", (uid,))
+            db.commit()
+        except Exception as e:
+            print(f"Error updating last login for user {uid}: {e}")
+
+    @staticmethod
+    def delete(uid):
+        try:
+            db = get_db()
+            db.execute("DELETE FROM users WHERE id=?", (uid,))
+            db.commit()
+            return True
+        except Exception as e:
+            print(f"Error deleting user {uid}: {e}")
+            db.rollback()
+            return False
+
+
+class Category:
+    """Category model for database operations"""
+
+    @staticmethod
+    def get_all():
+        try:
+            db = get_db()
+            return db.execute("SELECT * FROM categories WHERE is_active=1 ORDER BY sort_order ASC").fetchall()
+        except Exception as e:
+            print(f"Error getting categories: {e}")
+            return []
+
+    @staticmethod
+    def get_all_admin():
+        try:
+            db = get_db()
+            return db.execute("SELECT * FROM categories ORDER BY sort_order ASC").fetchall()
+        except Exception as e:
+            print(f"Error getting admin categories: {e}")
+            return []
+
+    @staticmethod
+    def get_by_id(cid):
+        try:
+            db = get_db()
+            return db.execute("SELECT * FROM categories WHERE id=?", (cid,)).fetchone()
+        except Exception as e:
+            print(f"Error getting category {cid}: {e}")
+            return None
+
+    @staticmethod
+    def create(data):
+        try:
+            db = get_db()
+            cursor = db.execute(
+                "INSERT INTO categories (name, name_am, name_ar, description, icon, image, sort_order, is_active) VALUES (?,?,?,?,?,?,?,?)",
+                (data.get('name'), data.get('name_am'), data.get('name_ar'), data.get('description'),
+                 data.get('icon'), data.get('image'), data.get('sort_order', 0), data.get('is_active', 1))
+            )
+            db.commit()
+            return cursor.lastrowid
+        except Exception as e:
+            print(f"Error creating category: {e}")
+            db.rollback()
+            return None
+
+    @staticmethod
+    def update(cid, data):
+        try:
+            db = get_db()
+            db.execute(
+                "UPDATE categories SET name=?, name_am=?, name_ar=?, description=?, icon=?, image=?, sort_order=?, is_active=? WHERE id=?",
+                (data.get('name'), data.get('name_am'), data.get('name_ar'), data.get('description'),
+                 data.get('icon'), data.get('image'), data.get('sort_order', 0), data.get('is_active', 1), cid)
+            )
+            db.commit()
+            return True
+        except Exception as e:
+            print(f"Error updating category {cid}: {e}")
+            db.rollback()
+            return False
+
+    @staticmethod
+    def delete(cid):
+        try:
+            db = get_db()
+            db.execute("DELETE FROM categories WHERE id=?", (cid,))
+            db.commit()
+            return True
+        except Exception as e:
+            print(f"Error deleting category {cid}: {e}")
+            db.rollback()
+            return False
+
+
+class CartItem:
+    """Cart item model for database operations"""
+
+    @staticmethod
+    def get_by_user(user_id):
+        try:
+            db = get_db()
+            return db.execute(
+                """SELECT ci.*, p.name, p.name_am, p.thumbnail, p.price, p.compare_price, p.stock_quantity
+                   FROM cart_items ci JOIN products p ON ci.product_id = p.id
+                   WHERE ci.user_id=?""",
+                (user_id,)
+            ).fetchall()
+        except Exception as e:
+            print(f"Error getting cart for user {user_id}: {e}")
+            return []
+
+    @staticmethod
+    def add(user_id, product_id, quantity=1):
+        try:
+            db = get_db()
+            existing = db.execute(
+                "SELECT id, quantity FROM cart_items WHERE user_id=? AND product_id=?",
+                (user_id, product_id)
+            ).fetchone()
+            if existing:
+                db.execute(
+                    "UPDATE cart_items SET quantity=quantity+? WHERE id=?",
+                    (quantity, existing['id'])
+                )
+            else:
+                db.execute(
+                    "INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?,?,?)",
+                    (user_id, product_id, quantity)
+                )
+            db.commit()
+            return True
+        except Exception as e:
+            print(f"Error adding to cart: {e}")
+            db.rollback()
+            return False
+
+    @staticmethod
+    def update_quantity(item_id, quantity):
+        try:
+            db = get_db()
+            db.execute("UPDATE cart_items SET quantity=? WHERE id=?", (quantity, item_id))
+            db.commit()
+            return True
+        except Exception as e:
+            print(f"Error updating cart item {item_id}: {e}")
+            db.rollback()
+            return False
+
+    @staticmethod
+    def remove(item_id):
+        try:
+            db = get_db()
+            db.execute("DELETE FROM cart_items WHERE id=?", (item_id,))
+            db.commit()
+            return True
+        except Exception as e:
+            print(f"Error removing cart item {item_id}: {e}")
+            db.rollback()
+            return False
+
+    @staticmethod
+    def clear(user_id):
+        try:
+            db = get_db()
+            db.execute("DELETE FROM cart_items WHERE user_id=?", (user_id,))
+            db.commit()
+            return True
+        except Exception as e:
+            print(f"Error clearing cart for user {user_id}: {e}")
+            db.rollback()
+            return False
+
+    @staticmethod
+    def count(user_id):
+        try:
+            db = get_db()
+            result = db.execute(
+                "SELECT SUM(quantity) FROM cart_items WHERE user_id=?", (user_id,)
+            ).fetchone()
+            return result[0] or 0
+        except Exception as e:
+            print(f"Error counting cart items: {e}")
+            return 0
+
+
+class OrderItem:
+    """Order item model for database operations"""
+
+    @staticmethod
+    def get_by_order(order_id):
+        try:
+            db = get_db()
+            return db.execute(
+                """SELECT oi.*, p.name, p.name_am, p.thumbnail
+                   FROM order_items oi JOIN products p ON oi.product_id = p.id
+                   WHERE oi.order_id=?""",
+                (order_id,)
+            ).fetchall()
+        except Exception as e:
+            print(f"Error getting items for order {order_id}: {e}")
+            return []
+
+
+Advertisement = Ad
+
+
+class Branch:
+    """Branch model for database operations"""
+
+    @staticmethod
+    def get_all():
+        try:
+            db = get_db()
+            return db.execute("SELECT * FROM branches WHERE is_active=1 ORDER BY sort_order ASC").fetchall()
+        except Exception as e:
+            print(f"Error getting branches: {e}")
+            return []
+
+    @staticmethod
+    def get_by_id(bid):
+        try:
+            db = get_db()
+            return db.execute("SELECT * FROM branches WHERE id=?", (bid,)).fetchone()
+        except Exception as e:
+            print(f"Error getting branch {bid}: {e}")
+            return None
+
+    @staticmethod
+    def create(data):
+        try:
+            db = get_db()
+            cursor = db.execute(
+                """INSERT INTO branches (name, name_am, name_ar, address, address_am, address_ar,
+                   phone, email, latitude, longitude, working_hours, image, sort_order, is_active)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                (data.get('name'), data.get('name_am'), data.get('name_ar'),
+                 data.get('address'), data.get('address_am'), data.get('address_ar'),
+                 data.get('phone'), data.get('email'),
+                 data.get('latitude', 0), data.get('longitude', 0),
+                 data.get('working_hours'), data.get('image'),
+                 data.get('sort_order', 0), data.get('is_active', 1))
+            )
+            db.commit()
+            return cursor.lastrowid
+        except Exception as e:
+            print(f"Error creating branch: {e}")
+            db.rollback()
+            return None
+
+    @staticmethod
+    def update(bid, data):
+        try:
+            db = get_db()
+            db.execute(
+                """UPDATE branches SET name=?, name_am=?, name_ar=?, address=?, address_am=?, address_ar=?,
+                   phone=?, email=?, latitude=?, longitude=?, working_hours=?, image=?, sort_order=?, is_active=?
+                   WHERE id=?""",
+                (data.get('name'), data.get('name_am'), data.get('name_ar'),
+                 data.get('address'), data.get('address_am'), data.get('address_ar'),
+                 data.get('phone'), data.get('email'),
+                 data.get('latitude', 0), data.get('longitude', 0),
+                 data.get('working_hours'), data.get('image'),
+                 data.get('sort_order', 0), data.get('is_active', 1), bid)
+            )
+            db.commit()
+            return True
+        except Exception as e:
+            print(f"Error updating branch {bid}: {e}")
+            db.rollback()
+            return False
+
+    @staticmethod
+    def delete(bid):
+        try:
+            db = get_db()
+            db.execute("DELETE FROM branches WHERE id=?", (bid,))
+            db.commit()
+            return True
+        except Exception as e:
+            print(f"Error deleting branch {bid}: {e}")
+            db.rollback()
+            return False
+
+
+class Notification:
+    """Notification model for database operations"""
+
+    @staticmethod
+    def get_all():
+        try:
+            db = get_db()
+            return db.execute("SELECT * FROM notifications ORDER BY id DESC").fetchall()
+        except Exception as e:
+            print(f"Error getting notifications: {e}")
+            return []
+
+    @staticmethod
+    def get_by_id(nid):
+        try:
+            db = get_db()
+            return db.execute("SELECT * FROM notifications WHERE id=?", (nid,)).fetchone()
+        except Exception as e:
+            print(f"Error getting notification {nid}: {e}")
+            return None
+
+    @staticmethod
+    def create(data):
+        try:
+            db = get_db()
+            cursor = db.execute(
+                """INSERT INTO notifications (title, title_am, title_ar, body, body_am, body_ar,
+                   image, link, target_audience, created_by)
+                   VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                (data.get('title'), data.get('title_am'), data.get('title_ar'),
+                 data.get('body'), data.get('body_am'), data.get('body_ar'),
+                 data.get('image'), data.get('link'),
+                 data.get('target_audience', 'all'), data.get('created_by'))
+            )
+            db.commit()
+            return cursor.lastrowid
+        except Exception as e:
+            print(f"Error creating notification: {e}")
+            db.rollback()
+            return None
+
+    @staticmethod
+    def delete(nid):
+        try:
+            db = get_db()
+            db.execute("DELETE FROM notifications WHERE id=?", (nid,))
+            db.commit()
+            return True
+        except Exception as e:
+            print(f"Error deleting notification {nid}: {e}")
+            db.rollback()
+            return False

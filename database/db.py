@@ -13,18 +13,12 @@ from config import Config
 
 def get_database_path():
     """
-    Get the correct database path from Config.DATABASE_URL.
+    Get the correct database path from Config.DATABASE_PATH.
     
     Returns:
         str: Database file path
     """
-    db_url = Config.SQLALCHEMY_DATABASE_URI
-    if db_url.startswith('sqlite:///'):
-        db_path = db_url.replace('sqlite:///', '')
-        return db_path
-    else:
-        # Default path
-        return os.path.join(os.path.dirname(__file__), 'ethiosadat.db')
+    return Config.DATABASE_PATH
 
 
 def get_db():
@@ -306,7 +300,7 @@ def init_db():
     cursor.execute("SELECT COUNT(*) FROM users")
     if cursor.fetchone()[0] == 0:
         from werkzeug.security import generate_password_hash
-        admin_password_hash = generate_password_hash('admin123456', method='bcrypt')
+        admin_password_hash = generate_password_hash('admin123456', method='pbkdf2:sha256')
         cursor.execute(
             "INSERT INTO users (username, email, password_hash, full_name, is_admin, is_active) VALUES (?, ?, ?, ?, ?, ?)",
             ('admin', 'admin@ethiosadat.com', admin_password_hash, 'Administrator', 1, 1)
@@ -451,6 +445,27 @@ def get_db_stats():
             'users': 0,
             'pending_orders': 0
         }
+
+
+def commit_or_rollback(db=None):
+    """
+    Commit the current transaction, or rollback on failure.
+    
+    Args:
+        db: Optional database connection. If not provided, uses get_db().
+    
+    Returns:
+        bool: True if commit succeeded, False if rolled back.
+    """
+    if db is None:
+        db = get_db()
+    try:
+        db.commit()
+        return True
+    except Exception as e:
+        db.rollback()
+        print(f"Transaction rolled back: {e}")
+        return False
 
 
 def test_connection():
