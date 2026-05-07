@@ -11,3 +11,5 @@ Pillow==10.0.0
 python-dotenv==1.0.0
 requests
 Werkzeug==2.3.7
+Flask-Caching
+googletrans==4.0.0rc1

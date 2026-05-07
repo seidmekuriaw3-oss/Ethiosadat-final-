@@ -314,6 +314,10 @@
         <!-- Login Form -->
         <form method="post" action="{{ url_for('admin_login') }}" id="loginForm" onsubmit="return handleSubmit(event)">
             <div class="input-group">
+                 <label for="email">Email</label>
+                 <input type="email" id="email" name="email" required placeholder="Enter admin email">
+                </div>
+            <div class="input-group">
                 <label>🔒 Password</label>
                 <input type="password" 
                        name="password" 

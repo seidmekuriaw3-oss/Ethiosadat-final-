@@ -221,8 +221,9 @@
                     <td style="padding: 12px;">{{ product.id }}</td>
                     <td style="padding: 12px;">
                         {% if product.thumbnail and product.thumbnail != '' %}
-                            <img src="{{ url_for('static', filename=product.thumbnail) }}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;" 
-                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'width:45px;height:45px;background:var(--bg-hover, #f5f5f5);display:flex;align-items:center;justify-content:center;border-radius:6px;\'>🪑</div>'">
+                            <img src="{{ url_for('static', filename=(product.thumbnail if product.thumbnail[:8] == 'uploads/' else 'uploads/products/' ~ product.thumbnail)) }}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;" 
+                                 loading="lazy"
+                                 onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/placeholder.png') }}'">
                         {% else %}
                             <div style="width: 45px; height: 45px; background: var(--bg-hover, #f5f5f5); display: flex; align-items: center; justify-content: center; border-radius: 6px;">🪑</div>
                         {% endif %}

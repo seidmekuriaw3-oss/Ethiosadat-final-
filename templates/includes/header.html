@@ -5,7 +5,7 @@
     <div class="header-container">
         
         <!-- Logo -->
-        <div class="logo" onclick="location.href='{{ url_for('index') }}'">
+        <div class="logo" onclick="location.href='{{ url_for(&quot;index&quot;) }}'">
             <div class="logo-icon">🪑</div>
             <div class="logo-text">
                 <h1>Ethiosadat</h1>
@@ -91,12 +91,13 @@
                 👑 Admin Panel
             </a>
             {% endif %}
-            <hr class="menu-divider">
-            <div class="mobile-language">
-                <a href="{{ url_for('set_language', lang='am') }}" class="lang-option">🇪🇹 አማርኛ</a>
-                <a href="{{ url_for('set_language', lang='en') }}" class="lang-option">🇬🇧 English</a>
-            </div>
-            <hr class="menu-divider">
+<hr class="menu-divider">
+<div class="mobile-language">
+    <a href="{{ url_for('set_language', lang='am') }}" class="lang-option">🇪🇹 አማርኛ</a>
+    <a href="{{ url_for('set_language', lang='en') }}" class="lang-option">🇬🇧 English</a>
+    <a href="{{ url_for('set_language', lang='ar') }}" class="lang-option">🇸🇦 العربية</a>
+</div>
+                <hr class="menu-divider">
             <a href="{{ url_for('about') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">
                 ℹ️ About Us
             </a>

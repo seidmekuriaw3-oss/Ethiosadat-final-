@@ -130,18 +130,29 @@
             </thead>
             <tbody id="adsTableBody">
                 {% for ad in ads %}
-                <tr class="ad-row" data-id="{{ ad.id }}" data-status="{% if ad.is_active %}active{% else %}inactive{% endif %}" data-search="{{ ad.title or '' }} {{ ad.description or '' }}" style="border-bottom: 1px solid #eee;">
+                <tr class="ad-row"
+                    data-id="{{ ad.id }}"
+                    data-status="{% if ad.is_active %}active{% else %}inactive{% endif %}"
+                    data-search="{{ ad.title or '' }} {{ ad.description or '' }}"
+                    style="border-bottom: 1px solid #eee;">
                     <td style="padding: 12px;">#{{ ad.id }}</td>
                     <td style="padding: 12px; text-align: center;">
-                        {% if ad.image and ad.image|trim != '' %}
-                            {% if ad.image.endswith(('.mp4', '.webm', '.mov', '.avi', '.ogg')) %}
-                                <video class="ad-preview-video" style="border-radius: 8px;" muted>
-                                    <source src="{{ url_for('static', filename=ad.image) }}" type="video/mp4">
+                        {% if ad.image and ad.image|trim %}
+                            {% set media_name = ad.image.split('/')[-1] %}
+                            {% if media_name.lower().endswith(('.mp4', '.webm', '.mov', '.avi', '.ogg')) %}
+                                <video class="ad-preview-video"
+                                       muted
+                                       preload="metadata"
+                                       poster="{{ url_for('static', filename='images/placeholder.png')}}"
+                                       onerror="this.onerror=null; this.poster=`{{ url_for('static', filename='images/placeholder.png') }}`;">
+                                    <source src="{{ url_for('uploaded_ad_media', filename=media_name) }}" type="video/mp4">
                                 </video>
                             {% else %}
-                                <img class="ad-preview" src="{{ url_for('static', filename=ad.image) }}" 
-                                     alt="Ad media" style="border-radius: 8px;" loading="lazy"
-                                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\' viewBox=\'0 0 24 24\' fill=\'%23ccc\'%3E%3Cpath d=\'M4 4h16v16H4z\'/%3E%3C/svg%3E'">
+                                <img class="ad-preview"
+                                     src="{{ url_for('uploaded_ad_media', filename=media_name) }}"
+                                     alt="Ad media"
+                                     loading="lazy"
+                                     onerror="this.onerror=null; this.src=`{{ url_for('static', filename='images/placeholder.png') }}`;">
                             {% endif %}
                         {% else %}
                             <div style="width: 60px; height: 60px; background: #f5f5f5; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -150,18 +161,27 @@
                         {% endif %}
                     </td>
                     <td style="padding: 12px;">
-                        <div class="ad-text" style="font-weight: 500;">{{ ad.title if ad.title else ad.description[:50] if ad.description else '-' }}{% if ad.description and ad.description|length > 50 %}...{% endif %}</div>
+                        <div class="ad-text" style="font-weight: 500;">
+                            {{ ad.title if ad.title else ad.description[:50] if ad.description else '-' }}{% if ad.description and ad.description|length > 50 %}...{% endif %}
+                        </div>
                         {% if ad.description and ad.title %}
                             <small style="color: #999;">{{ ad.description[:80] }}{% if ad.description|length > 80 %}...{% endif %}</small><br>
                         {% endif %}
-                        <small style="color: #999;">Created: {{ ad.created_at.strftime('%Y-%m-%d') if ad.created_at else 'N/A' }}</small>
+                        <small style="color: #999;">Created: {{ ad.formatted_date if ad.formatted_date else 'N/A' }}</small>
                         {% if ad.end_date %}
-                            <small style="color: #ff9800; display: block;">Expires: {{ ad.end_date.strftime('%Y-%m-%d') }}</small>
+                            <small style="color: #ff9800; display: block;">
+                                Expires:
+                                {% if ad.end_date is string %}
+                                    {{ ad.end_date.split(' ')[0] }}
+                                {% else %}
+                                    {{ ad.end_date.strftime('%Y-%m-%d') }}
+                                {% endif %}
+                            </small>
                         {% endif %}
                     </td>
                     <td style="padding: 12px; text-align: center;">
-                        <button class="ad-status {% if ad.is_active %}status-active{% else %}status-inactive{% endif %}" 
-                                onclick="toggleAdStatus({{ ad.id }}, this)">
+                        <button class="ad-status {% if ad.is_active %}status-active{% else %}status-inactive{% endif %}"
+                                onclick="toggleAdStatus"({{ ad.id }}", this, "{{ url_for('admin_ad_toggle', aid=ad.id) }}')">
                             {% if ad.is_active %}Active{% else %}Inactive{% endif %}
                         </button>
                     </td>
@@ -169,12 +189,12 @@
                         <span class="sort-handle" draggable="true" data-id="{{ ad.id }}" style="cursor: grab;">⋮⋮</span>
                     </td>
                     <td style="padding: 12px; text-align: center;">
-                        <a href="{{ url_for('admin_ad_edit', aid=ad.id) }}" style="background: none; border: none; color: #ff9800; cursor: pointer; margin-right: 8px; text-decoration: none; display: inline-block;" title="Edit">
-                            ✏️
-                        </a>
-                        <button onclick="deleteAd({{ ad.id }})" style="background: none; border: none; color: #f44336; cursor: pointer;" title="Delete">
-                            🗑️
-                        </button>
+                        <a href="{{ url_for('admin_ad_edit', aid=ad.id) }}"
+                           style="background: none; border: none; color: #ff9800; cursor: pointer; margin-right: 8px; text-decoration: none; display: inline-block;"
+                           title="Edit">✏️</a>
+                        <button onclick="deleteAd"({{ ad.id }}", "{{ url_for('admin_ad_delete', aid=ad.id) }}')"
+                                style="background: none; border: none; color: #f44336; cursor: pointer;"
+                                title="Delete">🗑️</button>
                     </td>
                 </tr>
                 {% else %}
@@ -203,14 +223,13 @@
 
 <script>
     // Delete ad function
-    function deleteAd(adId) {
-        if (!adId) return;
-        
-        const confirmFn = window.showConfirm || confirm;
+    function deleteAd(adId, deleteUrl) {
+        if (!adId || !deleteUrl) return;
+
         const callback = () => {
             if (window.showLoading) window.showLoading(true);
-            
-            fetch(`{{ url_for('admin_ad_delete', aid=adId) }}`, {
+
+            fetch(deleteUrl, {
                 method: 'DELETE',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -238,25 +257,27 @@
                 if (window.showLoading) window.showLoading(false);
             });
         };
-        
+
         if (window.showConfirm) {
-            window.showConfirm('Delete Advertisement', 'Are you sure you want to delete this advertisement? This action cannot be undone.', callback);
-        } else {
-            if (confirm('Are you sure you want to delete this advertisement? This action cannot be undone.')) {
-                callback();
-            }
+            window.showConfirm(
+                'Delete Advertisement',
+                'Are you sure you want to delete this advertisement? This action cannot be undone.',
+                callback
+            );
+        } else if (confirm('Are you sure you want to delete this advertisement? This action cannot be undone.')) {
+            callback();
         }
     }
 
     // Toggle ad status
-    function toggleAdStatus(adId, button) {
-        if (!adId || !button) return;
-        
+    function toggleAdStatus(adId, button, toggleUrl) {
+        if (!adId || !button || !toggleUrl) return;
+
         const newStatus = button.textContent.trim() === 'Active' ? 'inactive' : 'active';
-        
+
         if (window.showLoading) window.showLoading(true);
-        
-        fetch(`{{ url_for('admin_ad_toggle', aid=adId) }}`, {
+
+        fetch(toggleUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -279,11 +300,11 @@
                 } else if (window.showToast) {
                     window.showToast(`Ad ${newStatus}d successfully`, 'success');
                 }
-                // Update row data-status
+
                 const row = button.closest('.ad-row');
-                if (row) row.dataset.status = newStatus === 'active' ? 'active' : 'inactive';
-            } else {
-                if (window.showError) window.showError(data.error || 'Failed to update status');
+                if (row) row.dataset.status = newStatus;
+            } else if (window.showError) {
+                window.showError(data.error || 'Failed to update status');
             }
         })
         .catch(() => {
@@ -322,8 +343,7 @@
         if (resultMsg) {
             resultMsg.textContent = `${visibleCount} advertisement(s) found`;
         }
-        
-        // Reset pagination
+
         if (typeof currentPage !== 'undefined') {
             currentPage = 1;
             if (typeof showPage === 'function') showPage(1);
@@ -332,31 +352,31 @@
 
     // Drag and drop sorting
     let dragSrc = null;
-    
+
     function initDragAndDrop() {
         const handles = document.querySelectorAll('.sort-handle');
         handles.forEach(handle => {
             handle.removeEventListener('dragstart', handleDragStart);
             handle.removeEventListener('dragover', handleDragOver);
             handle.removeEventListener('drop', handleDrop);
-            
+
             handle.addEventListener('dragstart', handleDragStart);
             handle.addEventListener('dragover', handleDragOver);
             handle.addEventListener('drop', handleDrop);
         });
     }
-    
+
     function handleDragStart(e) {
         dragSrc = this;
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/plain', this.dataset.id);
     }
-    
+
     function handleDragOver(e) {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
     }
-    
+
     function handleDrop(e) {
         e.preventDefault();
         if (dragSrc !== this) {
@@ -365,11 +385,10 @@
             if (srcRow && destRow) {
                 const srcId = srcRow.dataset.id;
                 const destId = destRow.dataset.id;
-                
-                // Update order
+
                 fetch('{{ url_for("admin_ad_reorder") }}', {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
@@ -399,13 +418,13 @@
         const rows = document.querySelectorAll('#adsTableBody .ad-row');
         const totalRows = rows.length;
         const maxPage = Math.ceil(totalRows / rowsPerPage);
-        
+
         if (page < 1) page = 1;
         if (page > maxPage) page = maxPage;
-        
+
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-        
+
         rows.forEach((row, index) => {
             if (index >= start && index < end) {
                 row.style.display = '';
@@ -413,7 +432,7 @@
                 row.style.display = 'none';
             }
         });
-        
+
         const pageInfo = document.getElementById('pageInfo');
         if (pageInfo) pageInfo.textContent = `Page ${page}`;
         currentPage = page;
@@ -434,7 +453,7 @@
         const videos = document.querySelectorAll('.ad-preview-video');
         videos.forEach(video => {
             video.addEventListener('mouseenter', () => {
-                video.play().catch(e => console.log('Video play failed:', e));
+                video.play().catch(() => {});
             });
             video.addEventListener('mouseleave', () => {
                 video.pause();
@@ -447,8 +466,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         initDragAndDrop();
         initVideoPreviews();
-        
-        // Initialize pagination
+
         const totalRows = document.querySelectorAll('#adsTableBody .ad-row').length;
         if (totalRows > rowsPerPage) {
             showPage(1);

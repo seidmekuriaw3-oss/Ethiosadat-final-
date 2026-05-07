@@ -232,6 +232,7 @@
         margin: 0 0 8px 0;
         display: -webkit-box;
         -webkit-line-clamp: 2;
+        line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         color: var(--text-color, #333);
@@ -429,7 +430,7 @@
 {% if featured_products and featured_products|length > 0 %}
 <div class="products-grid">
     {% for product in featured_products[:12] %}
-    <div class="product-card" onclick="location.href='{{ url_for('product_detail', product_id=product.id) }}'">
+    <div class="product-card" onclick="location.href='{{ url_for(&quot;product_detail&quot;, product_id=product.id) }}'">
         <div class="product-image">
             {% if product.thumbnail and product.thumbnail|trim != '' %}
                 <img src="{{ url_for('static', filename=product.thumbnail) }}" 

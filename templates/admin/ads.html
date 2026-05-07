@@ -265,11 +265,11 @@
                     {% if ad.image %}
                     <div>
                         {% if ad.image.endswith(('.mp4', '.webm', '.mov', '.avi')) %}
-                            <video class="media-preview" muted>
-                                <source src="{{ url_for('static', filename=ad.image) }}" type="video/mp4">
+                            <video class="media-preview" muted poster="{{ url_for('static', filename='images/placeholder.png') }}" onerror="this.onerror=null; this.poster='{{ url_for('static', filename='images/placeholder.png') }}'">
+                                <source src="{{ url_for('static', filename=(ad.image if ad.image[:8] == 'uploads/' else 'uploads/ads/' ~ ad.image)) }}" type="video/mp4">
                             </video>
                         {% else %}
-                            <img src="{{ url_for('static', filename=ad.image) }}" class="media-preview" alt="Ad media">
+                            <img src="{{ url_for('static', filename=(ad.image if ad.image[:8] == 'uploads/' else 'uploads/ads/' ~ ad.image)) }}" class="media-preview" alt="Ad media" loading="lazy" onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/placeholder.png') }}'">
                         {% endif %}
                     </div>
                     {% endif %}

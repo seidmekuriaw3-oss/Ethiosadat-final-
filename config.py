@@ -92,12 +92,13 @@ class Config:
     DEFAULT_LANGUAGE = os.environ.get('DEFAULT_LANGUAGE', 'am')
     
     # Supported languages
-    SUPPORTED_LANGUAGES = ['am', 'en']
+    SUPPORTED_LANGUAGES = ['am', 'en', 'ar']
     
     # Language names for display
     LANGUAGE_NAMES = {
         'am': 'አማርኛ',
-        'en': 'English'
+        'en': 'English',
+        'ar': 'العربية'
     }
     
     # ============================================================

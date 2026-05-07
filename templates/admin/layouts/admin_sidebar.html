@@ -439,6 +439,47 @@
             <span class="nav-text">Logout</span>
         </a>
         
+        <!-- Language Switcher -->
+        <div class="sidebar-language" style="
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        ">
+            <div style="font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 8px; text-align: center;">Language / ቋንቋ</div>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <a href="{{ url_for('set_language', lang='am') }}" style="
+                    color: rgba(255,255,255,0.8);
+                    text-decoration: none;
+                    font-size: 12px;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    transition: background 0.3s;
+                    text-align: center;
+                    {% if session.get('lang') == 'am' %}background: rgba(255,255,255,0.2);{% endif %}
+                ">🇪🇹 አማርኛ</a>
+                <a href="{{ url_for('set_language', lang='en') }}" style="
+                    color: rgba(255,255,255,0.8);
+                    text-decoration: none;
+                    font-size: 12px;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    transition: background 0.3s;
+                    text-align: center;
+                    {% if session.get('lang') == 'en' or not session.get('lang') %}background: rgba(255,255,255,0.2);{% endif %}
+                ">🇬🇧 English</a>
+                <a href="{{ url_for('set_language', lang='ar') }}" style="
+                    color: rgba(255,255,255,0.8);
+                    text-decoration: none;
+                    font-size: 12px;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    transition: background 0.3s;
+                    text-align: center;
+                    {% if session.get('lang') == 'ar' %}background: rgba(255,255,255,0.2);{% endif %}
+                ">🇸🇦 العربية</a>
+            </div>
+        </div>
+        
         <div class="sidebar-version" style="
             margin-top: 16px;
             padding-top: 12px;

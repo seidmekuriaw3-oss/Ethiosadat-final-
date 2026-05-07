@@ -676,36 +676,6 @@
         return true;
     }
 
-    // ==================== Auto-save Draft ====================
-    let autoSaveTimer = null;
-    const form = document.getElementById('productForm');
-    
-    function autoSaveDraft() {
-        if (autoSaveTimer) clearTimeout(autoSaveTimer);
-        
-        autoSaveTimer = setTimeout(() => {
-            const formData = new FormData(form);
-            fetch('{{ url_for("admin_product_delete") }}', {
-                method: 'POST',
-                body: formData,
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Draft saved at', new Date().toLocaleTimeString());
-                }
-            })
-            .catch(err => console.error('Auto-save error:', err));
-        }, 5000);
-    }
-    
-    // Add auto-save listeners
-    const formInputs = form?.querySelectorAll('input, textarea, select');
-    formInputs?.forEach(input => {
-        input.addEventListener('input', autoSaveDraft);
-    });
-
     // ==================== Unsaved Changes Warning ====================
     let formChanged = false;
     

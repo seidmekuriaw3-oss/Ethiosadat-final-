@@ -145,12 +145,12 @@
             <h4>📎 Current Media</h4>
             <div style="text-align: center;">
                 {% if ad.image.endswith(('.mp4', '.webm', '.mov', '.avi', '.ogg')) %}
-                    <video src="{{ url_for('static', filename=ad.image) }}" controls style="max-width: 100%; max-height: 150px; border-radius: 8px;"></video>
+                    <video src="{{ url_for('static', filename=(ad.image if ad.image[:8] == 'uploads/' else 'uploads/ads/' ~ ad.image)) }}" controls style="max-width: 100%; max-height: 150px; border-radius: 8px;" poster="{{ url_for('static', filename='images/placeholder.png') }}" onerror="this.onerror=null; this.poster=`{{ url_for('static', filename='images/placeholder.png') }}`;"></video>
                 {% else %}
-                    <img src="{{ url_for('static', filename=ad.image) }}" alt="Current ad media" style="max-width: 100%; max-height: 150px; border-radius: 8px;">
+                    <img src="{{ url_for('static', filename=(ad.image if ad.image[:8] == 'uploads/' else 'uploads/ads/' ~ ad.image)) }}" alt="Current ad media" style="max-width: 100%; max-height: 150px; border-radius: 8px;" onerror="this.onerror=null; this.src=`{{ url_for('static', filename='images/placeholder.png') }}`;">
                 {% endif %}
                 <div style="margin-top: 8px;">
-                    <button type="button" class="delete-media-btn" onclick="deleteMedia({{ ad.id }})">🗑️ Remove Media</button>
+                    <button type="button" class="delete-media-btn" data-ad-id="{{ ad.id }}" onclick="deleteMedia(this.dataset.adId)">🗑️ Remove Media</button>
                     <small style="display: block; margin-top: 8px; color: #666;">Upload new media below to replace</small>
                 </div>
             </div>
@@ -278,7 +278,7 @@
                        name="start_date" 
                        id="start_date"
                        style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;"
-                       value="{{ ad.start_date.strftime('%Y-%m-%dT%H:%M') if ad.start_date else '' }}">
+                       value="{% if ad.start_date %}{% if ad.start_date is string %}{{ ad.start_date.replace(' ', 'T')[:16] }}{% else %}{{ ad.start_date.strftime('%Y-%m-%dT%H:%M') }}{% endif %}{% endif %}">
                 <small style="color: #666;">Leave empty to start immediately</small>
             </div>
             
@@ -288,7 +288,7 @@
                        name="end_date" 
                        id="end_date"
                        style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;"
-                       value="{{ ad.end_date.strftime('%Y-%m-%dT%H:%M') if ad.end_date else '' }}">
+                       value="{% if ad.end_date %}{% if ad.end_date is string %}{{ ad.end_date.replace(' ', 'T')[:16] }}{% else %}{{ ad.end_date.strftime('%Y-%m-%dT%H:%M') }}{% endif %}{% endif %}">
                 <small style="color: #666;">Leave empty for no expiration</small>
             </div>
         </div>
@@ -417,12 +417,13 @@
     // Delete media function
     function deleteMedia(adId) {
         if (!adId) return;
+        const deleteUrl = "{{ url_for('admin_ad_delete', aid=0) }}".replace('/0', `/${adId}`);
         
         const confirmFn = window.showConfirm || confirm;
         const callback = () => {
             if (window.showLoading) window.showLoading(true);
             
-            fetch(`{{ url_for('admin_ad_delete') }}?id=${adId}`, {
+            fetch(deleteUrl, {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -492,34 +493,8 @@
         return true;
     }
 
-    // Auto-save draft
-    let autoSaveTimer = null;
-    
-    function autoSaveDraft() {
-        if (autoSaveTimer) clearTimeout(autoSaveTimer);
-        
-        autoSaveTimer = setTimeout(() => {
-            const form = document.getElementById('adForm');
-            if (!form) return;
-            
-            const formData = new FormData(form);
-            
-            fetch('{{ url_for("admin_ad_delete") }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && window.showToast) {
-                    console.log('Draft saved');
-                }
-            })
-            .catch(error => console.error('Auto-save error:', error));
-        }, 5000);
-    }
+    // Auto-save draft is disabled for safety
+    // Use manual save instead
 
     // Escape HTML helper
     function escapeHtml(text) {

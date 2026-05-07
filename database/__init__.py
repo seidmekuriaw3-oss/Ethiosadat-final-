@@ -41,7 +41,7 @@ __all__ = [
 ]
 
 # ==================== INITIALIZATION LOG ====================
-print("✅ Database package initialized successfully")
+print("[OK] Database package initialized successfully")
 print(f"   - init_db: Database initializer")
 print(f"   - get_db: Database session manager")
 print(f"   - commit_or_rollback: Transaction handler")

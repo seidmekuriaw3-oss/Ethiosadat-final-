@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ lang }}">
+<html lang="{{ lang }}"{% if session.get('lang') == 'ar' %} dir="rtl"{% endif %}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -21,7 +21,36 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/hamburger.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/icons.css') }}">
     
-    {% block extra_css %}{% endblock %}
+    {% block extra_css %}
+    <style>
+        /* RTL Support */
+        [dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+        }
+        [dir="rtl"] .header-container {
+            flex-direction: row-reverse;
+        }
+        [dir="rtl"] .search-box {
+            order: 2;
+        }
+        [dir="rtl"] .desktop-nav {
+            order: 1;
+        }
+        [dir="rtl"] .left {
+            right: auto;
+            left: 0;
+        }
+        [dir="rtl"] .right {
+            left: auto;
+            right: 0;
+        }
+        [dir="rtl"] button,
+        [dir="rtl"] input {
+            text-align: right;
+        }
+    </style>
+    {% endblock %}
 </head>
 <body>
 
@@ -29,7 +58,7 @@
 <header class="header">
     <div class="header-container">
         <!-- Logo - Modern Professional Design -->
-        <div class="logo" onclick="location.href='{{ url_for('index') }}'" style="cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 8px 0;">
+        <div class="logo" onclick="location.href='{{ url_for("index") }}';" style="cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 8px 0;">
             <img src="{{ url_for('static', filename='images/mylogo.png') }}" alt="Ethiosadat Logo" style="height: 55px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
         </div>
         
@@ -183,6 +212,10 @@
         <a href="{{ url_for('set_language', lang='am') }}" class="menu-item">
             <span class="icon">🇪🇹</span>
             <span class="text">አማርኛ</span>
+        </a>
+        <a href="{{ url_for('set_language', lang='ar') }}" class="menu-item">
+            <span class="icon">🇸🇦</span>
+            <span class="text">العربية</span>
         </a>
         <a href="{{ url_for('set_language', lang='en') }}" class="menu-item">
             <span class="icon">🇬🇧</span>
@@ -486,11 +519,12 @@
         const modal = document.getElementById('user-modal');
         if (modal) modal.classList.add('active');
         
-        {% if session.get('user_id') %}
+        const isUserLoggedIn = {{ 'true' if session.get('user_id') else 'false' }};
+        if (isUserLoggedIn) {
             showProfileView();
-        {% else %}
+        } else {
             showLoginForm();
-        {% endif %}
+        }
     }
     
     function closeUserModal() {

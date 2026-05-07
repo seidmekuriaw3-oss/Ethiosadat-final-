@@ -481,34 +481,8 @@
         return true;
     }
 
-    // Auto-save draft
-    let autoSaveTimer = null;
-    
-    function autoSaveDraft() {
-        if (autoSaveTimer) clearTimeout(autoSaveTimer);
-        
-        autoSaveTimer = setTimeout(() => {
-            const form = document.getElementById('adForm');
-            if (!form) return;
-            
-            const formData = new FormData(form);
-            
-            fetch('{{ url_for("admin_ad_delete") }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && window.showToast) {
-                    console.log('Draft saved');
-                }
-            })
-            .catch(error => console.error('Auto-save error:', error));
-        }, 5000);
-    }
+    // Auto-save draft is disabled for safety
+    // Use manual save instead
 
     // Escape HTML helper
     function escapeHtml(text) {

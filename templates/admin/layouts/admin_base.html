@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ lang }}">
+<html lang="{{ lang }}"{% if session.get('lang') == 'ar' %} dir="rtl"{% endif %}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -14,7 +14,47 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/icons.css') }}">
     
-    {% block extra_css %}{% endblock %}
+    {% block extra_css %}
+    <style>
+        /* RTL Support for Admin Panel */
+        [dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+        }
+        [dir="rtl"] .admin-sidebar {
+            left: auto;
+            right: 0;
+            text-align: right;
+        }
+        [dir="rtl"] main {
+            margin-right: 280px;
+            margin-left: 0;
+        }
+        [dir="rtl"] .nav-item {
+            justify-content: flex-end;
+            padding-left: 20px;
+            padding-right: 0;
+        }
+        [dir="rtl"] .nav-icon {
+            order: 2;
+            margin-left: 0;
+            margin-right: 12px;
+        }
+        [dir="rtl"] .nav-text {
+            order: 1;
+        }
+        [dir="rtl"] .badge {
+            margin-left: auto;
+            margin-right: 0;
+        }
+        [dir="rtl"] button,
+        [dir="rtl"] input,
+        [dir="rtl"] select,
+        [dir="rtl"] textarea {
+            text-align: right;
+        }
+    </style>
+    {% endblock %}
     
     <style>
         /* Admin specific overrides */

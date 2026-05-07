@@ -84,7 +84,7 @@ __all__ = [
 ]
 
 # ==================== INITIALIZATION LOG ====================
-print("✅ Utils package initialized successfully")
+print("[OK] Utils package initialized successfully")
 print(f"   - Price helpers loaded")
 print(f"   - Cart helpers loaded")
 print(f"   - Validation helpers loaded")

@@ -10,10 +10,12 @@ import sqlite3
 import logging
 import atexit
 import urllib.parse
-from datetime import datetime
+from datetime import datetime, timedelta
 from functools import wraps
 from decimal import Decimal
-#from flask_caching import Cache
+import flask_caching
+import re
+import datetime as datetime_
 # Third Party Imports
 from flask import (
     Flask, render_template, request, redirect, url_for,
@@ -32,6 +34,7 @@ from database.models import (
 )
 from middleware.auth import login_required, admin_required, user_login_required, get_current_user, is_authenticated
 from middleware.platform import get_platform, is_android_app
+from utils.translation_cache import translate_text, batch_translate, clear_translation_cache, get_translation_stats, FALLBACK_TEXTS
 
 
 # ==================== 2. APP INITIALIZATION & CONFIGURATION ====================
@@ -84,7 +87,7 @@ app.secret_key = os.environ.get('SECRET_KEY', 'ethiosadat_default_secret_key_202
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["200 per day", "50 per hour"],
+    default_limits=["2000000 per day", "100000 per hour"],
     storage_uri="memory://"
 )
 
@@ -157,7 +160,7 @@ def inject_globals():
     platform = get_platform()
     
     return {
-        'current_year': datetime.now().year,
+        'current_year': datetime_.datetime.now().year,
         'lang': lang,
         'current_user': current_user,
         'is_authenticated': is_authenticated(),
@@ -298,9 +301,37 @@ def get_lang():
 
 
 def get_text(key, lang=None):
+    """
+    Get translated text for a key.
+    Tries dynamic translation first, falls back to manual TEXTS dictionary.
+    
+    Args:
+        key (str): Text key or English text to translate
+        lang (str): Language code ('am', 'en', 'ar')
+    
+    Returns:
+        str: Translated text
+    """
     if lang is None:
         lang = get_lang()
-    return TEXTS.get(lang, TEXTS[DEFAULT_LANGUAGE]).get(key, key)
+    
+    # If requesting English, return the key as-is
+    if lang == 'en':
+        return key
+    
+    # First, check if we have a manual translation
+    manual_translation = TEXTS.get(lang, {}).get(key)
+    if manual_translation:
+        return manual_translation
+    
+    # For items not in manual TEXTS, try dynamic translation
+    try:
+        translated = translate_text(key, lang)
+        return translated
+    except Exception as e:
+        app.logger.debug(f"Dynamic translation failed for '{key}': {str(e)}")
+        # Fall back to original text
+        return key
 
 
 def set_lang(lang):
@@ -518,7 +549,7 @@ def health_check():
     """Health check endpoint for monitoring services."""
     health_status = {
         'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': datetime_.datetime.now().isoformat(),
         'version': '2.0.0',
         'services': {}
     }
@@ -639,7 +670,6 @@ def index():
                                lang=lang, 
                                t=TEXTS.get(lang, TEXTS['am']))
 
-
 @app.route('/product/<int:product_id>')
 def product_detail(product_id):
     """Product detail page with related products."""
@@ -650,6 +680,7 @@ def product_detail(product_id):
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
+        # 1. የርዕሱን መረጃ ማምጣት
         cursor.execute("""
             SELECT p.*, c.name as category_name, c.name_am as category_name_am
             FROM products p
@@ -663,7 +694,7 @@ def product_detail(product_id):
             flash('Product not found', 'error')
             return redirect(url_for('index'))
         
-        # Get related products (same category)
+        # 2. ተዛማጅ ምርቶችን ማምጣት
         cursor.execute("""
             SELECT p.*, c.name as category_name
             FROM products p
@@ -674,26 +705,26 @@ def product_detail(product_id):
         """, (product['category_id'], product_id))
         
         related_products = cursor.fetchall()
-        conn.close()
         
-        # Convert to dict
+        # 3. የዕይታ ብዛት መጨመር (ይህ ቀድሞ ስህተት የነበረበት ቦታ ነው)
+        cursor.execute("UPDATE products SET views = views + 1 WHERE id = ?", (product_id,))
+        conn.commit()
+
+        # 4. መረጃዎችን ወደ ዲክሽነሪ መቀየር
         product_dict = dict(product)
         related_list = [dict(p) for p in related_products] if related_products else []
         
-        # Ensure image field exists
+        # ዳታቤዙን እዚህ ጋር እንዘጋዋለን
+        conn.close()
+        
+        # የተቀረው የኮድህ ክፍል (Price calculation)
         if product_dict.get('thumbnail') is None or str(product_dict.get('thumbnail')) == 'None':
             product_dict['thumbnail'] = ''
         
-        # Check if user is logged in for discount
         is_logged_in = session.get('user_id') is not None
         final_price = product_dict['price']
         if is_logged_in:
             final_price = product_dict['price'] * 0.9
-        
-        # Increment view count
-        cursor = conn.cursor()
-        cursor.execute("UPDATE products SET views = views + 1 WHERE id = ?", (product_id,))
-        conn.commit()
         
         return render_template('customer/product_detail.html', 
                                product=product_dict,
@@ -705,13 +736,10 @@ def product_detail(product_id):
                                
     except Exception as e:
         app.logger.error(f"Product detail error: {str(e)}")
-        import traceback
-        app.logger.error(traceback.format_exc())
         if conn:
             conn.close()
         flash('Unable to load product', 'error')
         return redirect(url_for('index'))
-
 
 @app.route('/category')
 @app.route('/category/<int:category_id>')
@@ -994,7 +1022,6 @@ def contact():
         ORDER BY sort_order ASC
     """)
     branches = cursor.fetchall()
-    conn.close()
     
     branches_list = [dict(branch) for branch in branches] if branches else []
     
@@ -1019,7 +1046,6 @@ def branches():
     """)
     
     branches = cursor.fetchall()
-    conn.close()
     
     branches_list = []
     for branch in branches:
@@ -1341,7 +1367,6 @@ def user_register():
             return render_template('auth/user_register.html', lang=lang, t=t)
         
         try:
-            conn = get_db()
             cursor = conn.cursor()
             
             # Check if email exists
@@ -1359,7 +1384,6 @@ def user_register():
             
             conn.commit()
             user_id = cursor.lastrowid
-            conn.close()
             
             # Auto login
             session['user_id'] = user_id
@@ -1639,18 +1663,22 @@ def admin_login():
     t = TEXTS.get(lang, TEXTS['am'])
     
     if request.method == 'POST':
-        username = request.form.get('username', '').strip()
+        email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
         
-        # Get admin credentials from environment
-        admin_username = os.environ.get('ADMIN_USERNAME', 'admin')
-        admin_password = os.environ.get('ADMIN_PASSWORD', 'admin123456')
+        if not email or not password:
+            flash('Please provide both email and password', 'error')
+            return render_template('admin/login.html', lang=lang, t=t)
         
-        if username == admin_username and password == admin_password:
+        # Get user from database
+        user = User.get_by_email(email)
+        
+        if user and user['is_admin'] and check_password_hash(user['password_hash'], password):
             session['admin'] = True
-            session['admin_username'] = username
+            session['admin_username'] = user['username']
+            session['admin_id'] = user['id']
             session.permanent = True
-            app.logger.info(f"Admin logged in: {username}")
+            app.logger.info(f"Admin logged in: {email}")
             
             flash('Welcome to Admin Panel!', 'success')
             
@@ -1659,8 +1687,8 @@ def admin_login():
                 return redirect(next_page)
             return redirect(url_for('admin_dashboard'))
         else:
-            app.logger.warning(f"Failed admin login attempt from {request.remote_addr}")
-            flash('Invalid username or password', 'error')
+            app.logger.warning(f"Failed admin login attempt for email: {email} from {request.remote_addr}")
+            flash('Invalid email or password', 'error')
     
     return render_template('admin/login.html', lang=lang, t=t)
 
@@ -1711,16 +1739,14 @@ def forgot_password():
             return render_template('auth/forgot_password.html', lang=lang, t=t)
         
         try:
-            conn = get_db()
             cursor = conn.cursor()
             cursor.execute("SELECT id, full_name FROM users WHERE email = ? AND is_active = 1", (email,))
             user = cursor.fetchone()
-            conn.close()
             
             if user:
                 # Generate reset token
                 reset_token = uuid.uuid4().hex
-                expiry = datetime.now().timestamp() + 3600  # 1 hour
+                expiry = datetime_.datetime.now().timestamp() + 3600  # 1 hour
                 
                 # Store token in session or database
                 session['reset_token'] = reset_token
@@ -1762,7 +1788,7 @@ def reset_password(token):
     stored_email = session.get('reset_email')
     stored_expiry = session.get('reset_expiry', 0)
     
-    if not stored_token or stored_token != token or datetime.now().timestamp() > stored_expiry:
+    if not stored_token or stored_token != token or datetime_.datetime.now().timestamp() > stored_expiry:
         flash('Invalid or expired reset link. Please request a new one.', 'error')
         return redirect(url_for('forgot_password'))
     
@@ -2223,7 +2249,6 @@ def checkout():
     # Get user info for pre-filling
     cursor.execute("SELECT full_name, email, phone, address, city FROM users WHERE id = ?", (session['user_id'],))
     user = cursor.fetchone()
-    conn.close()
     
     if request.method == 'POST':
         try:
@@ -2340,7 +2365,7 @@ def generate_order_number():
     """Generate a unique order number."""
     import random
     import string
-    prefix = datetime.now().strftime('%Y%m%d')
+    prefix = datetime_.datetime.now().strftime('%Y%m%d')
     random_str = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
     return f'{prefix}-{random_str}'
 
@@ -2434,12 +2459,10 @@ def get_cart_count():
     
     if session.get('user_id'):
         try:
-            conn = get_db()
             cursor = conn.cursor()
             cursor.execute("SELECT SUM(quantity) as total FROM cart_items WHERE user_id = ?", (session['user_id'],))
             result = cursor.fetchone()
             count = result[0] or 0
-            conn.close()
         except Exception as e:
             app.logger.error(f"Error getting cart count: {str(e)}")
     else:
@@ -2493,6 +2516,7 @@ def get_cart_total():
 
 @app.route('/admin')
 @admin_required
+@limiter.exempt
 def admin_dashboard():
     """Admin dashboard - Main admin panel with statistics."""
     lang = get_lang()
@@ -2580,14 +2604,15 @@ def admin_dashboard():
         app.logger.error(f"Error loading admin dashboard: {str(e)}")
         import traceback
         app.logger.error(traceback.format_exc())
-        flash('Error loading dashboard data.', 'error')
-        return redirect(url_for('admin_login'))
+        # ወደ ሎጊን ገጽ ከመላክ ይልቅ ስህተቱን በስክሪኑ ላይ እንዲያሳይህ እንዲህ አድርግ
+        return f"Dashboard Error: {str(e)}", 500
 
 
 # ==================== 19. ADMIN PRODUCT MANAGEMENT ====================
 
 @app.route('/admin/products')
 @admin_required
+@limiter.exempt
 def admin_products():
     """Admin product list - View all products with management options."""
     lang = get_lang()
@@ -2630,6 +2655,7 @@ def admin_products():
 
 @app.route('/admin/products/create', methods=['GET', 'POST'])
 @admin_required
+@limiter.exempt
 def admin_product_create():
     """Create new product."""
     lang = get_lang()
@@ -2694,7 +2720,7 @@ def admin_product_create():
             if image_file and image_file.filename:
                 if allowed_file(image_file.filename):
                     ext = image_file.filename.rsplit('.', 1)[1].lower()
-                    thumbnail_filename = f"product_{uuid.uuid4().hex}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
+                    thumbnail_filename = f"product_{uuid.uuid4().hex}_{datetime_.datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
                     upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'products')
                     os.makedirs(upload_path, exist_ok=True)
                     image_file.save(os.path.join(upload_path, thumbnail_filename))
@@ -2744,6 +2770,7 @@ def admin_product_create():
 
 @app.route('/admin/products/edit/<int:pid>', methods=['GET', 'POST'])
 @admin_required
+@limiter.exempt
 def admin_product_edit(pid):
     """Edit existing product."""
     lang = get_lang()
@@ -2814,7 +2841,7 @@ def admin_product_edit(pid):
                             pass
                     
                     ext = image_file.filename.rsplit('.', 1)[1].lower()
-                    thumbnail_filename = f"product_{uuid.uuid4().hex}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
+                    thumbnail_filename = f"product_{uuid.uuid4().hex}_{datetime_.datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
                     upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'products')
                     os.makedirs(upload_path, exist_ok=True)
                     image_file.save(os.path.join(upload_path, thumbnail_filename))
@@ -3009,7 +3036,7 @@ def admin_export_products():
         
         response = make_response(output.getvalue())
         response.headers['Content-Type'] = 'text/csv'
-        response.headers['Content-Disposition'] = f'attachment; filename=products_export_{datetime.now().strftime("%Y%m%d")}.csv'
+        response.headers['Content-Disposition'] = f'attachment; filename=products_export_{datetime_.datetime.now().strftime("%Y%m%d")}.csv'
         
         return response
         
@@ -3021,6 +3048,7 @@ def admin_export_products():
 
 @app.route('/admin/ads')
 @admin_required
+@limiter.exempt
 def admin_ads():
     """Admin advertisement list."""
     lang = get_lang()
@@ -3037,7 +3065,18 @@ def admin_ads():
         ads = cursor.fetchall()
         conn.close()
         
-        ads_list = [dict(ad) for ad in ads] if ads else []
+        ads_list = []
+        if ads:
+            for ad in ads:
+                ad_dict = dict(ad)
+                # ቀኑን ወደ ተነባቢ ጽሁፍ (YYYY-MM-DD) የመቀየሪያ ዘዴ
+                if ad_dict.get('created_at') and isinstance(ad_dict['created_at'], str):
+                    ad_dict['formatted_date'] = ad_dict['created_at'][:10]
+                elif ad_dict.get('created_at'):
+                    ad_dict['formatted_date'] = ad_dict['created_at'].strftime('%Y-%m-%d')
+                else:
+                    ad_dict['formatted_date'] = "N/A"
+                ads_list.append(ad_dict)
         
         # Get statistics
         active_ads = sum(1 for ad in ads_list if ad.get('is_active', 0) == 1)
@@ -3061,6 +3100,7 @@ def admin_ads():
 
 @app.route('/admin/ads/create', methods=['GET', 'POST'])
 @admin_required
+@limiter.exempt
 def admin_ad_create():
     """Create new advertisement."""
     lang = get_lang()
@@ -3094,7 +3134,7 @@ def admin_ad_create():
             if media_file and media_file.filename:
                 if allowed_file(media_file.filename):
                     ext = media_file.filename.rsplit('.', 1)[1].lower()
-                    image_filename = f"ad_{uuid.uuid4().hex}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
+                    image_filename = f"ad_{uuid.uuid4().hex}_{datetime_.datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
                     upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'ads')
                     os.makedirs(upload_path, exist_ok=True)
                     media_file.save(os.path.join(upload_path, image_filename))
@@ -3136,24 +3176,24 @@ def admin_ad_create():
 
 @app.route('/admin/ads/edit/<int:aid>', methods=['GET', 'POST'])
 @admin_required
+@limiter.exempt
 def admin_ad_edit(aid):
     """Edit existing advertisement."""
     lang = get_lang()
     t = TEXTS.get(lang, TEXTS['am'])
-    
+
     conn = get_db()
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM advertisements WHERE id = ?", (aid,))
     ad = cursor.fetchone()
-    conn.close()
-    
+
     if not ad:
         flash('Advertisement not found!', 'danger')
         return redirect(url_for('admin_ads'))
-    
+
     ad_dict = dict(ad)
-    
+
     if request.method == 'POST':
         try:
             title = request.form.get('title', '').strip()
@@ -3162,29 +3202,29 @@ def admin_ad_edit(aid):
             description = request.form.get('description', '').strip()
             description_am = request.form.get('description_am', '').strip()
             description_ar = request.form.get('description_ar', '').strip()
-            link = request.form.get('link', '').strip()
+            link = request.form.get('link', '').strip()  # ባዶ ቢሆንም ይሰራል
             sort_order = int(request.form.get('sort_order', 0))
             is_active = 1 if request.form.get('is_active') else 0
-            
+
             start_date = request.form.get('start_date')
             end_date = request.form.get('end_date')
-            
+
             # Handle media upload
             media_file = request.files.get('media')
             media_url = request.form.get('media_url', '').strip()
             image_filename = ad_dict.get('image', '')
-            
+
             if media_file and media_file.filename:
                 if allowed_file(media_file.filename):
                     # Delete old image if exists and is local file
                     if image_filename and image_filename.startswith('uploads/') and os.path.exists(image_filename):
                         try:
                             os.remove(image_filename)
-                        except:
+                        except Exception:
                             pass
-                    
+
                     ext = media_file.filename.rsplit('.', 1)[1].lower()
-                    image_filename = f"ad_{uuid.uuid4().hex}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
+                    image_filename = f"ad_{uuid.uuid4().hex}_{datetime_.datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
                     upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'ads')
                     os.makedirs(upload_path, exist_ok=True)
                     media_file.save(os.path.join(upload_path, image_filename))
@@ -3194,33 +3234,32 @@ def admin_ad_edit(aid):
                     return redirect(url_for('admin_ad_edit', aid=aid))
             elif media_url:
                 image_filename = media_url
-            
-            conn = get_db()
+
             cursor = conn.cursor()
+            # ማስተካከያ፡ 'updated_at=CURRENT_TIMESTAMP' የሚለው ተወግዷል
             cursor.execute("""
                 UPDATE advertisements SET
                     title=?, title_am=?, title_ar=?,
                     description=?, description_am=?, description_ar=?,
                     image=?, link=?, sort_order=?, is_active=?,
-                    start_date=?, end_date=?, updated_at=CURRENT_TIMESTAMP
+                    start_date=?, end_date=?
                 WHERE id=?
-            """, (title, title_am, title_ar, description, description_am, description_ar,
-                  image_filename, link, sort_order, is_active, start_date, end_date, aid))
-            
+            """, (
+                title, title_am, title_ar, description, description_am, description_ar,
+                image_filename, link, sort_order, is_active, start_date, end_date, aid
+            ))
+
             conn.commit()
-            conn.close()
-            
+
             app.logger.info(f"Advertisement updated: ID {aid}")
             flash('Advertisement updated successfully!', 'success')
             return redirect(url_for('admin_ads'))
-            
+
         except Exception as e:
             app.logger.error(f"Error updating advertisement: {str(e)}")
             flash('Error updating advertisement. Please try again.', 'error')
-    
+
     return render_template('admin/ads/edit.html', ad=ad_dict, lang=lang, t=t)
-
-
 @app.route('/admin/ads/toggle/<int:aid>', methods=['POST'])
 @admin_required
 def admin_ad_toggle(aid):
@@ -3233,7 +3272,6 @@ def admin_ad_toggle(aid):
         cursor = conn.cursor()
         cursor.execute("UPDATE advertisements SET is_active = ? WHERE id = ?", (1 if is_active else 0, aid))
         conn.commit()
-        conn.close()
         
         app.logger.info(f"Ad {aid} status toggled to: {'active' if is_active else 'inactive'}")
         return jsonify({'success': True, 'is_active': is_active})
@@ -3299,7 +3337,6 @@ def admin_ad_reorder():
             cursor.execute("UPDATE advertisements SET sort_order = ? WHERE id = ?", (src_order[0], dest_id))
             conn.commit()
         
-        conn.close()
         
         return jsonify({'success': True})
         
@@ -3312,6 +3349,7 @@ def admin_ad_reorder():
 
 @app.route('/admin/orders')
 @admin_required
+@limiter.exempt
 def admin_orders():
     """Admin orders list."""
     lang = get_lang()
@@ -3378,6 +3416,7 @@ def admin_orders():
 
 @app.route('/admin/orders/<int:oid>')
 @admin_required
+@limiter.exempt
 def admin_order_detail(oid):
     """Admin order detail page."""
     lang = get_lang()
@@ -3521,7 +3560,7 @@ def admin_export_order(oid):
         
         response = make_response(json.dumps(export_data, indent=2, default=str))
         response.headers['Content-Type'] = 'application/json'
-        response.headers['Content-Disposition'] = f'attachment; filename=order_{oid}_{datetime.now().strftime("%Y%m%d")}.json'
+        response.headers['Content-Disposition'] = f'attachment; filename=order_{oid}_{datetime_.datetime.now().strftime("%Y%m%d")}.json'
         
         return response
         
@@ -3625,6 +3664,7 @@ def admin_order_invoice(oid):
 
 @app.route('/admin/reports')
 @admin_required
+@limiter.exempt
 def admin_reports():
     """Reports dashboard with analytics."""
     lang = get_lang()
@@ -3725,6 +3765,7 @@ def admin_reports():
                                monthly_sales=monthly_sales_list,
                                top_products=top_products_list,
                                low_stock=low_stock_list,
+                               total_products=total_products,
                                lang=lang,
                                t=t)
                                
@@ -3738,6 +3779,7 @@ def admin_reports():
 
 @app.route('/admin/reports/sales')
 @admin_required
+@limiter.exempt
 def admin_reports_sales():
     """Detailed sales report with date filtering."""
     lang = get_lang()
@@ -3812,6 +3854,7 @@ def admin_reports_sales():
 
 @app.route('/admin/reports/products')
 @admin_required
+@limiter.exempt
 def admin_reports_products():
     """Products performance report."""
     lang = get_lang()
@@ -3842,20 +3885,36 @@ def admin_reports_products():
                 SUM(stock_quantity) as total_stock,
                 SUM(CASE WHEN stock_quantity = 0 THEN 1 ELSE 0 END) as out_of_stock,
                 SUM(CASE WHEN stock_quantity <= low_stock_threshold AND stock_quantity > 0 THEN 1 ELSE 0 END) as low_stock,
-                AVG(price) as avg_price
+                AVG(price) as avg_price,
+                SUM(price * stock_quantity) as total_value
             FROM products
             WHERE is_active = 1
         """)
         stats = cursor.fetchone()
+
+        # Get active categories and product counts
+        cursor.execute("""
+            SELECT c.id, c.name_am, c.name, COUNT(p.id) as product_count
+            FROM categories c
+            LEFT JOIN products p ON p.category_id = c.id AND p.is_active = 1
+            WHERE c.is_active = 1
+            GROUP BY c.id
+            ORDER BY c.name_am ASC
+        """)
+        categories = cursor.fetchall()
         
         conn.close()
         
         products_list = [dict(p) for p in products] if products else []
         stats_dict = dict(stats) if stats else {}
+        categories_list = [dict(cat) for cat in categories] if categories else []
         
         return render_template('admin/reports/products.html',
                                products=products_list,
                                stats=stats_dict,
+                               categories=categories_list,
+                               total_products=stats_dict.get('total_products', 0),
+                               total_value=stats_dict.get('total_value', 0),
                                lang=lang,
                                t=t)
                                
@@ -3869,6 +3928,7 @@ def admin_reports_products():
 
 @app.route('/admin/settings', methods=['GET', 'POST'])
 @admin_required
+@limiter.exempt
 def admin_settings():
     """Admin settings page."""
     lang = get_lang()
@@ -3986,7 +4046,7 @@ def admin_backup_database():
         backup_dir = 'backups'
         os.makedirs(backup_dir, exist_ok=True)
         
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        timestamp = datetime_.datetime.now().strftime('%Y%m%d_%H%M%S')
         backup_filename = f"ethiosadat_backup_{timestamp}.db"
         backup_path = os.path.join(backup_dir, backup_filename)
         
@@ -4347,7 +4407,7 @@ def api_cart_remove():
 # ==================== 26. API ROUTES (CONTINUED) ====================
 
 @app.route('/api/products')
-@limiter.limit("60 per minute")
+@limiter.limit("1000 per minute")
 def api_products():
     """API endpoint to get all products with pagination and filtering."""
     try:
@@ -4555,7 +4615,7 @@ def api_categories():
 
 
 @app.route('/api/search')
-@limiter.limit("30 per minute")
+@limiter.limit("20000 per minute")
 def api_search_products():
     """API endpoint to search products."""
     try:
@@ -4633,7 +4693,7 @@ def api_branches():
 
 
 @app.route('/api/submit-order', methods=['POST'])
-@limiter.limit("10 per minute")
+@limiter.limit("50000 per minute")
 def api_submit_order():
     """API endpoint to submit order via AJAX."""
     try:
@@ -4765,7 +4825,7 @@ def datetime_filter(dt):
         return ''
     if isinstance(dt, str):
         try:
-            dt = datetime.fromisoformat(dt.replace('Z', '+00:00'))
+            dt = datetime_.datetime.fromisoformat(dt.replace('Z', '+00:00'))
         except:
             return dt
     return dt.strftime('%Y-%m-%d %H:%M')
@@ -4779,7 +4839,7 @@ def format_date_filter(date_obj, format_type='short'):
     
     if isinstance(date_obj, str):
         try:
-            date_obj = datetime.fromisoformat(date_obj.replace('Z', '+00:00'))
+            date_obj = datetime_.datetime.fromisoformat(date_obj.replace('Z', '+00:00'))
         except:
             return date_obj
     
@@ -5684,7 +5744,7 @@ def sitemap_xml():
         conn.close()
         
         base_url = request.url_root.rstrip('/')
-        current_date = datetime.now().strftime('%Y-%m-%d')
+        current_date = datetime_.datetime.now().strftime('%Y-%m-%d')
         
         xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
         xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -5871,7 +5931,7 @@ def send_error_notification(error_message, error_detail):
             error_text = f"⚠️ *Error on Ethiosadat*\n\n"
             error_text += f"Message: {error_message}\n"
             error_text += f"Path: {request.path}\n"
-            error_text += f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+            error_text += f"Time: {datetime_.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
             error_text += f"IP: {request.remote_addr}\n"
             
             encoded = urllib.parse.quote(error_text)
@@ -5892,7 +5952,7 @@ def health_check_details():
     """Detailed health check for monitoring (admin only)."""
     health_status = {
         'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': datetime_.datetime.now().isoformat(),
         'version': '2.0.0',
         'system': {
             'python_version': sys.version,
@@ -5940,12 +6000,108 @@ def health_check_details():
     return jsonify(health_status), status_code
 
 
-# ==================== 47. APP STARTUP TIMESTAMP ====================
+# ==================== 47. TRANSLATION MANAGEMENT ROUTES ====================
+
+@app.route('/admin/translations/status', methods=['GET'])
+@admin_required
+def translation_status():
+    """Get translation cache statistics (admin only)."""
+    stats = get_translation_stats()
+    return jsonify({
+        'status': 'success',
+        'cache': stats,
+        'fallback_languages': list(FALLBACK_TEXTS.keys()),
+        'supported_languages': ['am', 'en', 'ar']
+    })
+
+
+@app.route('/admin/translations/clear', methods=['POST'])
+@admin_required
+def clear_translations():
+    """Clear translation cache (admin only)."""
+    try:
+        clear_translation_cache()
+        app.logger.info("Translation cache cleared by admin")
+        return jsonify({
+            'status': 'success',
+            'message': 'Translation cache cleared successfully'
+        })
+    except Exception as e:
+        app.logger.error(f"Error clearing translation cache: {str(e)}")
+        return jsonify({
+            'status': 'error',
+            'message': f'Error clearing cache: {str(e)}'
+        }), 500
+
+
+@app.route('/api/translate', methods=['POST'])
+def api_translate():
+    """
+    API endpoint to translate text.
+    Requires: text (str), target_lang (str)
+    """
+    try:
+        data = request.get_json()
+        text = data.get('text', '').strip()
+        target_lang = data.get('target_lang', 'en')
+        
+        if not text:
+            return jsonify({'error': 'Text is required'}), 400
+        
+        translated = translate_text(text, target_lang)
+        
+        return jsonify({
+            'status': 'success',
+            'original': text,
+            'translated': translated,
+            'language': target_lang
+        })
+    
+    except Exception as e:
+        app.logger.error(f"Translation API error: {str(e)}")
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+
+@app.route('/api/translate-batch', methods=['POST'])
+def api_translate_batch():
+    """
+    API endpoint to translate multiple texts at once.
+    Requires: texts (list), target_lang (str)
+    """
+    try:
+        data = request.get_json()
+        texts = data.get('texts', [])
+        target_lang = data.get('target_lang', 'en')
+        
+        if not texts or not isinstance(texts, list):
+            return jsonify({'error': 'Texts array is required'}), 400
+        
+        translations = batch_translate(texts, target_lang)
+        
+        return jsonify({
+            'status': 'success',
+            'translations': translations,
+            'language': target_lang,
+            'count': len(translations)
+        })
+    
+    except Exception as e:
+        app.logger.error(f"Batch translation API error: {str(e)}")
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+
+# ==================== 48. APP STARTUP TIMESTAMP ====================
 
 app.start_time = time.time()
 
 
-# ==================== 48. DATABASE BACKUP SCHEDULER (Optional) ====================
+# ==================== 49. DATABASE BACKUP SCHEDULER (Optional) ====================
 
 import threading
 
@@ -5953,9 +6109,9 @@ def scheduled_backup():
     """Run scheduled database backup every day at midnight."""
     while True:
         try:
-            now = datetime.now()
+            now = datetime_.datetime.now()
             # Calculate time until next midnight
-            next_midnight = datetime(now.year, now.month, now.day) + timedelta(days=1)
+            next_midnight = datetime_.datetime(now.year, now.month, now.day) + datetime_.timedelta(days=1)
             sleep_seconds = (next_midnight - now).total_seconds()
             
             time.sleep(sleep_seconds)
@@ -5969,7 +6125,7 @@ def scheduled_backup():
                     backup_dir = 'backups'
                     os.makedirs(backup_dir, exist_ok=True)
                     
-                    timestamp = datetime.now().strftime('%Y%m%d')
+                    timestamp = datetime_.datetime.now().strftime('%Y%m%d')
                     backup_filename = f"ethiosadat_backup_{timestamp}.db"
                     backup_path = os.path.join(backup_dir, backup_filename)
                     
@@ -5980,8 +6136,8 @@ def scheduled_backup():
                     for f in os.listdir(backup_dir):
                         if f.startswith('ethiosadat_backup_') and f != backup_filename:
                             file_path = os.path.join(backup_dir, f)
-                            file_time = datetime.fromtimestamp(os.path.getctime(file_path))
-                            if (datetime.now() - file_time).days > 7:
+                            file_time = datetime_.datetime.fromtimestamp(os.path.getctime(file_path))
+                            if (datetime_.datetime.now() - file_time).days > 7:
                                 os.remove(file_path)
                                 app.logger.info(f"Deleted old backup: {f}")
                                 
@@ -6181,5 +6337,5 @@ def main():
 
 if __name__ == '__main__':
     main()
-
+    app.run(host='0.0.0.0', port=5000)
 # ==================== END OF APPLICATION FILE ====================
