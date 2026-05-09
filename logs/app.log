@@ -52858,3 +52858,16 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'admin_
 2026-05-07 17:12:43,241 - app - INFO - Cache Type: SimpleCache
 2026-05-07 17:12:43,242 - app - INFO - ============================================================
 2026-05-07 17:23:29,550 - app - INFO - Application shutting down...
+2026-05-09 04:00:53,668 - app - INFO - ==================================================
+2026-05-09 04:00:53,668 - app - INFO - Ethiosadat Application Started
+2026-05-09 04:00:53,668 - app - INFO - ==================================================
+2026-05-09 04:00:54,901 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:00:55,746 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:00:59,849 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/service-worker.js
+2026-05-09 04:01:00,118 - app - WARNING - 404 Error: http://localhost:5000/static/service-worker.js
+2026-05-09 04:01:04,435 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:01:08,040 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:01:08,234 - app - WARNING - 404 Error: http://localhost:5000/static/service-worker.js
+2026-05-09 04:01:08,477 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/service-worker.js
+2026-05-09 04:02:00,747 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:02:00,988 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5

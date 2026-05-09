@@ -14667,3 +14667,7 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'admin_
 2026-05-07 16:43:55,932 - app - WARNING - 404 Error: http://172.17.155.182:5000/favicon.ico
 2026-05-07 16:45:03,825 - app - ERROR - Error updating product: Cannot operate on a closed database.
 2026-05-07 16:46:09,257 - app - ERROR - Error updating product: Cannot operate on a closed database.
+2026-05-09 04:00:59,849 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/service-worker.js
+2026-05-09 04:01:00,118 - app - WARNING - 404 Error: http://localhost:5000/static/service-worker.js
+2026-05-09 04:01:08,234 - app - WARNING - 404 Error: http://localhost:5000/static/service-worker.js
+2026-05-09 04:01:08,477 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/service-worker.js

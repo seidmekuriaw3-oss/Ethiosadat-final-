@@ -13,3 +13,12 @@ requests
 Werkzeug==2.3.7
 Flask-Caching
 googletrans==4.0.0rc1
+Flask
+Flask-Caching
+Flask-Limiter
+Flask-Session
+googletrans==4.0.0rc1
+Pillow
+python-dotenv
+requests
+Werkzeug
