@@ -53233,3 +53233,17 @@ sqlite3.ProgrammingError: Cannot operate on a closed database.
 2026-05-09 10:25:16,425 - app - INFO - Application shutting down...
 2026-05-09 10:25:20,566 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
 2026-05-09 10:25:20,947 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 10:26:48,081 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-09 10:26:55,143 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-09 10:26:55,439 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-09 10:27:05,255 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 10:27:09,935 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 10:27:11,075 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 10:27:11,704 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 10:27:29,947 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-09 10:27:31,493 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 10:27:40,933 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 10:27:42,416 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 10:27:43,628 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 10:27:44,623 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 10:27:45,199 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
