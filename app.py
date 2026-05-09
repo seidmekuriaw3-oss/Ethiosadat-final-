@@ -2761,21 +2761,23 @@ def admin_product_create():
             conn = get_db()
             cursor = conn.cursor()
             cursor.execute("""
-                INSERT INTO products (
-                    name, name_am, name_ar, description, description_am, description_ar,
-                    price, compare_price, stock_quantity, low_stock_threshold,
-                    category_id, sku, material, color,
-                    is_featured, is_new, is_active,
-                    thumbnail, meta_title, meta_description,
-                    created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 5, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-            """, (
-                name, name_am, name_ar, description, description_am, description_ar,
-                price, compare_price, stock_quantity,
-                category_id, sku, material, color,
-                is_featured, is_new,
-                thumbnail_filename, meta_title, meta_description
-            ))
+    INSERT INTO products (
+        name, name_am, name_ar, name_en,
+        description, description_am, description_ar, description_en,
+        price, compare_price, stock_quantity, low_stock_threshold,
+        category_id, sku, material, color,
+        is_featured, is_new, is_active,
+        thumbnail, meta_title, meta_description,
+        created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 5, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+""", (
+    name, name_am, name_ar, name,
+    description, description_am, description_ar, description,
+    price, compare_price, stock_quantity,
+    category_id, sku, material, color,
+    is_featured, is_new,
+    thumbnail_filename, meta_title, meta_description
+))
             
             conn.commit()
             product_id = cursor.lastrowid
@@ -2886,23 +2888,24 @@ def admin_product_edit(pid):
             conn = get_db()
             cursor = conn.cursor()
             cursor.execute("""
-                UPDATE products SET
-                    name=?, name_am=?, name_ar=?, 
-                    description=?, description_am=?, description_ar=?,
-                    price=?, compare_price=?, stock_quantity=?,
-                    category_id=?, sku=?, material=?, color=?,
-                    is_featured=?, is_new=?,
-                    thumbnail=?, meta_title=?, meta_description=?,
-                    updated_at=CURRENT_TIMESTAMP
-                WHERE id=?
-            """, (
-                name, name_am, name_ar, description, description_am, description_ar,
-                price, compare_price, stock_quantity,
-                category_id, sku, material, color,
-                is_featured, is_new,
-                thumbnail_filename, meta_title, meta_description,
-                pid
-            ))
+    UPDATE products SET
+        name=?, name_am=?, name_ar=?, name_en=?,
+        description=?, description_am=?, description_ar=?, description_en=?,
+        price=?, compare_price=?, stock_quantity=?,
+        category_id=?, sku=?, material=?, color=?,
+        is_featured=?, is_new=?,
+        thumbnail=?, meta_title=?, meta_description=?,
+        updated_at=CURRENT_TIMESTAMP
+    WHERE id=?
+""", (
+    name, name_am, name_ar, name,
+    description, description_am, description_ar, description,
+    price, compare_price, stock_quantity,
+    category_id, sku, material, color,
+    is_featured, is_new,
+    thumbnail_filename, meta_title, meta_description,
+    pid
+))
             
             conn.commit()
             conn.close()

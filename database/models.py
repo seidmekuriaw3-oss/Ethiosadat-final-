@@ -100,12 +100,13 @@ class Product:
         
         Args:
             data (dict): Product data with keys:
-                - name, name_am, name_ar (required)
+                - name, name_am, name_ar, name_en (required)
                 - price (required)
                 - category_id (required)
-                - description, description_am, description_ar, compare_price
+                - description, description_am, description_ar, description_en
                 - image, images, thumbnail, stock_quantity
                 - is_featured, is_new, material, color, weight, dimensions
+                - meta_title, meta_description
         """
         try:
             db = get_db()
@@ -120,21 +121,25 @@ class Product:
             
             cursor = db.execute(
                 """INSERT INTO products (
-                    name, name_am, name_ar, description, description_am, description_ar,
+                    name, name_am, name_ar, name_en,
+                    description, description_am, description_ar, description_en,
                     price, compare_price, cost, sku, barcode,
                     stock_quantity, low_stock_threshold,
                     images, thumbnail,
                     is_active, is_featured, is_new,
                     weight, dimensions, material, color,
-                    category_id, views, sales_count
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    category_id, views, sales_count,
+                    meta_title, meta_description
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                 (
                     data.get('name', data.get('name_en', '')),
                     data.get('name_am', ''),
                     data.get('name_ar', ''),
+                    data.get('name_en', ''),
                     data.get('description', data.get('description_en', '')),
                     data.get('description_am', ''),
                     data.get('description_ar', ''),
+                    data.get('description_en', ''),
                     data['price'],
                     data.get('compare_price', data.get('old_price')),
                     data.get('cost'),
@@ -153,7 +158,9 @@ class Product:
                     data.get('color'),
                     data['category_id'],
                     0,  # views
-                    0   # sales_count
+                    0,  # sales_count
+                    data.get('meta_title', ''),
+                    data.get('meta_description', '')
                 )
             )
             db.commit()
@@ -162,15 +169,20 @@ class Product:
             print(f"Error creating product: {e}")
             db.rollback()
             return None
-    
+
     @staticmethod
     def update(pid, data):
         """
         Update an existing product
+        
+        Args:
+            pid (int): Product ID
+            data (dict): Updated product data
         """
         try:
             db = get_db()
             
+            # Handle images as JSON string
             images_json = None
             if data.get('images'):
                 if isinstance(data['images'], list):
@@ -180,22 +192,26 @@ class Product:
             
             db.execute(
                 """UPDATE products SET 
-                    name=?, name_am=?, name_ar=?, 
-                    description=?, description_am=?, description_ar=?,
+                    name=?, name_am=?, name_ar=?, name_en=?,
+                    description=?, description_am=?, description_ar=?, description_en=?,
                     price=?, compare_price=?, cost=?, sku=?, barcode=?,
                     stock_quantity=?, low_stock_threshold=?,
                     images=?, thumbnail=?,
                     is_featured=?, is_new=?,
                     weight=?, dimensions=?, material=?, color=?,
-                    category_id=?, updated_at=CURRENT_TIMESTAMP
+                    category_id=?,
+                    meta_title=?, meta_description=?,
+                    updated_at=CURRENT_TIMESTAMP
                    WHERE id=?""",
                 (
                     data.get('name', data.get('name_en', '')),
                     data.get('name_am', ''),
                     data.get('name_ar', ''),
+                    data.get('name_en', ''),
                     data.get('description', data.get('description_en', '')),
                     data.get('description_am', ''),
                     data.get('description_ar', ''),
+                    data.get('description_en', ''),
                     data.get('price'),
                     data.get('compare_price', data.get('old_price')),
                     data.get('cost'),
@@ -212,6 +228,8 @@ class Product:
                     data.get('material'),
                     data.get('color'),
                     data.get('category_id'),
+                    data.get('meta_title', ''),
+                    data.get('meta_description', ''),
                     pid
                 )
             )
@@ -221,7 +239,7 @@ class Product:
             print(f"Error updating product {pid}: {e}")
             db.rollback()
             return False
-    
+
     @staticmethod
     def delete(pid):
         """Soft delete a product (set is_active to 0)"""
@@ -298,7 +316,6 @@ class Ad:
         """Get all active advertisements ordered by sort_order"""
         try:
             db = get_db()
-            now = "datetime('now')"
             return db.execute(
                 """SELECT * FROM advertisements 
                    WHERE is_active = 1 
