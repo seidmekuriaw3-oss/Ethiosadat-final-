@@ -53086,3 +53086,59 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'admin_
 2026-05-09 05:28:35,053 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
 2026-05-09 05:28:40,284 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
 2026-05-09 05:28:52,687 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-09 05:36:10,866 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:36:18,476 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:36:57,618 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 05:37:43,437 - app - ERROR - Error updating product: Cannot operate on a closed database.
+2026-05-09 05:39:15,601 - app - ERROR - Error creating product: Cannot operate on a closed database.
+2026-05-09 05:39:15,602 - app - ERROR - Traceback (most recent call last):
+  File "/home/runner/workspace/app.py", line 2756, in admin_product_create
+    cursor = conn.cursor()
+             ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: Cannot operate on a closed database.
+
+2026-05-09 05:39:26,591 - app - INFO - Admin ads list viewed - 7 ads
+2026-05-09 05:39:35,111 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:39:36,235 - app - INFO - Admin reports viewed
+2026-05-09 05:39:36,264 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:39:40,858 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:39:40,872 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:39:40,874 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:39:40,877 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:39:41,141 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:39:41,144 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:39:41,146 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:39:41,412 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:39:41,752 - app - INFO - Admin reports viewed
+2026-05-09 05:39:41,783 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:40:16,613 - app - INFO - Admin reports viewed
+2026-05-09 05:40:16,896 - app - INFO - Admin reports viewed
+2026-05-09 05:40:17,974 - app - INFO - Admin reports viewed
+2026-05-09 05:40:18,229 - app - INFO - Admin reports viewed
+2026-05-09 05:40:24,195 - app - INFO - Admin reports viewed
+2026-05-09 05:40:28,676 - app - INFO - Admin reports viewed
+2026-05-09 05:40:30,726 - app - INFO - Admin reports viewed
+2026-05-09 05:40:31,066 - app - INFO - Admin reports viewed
+2026-05-09 05:40:32,389 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:40:32,657 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:40:32,657 - app - INFO - Admin reports viewed
+2026-05-09 05:40:33,264 - app - INFO - Admin reports viewed
+2026-05-09 05:40:33,588 - app - INFO - Admin reports viewed
+2026-05-09 05:40:37,308 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:40:37,311 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:40:37,626 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:40:37,629 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:40:37,631 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:40:38,397 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:40:38,398 - app - INFO - Admin reports viewed
+2026-05-09 05:40:43,316 - app - INFO - Admin reports viewed
+2026-05-09 05:40:43,586 - app - INFO - Admin reports viewed
+2026-05-09 05:40:44,167 - app - INFO - Admin reports viewed
+2026-05-09 05:40:44,462 - app - INFO - Admin reports viewed
+2026-05-09 05:41:05,676 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:55:12,682 - app - INFO - ==================================================
+2026-05-09 05:55:12,683 - app - INFO - Ethiosadat Application Started
+2026-05-09 05:55:12,683 - app - INFO - ==================================================
+2026-05-09 05:55:24,276 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:55:30,358 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:55:38,459 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico

@@ -14685,3 +14685,19 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'admin_
 2026-05-09 05:12:20,541 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
 2026-05-09 05:12:20,542 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/images/logo.svg
 2026-05-09 05:28:52,687 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-09 05:37:43,437 - app - ERROR - Error updating product: Cannot operate on a closed database.
+2026-05-09 05:39:15,601 - app - ERROR - Error creating product: Cannot operate on a closed database.
+2026-05-09 05:39:15,602 - app - ERROR - Traceback (most recent call last):
+  File "/home/runner/workspace/app.py", line 2756, in admin_product_create
+    cursor = conn.cursor()
+             ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: Cannot operate on a closed database.
+
+2026-05-09 05:39:40,872 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:39:40,877 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:39:41,144 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:40:32,389 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:40:32,657 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:40:37,311 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:40:37,629 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:55:38,459 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico

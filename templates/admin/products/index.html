@@ -368,12 +368,13 @@
             if (stockFilter === 'medium' && (stock <= 0 || stock > 10)) matches = false;
             if (stockFilter === 'low' && stock > 0) matches = false;
 
-            if (matches) {
-                row.style.display = '';
-                visibleCount++;
-            } else {
+            // Use data attribute to track filter state — not style.display
+            // so pagination can independently control visibility
+            row.dataset.filtered = matches ? 'true' : 'false';
+            if (!matches) {
                 row.style.display = 'none';
             }
+            if (matches) visibleCount++;
         });
 
         currentPage = 1;
@@ -599,23 +600,27 @@
 
     function updatePagination() {
         const rows = document.querySelectorAll('#productsTableBody .product-row');
-        const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none');
-        const totalPages = Math.ceil(visibleRows.length / rowsPerPage);
+        // Use data-filtered attribute so filter state and pagination state are separate.
+        // Rows that haven't been filtered yet (no attribute) count as visible.
+        const filteredRows = Array.from(rows).filter(row => row.dataset.filtered !== 'false');
+        const totalPages = Math.max(1, Math.ceil(filteredRows.length / rowsPerPage));
         const paginationDiv = document.getElementById('pagination');
         
         if (!paginationDiv) return;
         
         if (totalPages <= 1) {
             paginationDiv.innerHTML = '';
+            // Still show all filtered rows
+            filteredRows.forEach(row => { row.style.display = ''; });
             return;
         }
+
+        // Clamp currentPage
+        if (currentPage > totalPages) currentPage = totalPages;
         
         let paginationHtml = '';
-        
-        // Previous button
         paginationHtml += `<button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>« Prev</button>`;
         
-        // Page numbers
         let startPage = Math.max(1, currentPage - 2);
         let endPage = Math.min(totalPages, startPage + 4);
         if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
@@ -624,29 +629,22 @@
             paginationHtml += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
         }
         
-        // Next button
         paginationHtml += `<button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next »</button>`;
-        
         paginationDiv.innerHTML = paginationHtml;
         
-        // Show/hide rows based on current page
+        // Show only the current page's rows from the filtered set
         const start = (currentPage - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-        
-        visibleRows.forEach((row, index) => {
-            if (index >= start && index < end) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+        filteredRows.forEach((row, index) => {
+            row.style.display = (index >= start && index < end) ? '' : 'none';
         });
     }
 
     function changePage(page) {
         if (page < 1) return;
         const rows = document.querySelectorAll('#productsTableBody .product-row');
-        const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none');
-        const totalPages = Math.ceil(visibleRows.length / rowsPerPage);
+        const filteredRows = Array.from(rows).filter(row => row.dataset.filtered !== 'false');
+        const totalPages = Math.max(1, Math.ceil(filteredRows.length / rowsPerPage));
         if (page > totalPages) return;
         currentPage = page;
         updatePagination();

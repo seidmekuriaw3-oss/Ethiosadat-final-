@@ -37,16 +37,30 @@
         cursor: pointer;
         z-index: 10000;
     }
-    /* Responsive video sizing */
-    @media (max-width: 768px) {
-        .slider-slide video {
-            max-height: 250px !important;
-        }
+    /* Slide background video - full fill, behind content */
+    .slide-bg-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+        pointer-events: none;
     }
-    @media (min-width: 769px) {
-        .slider-slide video {
-            max-height: 200px !important;
-        }
+    /* Dark overlay so text stays readable on video */
+    .slider-slide.has-video::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.50);
+        z-index: 1;
+        border-radius: inherit;
+    }
+    /* Keep content above video and overlay */
+    .slider-slide.has-video .slide-content {
+        position: relative;
+        z-index: 2;
     }
     
     /* Products Grid - Mobile: 2, Desktop: 6 */
@@ -188,21 +202,19 @@
     <div class="slider-wrapper">
         <div class="slider-track">
             {% for ad in ads %}
-            <div class="slider-slide">
+            {% set is_video = ad.image and ad.image|trim != '' and ad.image.lower().endswith(('.mp4', '.webm', '.mov', '.avi', '.ogg')) %}
+            {% set is_image = ad.image and ad.image|trim != '' and not is_video %}
+            <div class="slider-slide {% if is_video %}has-video{% elif is_image %}has-image{% endif %}"
+                 {% if is_image %}style="background-image: url('{{ url_for('static', filename=ad.image) }}');"{% endif %}>
+                {% if is_video %}
+                <video class="slide-bg-video"
+                       src="{{ url_for('static', filename=ad.image) }}"
+                       autoplay muted loop playsinline
+                       onclick="if(window.innerWidth < 768){ this.pause(); playFullscreen('{{ url_for('static', filename=ad.image) }}'); }"></video>
+                {% endif %}
                 <div class="slide-content">
                     <h3>{{ ad.title if ad.title else '🎉 Special Offer!' }}</h3>
                     <p>{{ ad.description if ad.description else ad.text if ad.text else 'Amazing deals on quality furniture!' }}</p>
-                    {% if ad.image and ad.image|trim != '' %}
-                        {% if ad.image.endswith(('.mp4', '.webm', '.mov', '.avi', '.ogg')) %}
-                            <video src="{{ url_for('static', filename=ad.image) }}" 
-                                   style="width: 100%; max-height: 200px; margin: 10px 0; border-radius: 8px; object-fit: cover; cursor: pointer; background: #000;" 
-                                   autoplay muted loop playsinline
-                                   onclick="event.stopPropagation(); if(window.innerWidth < 768) { this.pause(); playFullscreen('{{ url_for('static', filename=ad.image) }}'); } else { this.paused ? this.play() : this.pause(); }"></video>
-                        {% else %}
-                            <img src="{{ url_for('static', filename=ad.image) }}" 
-                                 style="width: 100%; max-height: 200px; margin: 10px 0; border-radius: 8px; object-fit: cover; cursor: pointer;">
-                        {% endif %}
-                    {% endif %}
                     <a href="{{ ad.link if ad.link else url_for('products') }}" class="slide-btn">Shop Now →</a>
                 </div>
             </div>

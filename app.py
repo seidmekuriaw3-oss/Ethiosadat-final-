@@ -2590,9 +2590,14 @@ def admin_dashboard():
             LIMIT 10
         """)
         low_stock_products = cursor.fetchall()
+
+        # Total page views from settings table
+        cursor.execute("SELECT value FROM settings WHERE key = 'page_views'")
+        pv_row = cursor.fetchone()
+        total_page_views = int(pv_row[0]) if pv_row and pv_row[0] else 0
         
         conn.close()
-        
+
         with _visitor_lock:
             live_visitors = len(_active_visitors)
 
@@ -2605,6 +2610,7 @@ def admin_dashboard():
             'total_revenue': total_revenue,
             'today_orders': today_orders,
             'live_visitors': live_visitors,
+            'total_page_views': total_page_views,
         }
         
         # Convert rows to dict for template
@@ -2783,7 +2789,8 @@ def admin_product_create():
             app.logger.error(f"Error creating product: {str(e)}")
             import traceback
             app.logger.error(traceback.format_exc())
-            flash('Error creating product. Please try again.', 'error')
+            flash(f'Error creating product: {str(e)}', 'error')
+            return redirect(url_for('admin_product_create'))
     
     return render_template('admin/products/create.html', 
                            categories=categories_list,
@@ -5252,7 +5259,7 @@ def detect_platform():
     if request.method == 'GET' and not request.path.startswith('/static'):
         app.logger.debug(f"Platform: {g.platform} - Path: {request.path}")
 
-    # Track live visitors (non-static page views only)
+    # Track live visitors and total page views (non-static, non-API only)
     if not request.path.startswith('/static') and not request.path.startswith('/api/'):
         sid = session.get('_id')
         if not sid:
@@ -5266,6 +5273,17 @@ def detect_platform():
             stale = [k for k, v in _active_visitors.items() if v < cutoff]
             for k in stale:
                 del _active_visitors[k]
+        # Increment total page views counter in DB (best-effort, no crash on failure)
+        try:
+            _pv_conn = get_db()
+            _pv_conn.execute(
+                "INSERT INTO settings (key, value) VALUES ('page_views', '1') "
+                "ON CONFLICT(key) DO UPDATE SET value = CAST(CAST(value AS INTEGER) + 1 AS TEXT)"
+            )
+            _pv_conn.commit()
+            _pv_conn.close()
+        except Exception:
+            pass
 
 
 @app.context_processor
