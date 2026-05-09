@@ -53142,3 +53142,74 @@ sqlite3.ProgrammingError: Cannot operate on a closed database.
 2026-05-09 05:55:24,276 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
 2026-05-09 05:55:30,358 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
 2026-05-09 05:55:38,459 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-09 05:58:38,487 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:58:51,922 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 05:58:52,218 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 05:58:56,108 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:58:56,692 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:58:56,717 - app - INFO - Admin reports viewed
+2026-05-09 05:59:23,885 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:59:23,902 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:59:24,202 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:59:24,229 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:59:24,232 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:59:24,927 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:59:24,948 - app - INFO - Admin reports viewed
+2026-05-09 05:59:28,332 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:59:28,336 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:59:28,599 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:59:28,602 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:59:28,604 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:59:28,885 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:59:29,583 - app - INFO - Admin reports viewed
+2026-05-09 05:59:29,615 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:59:41,018 - app - INFO - Admin reports viewed
+2026-05-09 05:59:42,492 - app - INFO - Admin reports viewed
+2026-05-09 05:59:42,824 - app - INFO - Admin reports viewed
+2026-05-09 05:59:46,499 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:59:46,799 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:59:46,804 - app - INFO - Admin reports viewed
+2026-05-09 05:59:47,136 - app - INFO - Admin reports viewed
+2026-05-09 05:59:47,730 - app - INFO - Admin reports viewed
+2026-05-09 05:59:48,033 - app - INFO - Admin reports viewed
+2026-05-09 05:59:51,214 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:59:51,486 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:59:51,525 - app - INFO - Admin reports viewed
+2026-05-09 05:59:52,682 - app - INFO - Admin reports viewed
+2026-05-09 05:59:53,301 - app - INFO - Admin reports viewed
+2026-05-09 05:59:55,808 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:59:55,811 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:59:56,109 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:59:56,111 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:59:56,115 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:59:56,785 - app - INFO - Admin reports viewed
+2026-05-09 05:59:56,794 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 06:01:42,054 - app - ERROR - Error creating product: Cannot operate on a closed database.
+2026-05-09 06:01:42,056 - app - ERROR - Traceback (most recent call last):
+  File "/home/runner/workspace/app.py", line 2762, in admin_product_create
+    cursor = conn.cursor()
+             ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: Cannot operate on a closed database.
+
+2026-05-09 06:01:42,056 - app - WARNING - Slow request: POST /admin/products/create - 1.70s
+2026-05-09 06:02:15,257 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 06:02:15,696 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 06:02:19,947 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 06:05:44,038 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 06:05:47,732 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 06:05:48,859 - app - INFO - Admin reports viewed
+2026-05-09 06:05:49,384 - app - INFO - Admin reports viewed
+2026-05-09 06:05:49,902 - app - INFO - Admin reports viewed
+2026-05-09 06:05:50,656 - app - INFO - Admin reports viewed
+2026-05-09 06:05:52,038 - app - INFO - Admin reports viewed
+2026-05-09 06:05:53,658 - app - INFO - Admin reports viewed
+2026-05-09 06:05:53,888 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 06:05:54,493 - app - INFO - Admin reports viewed
+2026-05-09 06:05:54,495 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 06:05:55,645 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 06:05:55,958 - app - INFO - Admin reports viewed
+2026-05-09 06:05:58,446 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 06:05:59,298 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 06:05:59,328 - app - INFO - Admin reports viewed
+2026-05-09 06:06:00,087 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 06:06:01,484 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5

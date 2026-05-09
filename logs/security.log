@@ -14701,3 +14701,21 @@ sqlite3.ProgrammingError: Cannot operate on a closed database.
 2026-05-09 05:40:37,311 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
 2026-05-09 05:40:37,629 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
 2026-05-09 05:55:38,459 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-09 05:59:23,902 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:59:24,232 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:59:28,336 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:59:28,602 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:59:46,499 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:59:46,799 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:59:51,214 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:59:51,486 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-09 05:59:55,811 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:59:56,115 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 06:01:42,054 - app - ERROR - Error creating product: Cannot operate on a closed database.
+2026-05-09 06:01:42,056 - app - ERROR - Traceback (most recent call last):
+  File "/home/runner/workspace/app.py", line 2762, in admin_product_create
+    cursor = conn.cursor()
+             ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: Cannot operate on a closed database.
+
+2026-05-09 06:01:42,056 - app - WARNING - Slow request: POST /admin/products/create - 1.70s
