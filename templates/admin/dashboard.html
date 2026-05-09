@@ -217,6 +217,24 @@
             <div class="stat-label">Total Revenue</div>
             <a href="{{ url_for('admin_reports') }}" class="btn btn-outline btn-small">Reports →</a>
         </div>
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value">{{ stats.customers_count|default(0) }}</div>
+            <div class="stat-label">Registered Customers</div>
+            <span class="btn btn-outline btn-small" style="cursor:default;">Total Users</span>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🟢</div>
+            <div class="stat-value" id="liveVisitors">{{ stats.live_visitors|default(0) }}</div>
+            <div class="stat-label">Live Visitors (5 min)</div>
+            <span class="btn btn-outline btn-small" style="cursor:default;">Active Now</span>
+        </div>
+        <div class="stat-card" onclick="location.href='{{ url_for('admin_orders') }}'">
+            <div class="stat-icon">📅</div>
+            <div class="stat-value">{{ stats.today_orders|default(0) }}</div>
+            <div class="stat-label">Orders Today</div>
+            <a href="{{ url_for('admin_orders') }}" class="btn btn-outline btn-small">View →</a>
+        </div>
     </div>
 
     <!-- Pending Orders Alert -->

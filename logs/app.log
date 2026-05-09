@@ -52871,3 +52871,97 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'admin_
 2026-05-09 04:01:08,477 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/service-worker.js
 2026-05-09 04:02:00,747 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
 2026-05-09 04:02:00,988 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:14:53,438 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:14:54,506 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:14:56,187 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:15:51,305 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/favicon.ico
+2026-05-09 04:16:03,594 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-09 04:16:03,847 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:16:04,766 - app - INFO - Admin reports viewed
+2026-05-09 04:16:04,782 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:17:04,798 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:17:04,799 - app - INFO - Admin reports viewed
+2026-05-09 04:18:04,820 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:18:04,821 - app - INFO - Admin reports viewed
+2026-05-09 04:19:04,802 - app - INFO - Admin reports viewed
+2026-05-09 04:19:04,804 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:20:04,821 - app - INFO - Admin reports viewed
+2026-05-09 04:20:04,822 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:21:04,794 - app - INFO - Admin reports viewed
+2026-05-09 04:21:04,800 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:22:04,806 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:22:04,806 - app - INFO - Admin reports viewed
+2026-05-09 04:23:04,808 - app - INFO - Admin reports viewed
+2026-05-09 04:23:04,810 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:24:04,845 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:24:04,847 - app - INFO - Admin reports viewed
+2026-05-09 04:25:04,805 - app - INFO - Admin reports viewed
+2026-05-09 04:25:04,811 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:26:04,805 - app - INFO - Admin reports viewed
+2026-05-09 04:26:04,816 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:27:04,832 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:27:04,837 - app - INFO - Admin reports viewed
+2026-05-09 04:28:04,817 - app - INFO - Admin reports viewed
+2026-05-09 04:28:04,819 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:29:04,806 - app - INFO - Admin reports viewed
+2026-05-09 04:29:04,810 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:30:04,817 - app - INFO - Admin reports viewed
+2026-05-09 04:30:04,819 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:31:04,838 - app - INFO - Admin reports viewed
+2026-05-09 04:31:04,844 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:32:04,844 - app - INFO - Admin reports viewed
+2026-05-09 04:32:04,845 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:33:04,866 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:33:04,872 - app - INFO - Admin reports viewed
+2026-05-09 04:34:04,814 - app - INFO - Admin reports viewed
+2026-05-09 04:34:04,824 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:35:04,998 - app - INFO - Admin reports viewed
+2026-05-09 04:35:05,000 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:36:31,172 - app - INFO - Admin reports viewed
+2026-05-09 04:36:31,175 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:37:04,807 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:37:04,810 - app - INFO - Admin reports viewed
+2026-05-09 04:38:05,023 - app - INFO - Admin reports viewed
+2026-05-09 04:38:05,024 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:39:43,008 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:39:43,010 - app - INFO - Admin reports viewed
+2026-05-09 04:40:43,008 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:40:43,010 - app - INFO - Admin reports viewed
+2026-05-09 04:41:43,008 - app - INFO - Admin reports viewed
+2026-05-09 04:41:43,010 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:42:43,751 - app - INFO - Admin reports viewed
+2026-05-09 04:42:43,837 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:43:42,999 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:43:43,020 - app - INFO - Admin reports viewed
+2026-05-09 04:44:43,068 - app - INFO - Admin reports viewed
+2026-05-09 04:44:43,071 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:45:42,998 - app - INFO - Admin reports viewed
+2026-05-09 04:45:43,023 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:46:43,057 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:46:43,086 - app - INFO - Admin reports viewed
+2026-05-09 04:47:43,019 - app - INFO - Admin reports viewed
+2026-05-09 04:47:43,020 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:48:43,049 - app - INFO - Admin reports viewed
+2026-05-09 04:48:43,071 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:49:43,004 - app - INFO - Admin reports viewed
+2026-05-09 04:49:43,005 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:50:43,010 - app - INFO - Admin reports viewed
+2026-05-09 04:50:43,028 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:51:43,017 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:51:43,037 - app - INFO - Admin reports viewed
+2026-05-09 04:52:43,077 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:52:43,082 - app - INFO - Admin reports viewed
+2026-05-09 04:53:43,016 - app - INFO - Admin reports viewed
+2026-05-09 04:53:43,040 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:54:44,376 - app - INFO - Admin reports viewed
+2026-05-09 04:54:44,418 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:55:30,843 - app - INFO - ==================================================
+2026-05-09 04:55:30,844 - app - INFO - Ethiosadat Application Started
+2026-05-09 04:55:30,844 - app - INFO - ==================================================
+2026-05-09 04:55:31,626 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:55:32,837 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:55:37,262 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:55:37,837 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:55:43,014 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:55:43,014 - app - INFO - Admin reports viewed
+2026-05-09 04:55:48,170 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5

@@ -389,7 +389,7 @@ def user_register():
             return redirect(url_for('customer.user_register'))
         
         # Create user
-        password_hash = generate_password_hash(password, method='bcrypt')
+        password_hash = generate_password_hash(password, method='pbkdf2:sha256')
         cursor.execute("""
             INSERT INTO users (full_name, email, phone, password_hash, is_admin, is_active)
             VALUES (?, ?, ?, ?, 0, 1)

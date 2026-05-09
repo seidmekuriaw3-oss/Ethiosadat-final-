@@ -41,6 +41,11 @@ from utils.translation_cache import translate_text, batch_translate, clear_trans
 
 app = Flask(__name__)
 
+# ---- Live Visitor Tracking (in-memory, 5-minute window) ----
+import threading
+_visitor_lock = threading.Lock()
+_active_visitors = {}   # {session_id: last_seen_timestamp}
+
 
 class SafeJSONEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -158,7 +163,19 @@ def inject_globals():
     lang = session.get('lang', 'am')
     current_user = get_current_user()
     platform = get_platform()
-    
+
+    pending_orders_count = 0
+    if session.get('admin') or session.get('is_admin'):
+        try:
+            conn = get_db()
+            cur = conn.cursor()
+            cur.execute("SELECT COUNT(*) FROM orders WHERE status = 'pending'")
+            row = cur.fetchone()
+            pending_orders_count = row[0] if row else 0
+            conn.close()
+        except Exception:
+            pass
+
     return {
         'current_year': datetime_.datetime.now().year,
         'lang': lang,
@@ -169,7 +186,8 @@ def inject_globals():
         'platform': platform,
         'whatsapp_number': WHATSAPP_NUMBER,
         'google_translate_widget': get_google_translate_widget(),
-        'app_name': 'Ethiosadat Furniture'
+        'app_name': 'Ethiosadat Furniture',
+        'pending_orders_count': pending_orders_count,
     }
 
 
@@ -1376,7 +1394,7 @@ def user_register():
                 return render_template('auth/user_register.html', lang=lang, t=t)
             
             # Create user
-            password_hash = generate_password_hash(password, method='bcrypt')
+            password_hash = generate_password_hash(password, method='pbkdf2:sha256')
             cursor.execute("""
                 INSERT INTO users (full_name, email, phone, password_hash, is_admin, is_active, created_at)
                 VALUES (?, ?, ?, ?, 0, 1, CURRENT_TIMESTAMP)
@@ -1524,7 +1542,7 @@ def change_password():
     try:
         conn = get_db()
         cursor = conn.cursor()
-        password_hash = generate_password_hash(new_password, method='bcrypt')
+        password_hash = generate_password_hash(new_password, method='pbkdf2:sha256')
         cursor.execute("UPDATE users SET password_hash = ? WHERE id = ?", (password_hash, session['user_id']))
         conn.commit()
         conn.close()
@@ -1807,7 +1825,7 @@ def reset_password(token):
         try:
             conn = get_db()
             cursor = conn.cursor()
-            password_hash = generate_password_hash(password, method='bcrypt')
+            password_hash = generate_password_hash(password, method='pbkdf2:sha256')
             cursor.execute("UPDATE users SET password_hash = ? WHERE email = ?", (password_hash, stored_email))
             conn.commit()
             conn.close()
@@ -2575,6 +2593,9 @@ def admin_dashboard():
         
         conn.close()
         
+        with _visitor_lock:
+            live_visitors = len(_active_visitors)
+
         stats = {
             'products_count': products_count,
             'ads_count': ads_count,
@@ -2582,7 +2603,8 @@ def admin_dashboard():
             'pending_orders': pending_orders,
             'customers_count': customers_count,
             'total_revenue': total_revenue,
-            'today_orders': today_orders
+            'today_orders': today_orders,
+            'live_visitors': live_visitors,
         }
         
         # Convert rows to dict for template
@@ -2833,19 +2855,21 @@ def admin_product_edit(pid):
             
             if image_file and image_file.filename:
                 if allowed_file(image_file.filename):
-                    # Delete old image if exists
-                    if thumbnail_filename and os.path.exists(thumbnail_filename):
-                        try:
-                            os.remove(thumbnail_filename)
-                        except:
-                            pass
-                    
+                    # Delete old image file from disk if it exists
+                    if thumbnail_filename:
+                        old_static_path = os.path.join('static', thumbnail_filename.lstrip('/'))
+                        if os.path.exists(old_static_path):
+                            try:
+                                os.remove(old_static_path)
+                            except Exception:
+                                pass
+
                     ext = image_file.filename.rsplit('.', 1)[1].lower()
-                    thumbnail_filename = f"product_{uuid.uuid4().hex}_{datetime_.datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
+                    new_fname = f"product_{uuid.uuid4().hex}_{datetime_.datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
                     upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'products')
                     os.makedirs(upload_path, exist_ok=True)
-                    image_file.save(os.path.join(upload_path, thumbnail_filename))
-                    thumbnail_filename = f'uploads/products/{thumbnail_filename}'
+                    image_file.save(os.path.join(upload_path, new_fname))
+                    thumbnail_filename = f'uploads/products/{new_fname}'
                 else:
                     flash('Invalid file type. Please upload an image.', 'error')
                     return redirect(url_for('admin_product_edit', pid=pid))
@@ -2902,17 +2926,22 @@ def admin_product_delete(pid):
         product = cursor.fetchone()
         
         if product:
-            # Delete thumbnail if exists
-            if product[1] and os.path.exists(product[1]):
-                try:
-                    os.remove(product[1])
-                except:
-                    pass
-            
-            # Soft delete - set is_active to 0
-            cursor.execute("UPDATE products SET is_active = 0 WHERE id = ?", (pid,))
+            # Delete thumbnail file from disk if it exists
+            thumbnail = product[1] or ''
+            if thumbnail:
+                # Strip any accidental leading slash
+                thumbnail_clean = thumbnail.lstrip('/')
+                static_path = os.path.join('static', thumbnail_clean)
+                if os.path.exists(static_path):
+                    try:
+                        os.remove(static_path)
+                    except Exception:
+                        pass
+
+            # Hard delete from DB
+            cursor.execute("DELETE FROM products WHERE id = ?", (pid,))
             conn.commit()
-            app.logger.info(f"Product deleted: {product[0]} (ID: {pid})")
+            app.logger.info(f"Product hard-deleted: {product[0]} (ID: {pid})")
             flash(f'Product "{product[0]}" deleted successfully!', 'success')
         else:
             flash('Product not found.', 'error')
@@ -2931,16 +2960,19 @@ def admin_product_delete(pid):
 def admin_product_toggle_featured(pid):
     """Toggle product featured status."""
     try:
-        data = request.get_json()
-        is_featured = data.get('is_featured', False)
-        
         conn = get_db()
         cursor = conn.cursor()
-        cursor.execute("UPDATE products SET is_featured = ? WHERE id = ?", (1 if is_featured else 0, pid))
+        cursor.execute("SELECT is_featured FROM products WHERE id = ?", (pid,))
+        row = cursor.fetchone()
+        if not row:
+            conn.close()
+            return jsonify({'success': False, 'error': 'Product not found'}), 404
+        new_state = 0 if row[0] else 1
+        cursor.execute("UPDATE products SET is_featured = ? WHERE id = ?", (new_state, pid))
         conn.commit()
         conn.close()
-        
-        return jsonify({'success': True, 'is_featured': is_featured})
+
+        return jsonify({'success': True, 'is_featured': bool(new_state)})
         
     except Exception as e:
         app.logger.error(f"Error toggling featured: {str(e)}")
@@ -2982,19 +3014,29 @@ def admin_bulk_delete_products():
         conn = get_db()
         cursor = conn.cursor()
         placeholders = ','.join(['?'] * len(ids))
-        
-        # Get product names for logging
-        cursor.execute(f"SELECT id, name_am FROM products WHERE id IN ({placeholders})", ids)
+
+        # Fetch thumbnails to clean up files
+        cursor.execute(f"SELECT id, name_am, thumbnail FROM products WHERE id IN ({placeholders})", ids)
         products = cursor.fetchall()
-        
-        # Soft delete products
-        cursor.execute(f"UPDATE products SET is_active = 0 WHERE id IN ({placeholders})", ids)
+
+        # Delete image files from disk
+        for prod in products:
+            thumb = prod[2] or ''
+            if thumb:
+                static_path = os.path.join('static', thumb.lstrip('/'))
+                if os.path.exists(static_path):
+                    try:
+                        os.remove(static_path)
+                    except Exception:
+                        pass
+
+        # Hard delete from DB
+        cursor.execute(f"DELETE FROM products WHERE id IN ({placeholders})", ids)
         conn.commit()
         conn.close()
-        
-        app.logger.info(f"Bulk deleted {len(ids)} products")
-        flash(f'{len(ids)} product(s) deleted successfully!', 'success')
-        
+
+        app.logger.info(f"Bulk hard-deleted {len(ids)} products")
+
         return jsonify({'success': True, 'deleted': len(ids)})
         
     except Exception as e:
@@ -5200,13 +5242,28 @@ if __name__ == '__main__':
 def detect_platform():
     """Detect user platform (Desktop, Mobile Browser, Android App) and store in g."""
     from middleware.platform import get_platform, is_android_app
-    
+
     g.platform = get_platform()
     g.is_android_app = is_android_app()
-    
+
     # Log platform for analytics
     if request.method == 'GET' and not request.path.startswith('/static'):
         app.logger.debug(f"Platform: {g.platform} - Path: {request.path}")
+
+    # Track live visitors (non-static page views only)
+    if not request.path.startswith('/static') and not request.path.startswith('/api/'):
+        sid = session.get('_id')
+        if not sid:
+            sid = uuid.uuid4().hex
+            session['_id'] = sid
+        now = time.time()
+        cutoff = now - 300  # 5-minute window
+        with _visitor_lock:
+            _active_visitors[sid] = now
+            # Prune stale visitors
+            stale = [k for k, v in _active_visitors.items() if v < cutoff]
+            for k in stale:
+                del _active_visitors[k]
 
 
 @app.context_processor

@@ -2,6 +2,9 @@
 /* Modern, Responsive, Professional Design */
 /* Part 1 of 4: Variables, Reset, Typography, Header, Navigation */
 
+/* ==================== Amharic / Arabic Web Fonts ==================== */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Ethiopic:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap');
+
 /* ==================== CSS Variables ==================== */
 :root {
     --primary: #1a73e8;
@@ -614,6 +617,72 @@ img {
     margin-top: 1.5rem;
     position: relative;
     z-index: 1;
+}
+
+/* Hero background video */
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero > *:not(.hero-video) {
+    position: relative;
+    z-index: 1;
+}
+
+/* ==================== RTL Language Support ==================== */
+[dir="rtl"] .hero-buttons {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .footer-grid {
+    direction: rtl;
+}
+
+[dir="rtl"] .product-card {
+    text-align: right;
+}
+
+[dir="rtl"] .cart-item {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .bottom-nav {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .flash-messages {
+    text-align: right;
+}
+
+[dir="rtl"] .form-group label {
+    text-align: right;
+    display: block;
+}
+
+[dir="rtl"] .categories-modal-body {
+    direction: rtl;
+}
+
+/* Amharic / Ethiopic font rendering */
+:lang(am),
+[lang="am"],
+[data-lang="am"] {
+    font-family: 'Noto Serif Ethiopic', 'Ethiopic Halehale', sans-serif;
+}
+
+/* Arabic font rendering */
+:lang(ar),
+[lang="ar"],
+[dir="rtl"] {
+    font-family: 'Noto Naskh Arabic', 'Arabic Typesetting', sans-serif;
+    line-height: 1.8;
 }
 
 /* ==================== Cart & Checkout ==================== */
