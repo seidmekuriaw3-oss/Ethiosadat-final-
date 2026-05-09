@@ -14672,3 +14672,16 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'admin_
 2026-05-09 04:01:08,234 - app - WARNING - 404 Error: http://localhost:5000/static/service-worker.js
 2026-05-09 04:01:08,477 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/service-worker.js
 2026-05-09 04:15:51,305 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/favicon.ico
+2026-05-09 05:04:16,374 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:04:17,149 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:04:21,768 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:04:22,590 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:05:55,025 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/favicon.ico
+2026-05-09 05:05:55,316 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/favicon.ico
+2026-05-09 05:07:05,553 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:07:05,876 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:11:01,772 - app - WARNING - Slow request: POST /admin/ads/create - 1.84s
+2026-05-09 05:11:38,623 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/favicon.ico
+2026-05-09 05:12:20,541 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-09 05:12:20,542 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/images/logo.svg
+2026-05-09 05:28:52,687 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico

@@ -75,17 +75,20 @@
         
         <!-- Desktop Navigation (Desktop only) -->
         <div class="desktop-nav">
-            <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'customer.index' %}active{% endif %}" title="Home">
+            <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'customer.index' %}active{% endif %}" title="{% if lang == 'am' %}መነሻ{% else %}Home{% endif %}">
                 🏠
             </a>
-            <a href="#" onclick="toggleCategories(); return false;" title="Categories">
+            <a href="#" onclick="toggleCategories(); return false;" title="{% if lang == 'am' %}ምድቦች{% else %}Categories{% endif %}">
                 📂
             </a>
-            <a href="{{ url_for('view_cart') }}" class="cart-link {% if request.endpoint == 'cart.view_cart' %}active{% endif %}" style="position: relative;" title="Cart">
+            <a href="{{ url_for('branches') }}" class="{% if request.endpoint == 'branches' %}active{% endif %}" title="{% if lang == 'am' %}ቅርንጫፎቻችን{% elif lang == 'ar' %}فروعنا{% else %}Our Branches{% endif %}">
+                📍
+            </a>
+            <a href="{{ url_for('view_cart') }}" class="cart-link {% if request.endpoint == 'cart.view_cart' %}active{% endif %}" style="position: relative;" title="{% if lang == 'am' %}ጋሪ{% else %}Cart{% endif %}">
                 🛒
                 <span id="desktop-cart-count" class="cart-count" style="display: none;">0</span>
             </a>
-            <a href="#" onclick="openUserModal(); return false;" title="Account">
+            <a href="#" onclick="openUserModal(); return false;" title="{% if lang == 'am' %}አካውንት{% else %}Account{% endif %}">
                 👤
             </a>
         </div>
@@ -231,13 +234,17 @@
     <!-- SUPPORT SECTION -->
     <div class="menu-section">
         <div class="menu-title">❓ SUPPORT</div>
+        <a href="{{ url_for('branches') }}" class="menu-item">
+            <span class="icon">📍</span>
+            <span class="text">{% if lang == 'am' %}ቅርንጫፎቻችን{% elif lang == 'ar' %}فروعنا{% else %}Our Branches{% endif %}</span>
+        </a>
         <a href="{{ url_for('about') }}" class="menu-item">
             <span class="icon">ℹ️</span>
-            <span class="text">About Us</span>
+            <span class="text">{% if lang == 'am' %}ስለ እኛ{% elif lang == 'ar' %}معلومات عنا{% else %}About Us{% endif %}</span>
         </a>
         <a href="{{ url_for('contact') }}" class="menu-item">
             <span class="icon">📞</span>
-            <span class="text">Contact Us</span>
+            <span class="text">{% if lang == 'am' %}አግኙን{% elif lang == 'ar' %}اتصل بنا{% else %}Contact Us{% endif %}</span>
         </a>
     </div>
     
@@ -403,11 +410,12 @@
                 <p>{% if lang == 'am' %}ጥራት ያለው የቤት እቃ በተመጣጣኝ ዋጋ{% else %}Quality furniture at affordable prices{% endif %}</p>
             </div>
             <div class="footer-section">
-                <h4>🔗 {% if lang == 'am' %}ፈጣን አገናኞች{% else %}Quick Links{% endif %}</h4>
-                <a href="{{ url_for('index') }}">🏠 {% if lang == 'am' %}መነሻ{% else %}Home{% endif %}</a>
-                <a href="{{ url_for('products') }}">📦 {% if lang == 'am' %}ምርቶች{% else %}Products{% endif %}</a>
-                <a href="{{ url_for('about') }}">ℹ️ {% if lang == 'am' %}ስለ እኛ{% else %}About{% endif %}</a>
-                <a href="{{ url_for('contact') }}">📞 {% if lang == 'am' %}አግኙን{% else %}Contact{% endif %}</a>
+                <h4>🔗 {% if lang == 'am' %}ፈጣን አገናኞች{% elif lang == 'ar' %}روابط سريعة{% else %}Quick Links{% endif %}</h4>
+                <a href="{{ url_for('index') }}">🏠 {% if lang == 'am' %}መነሻ{% elif lang == 'ar' %}الرئيسية{% else %}Home{% endif %}</a>
+                <a href="{{ url_for('products') }}">📦 {% if lang == 'am' %}ምርቶች{% elif lang == 'ar' %}المنتجات{% else %}Products{% endif %}</a>
+                <a href="{{ url_for('branches') }}">📍 {% if lang == 'am' %}ቅርንጫፎቻችን{% elif lang == 'ar' %}فروعنا{% else %}Our Branches{% endif %}</a>
+                <a href="{{ url_for('about') }}">ℹ️ {% if lang == 'am' %}ስለ እኛ{% elif lang == 'ar' %}معلومات عنا{% else %}About{% endif %}</a>
+                <a href="{{ url_for('contact') }}">📞 {% if lang == 'am' %}አግኙን{% elif lang == 'ar' %}اتصل بنا{% else %}Contact{% endif %}</a>
             </div>
             <div class="footer-section">
                 <h4>📞 {% if lang == 'am' %}ይደውሉልን{% else %}Call Us{% endif %}</h4>

@@ -2695,10 +2695,11 @@ def admin_product_create():
     if request.method == 'POST':
         try:
             # Basic Information
-            name = request.form.get('name', '').strip()
+            # Form sends name_en/description_en for English fields
+            name = (request.form.get('name_en') or request.form.get('name', '')).strip()
             name_am = request.form.get('name_am', '').strip()
             name_ar = request.form.get('name_ar', '').strip()
-            description = request.form.get('description', '').strip()
+            description = (request.form.get('description_en') or request.form.get('description', '')).strip()
             description_am = request.form.get('description_am', '').strip()
             description_ar = request.form.get('description_ar', '').strip()
             
@@ -2822,10 +2823,11 @@ def admin_product_edit(pid):
     if request.method == 'POST':
         try:
             # Basic Information
-            name = request.form.get('name', '').strip()
+            # Form sends name_en/description_en for English fields
+            name = (request.form.get('name_en') or request.form.get('name', '')).strip()
             name_am = request.form.get('name_am', '').strip()
             name_ar = request.form.get('name_ar', '').strip()
-            description = request.form.get('description', '').strip()
+            description = (request.form.get('description_en') or request.form.get('description', '')).strip()
             description_am = request.form.get('description_am', '').strip()
             description_ar = request.form.get('description_ar', '').strip()
             

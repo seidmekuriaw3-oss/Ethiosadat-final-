@@ -52965,3 +52965,124 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'admin_
 2026-05-09 04:55:43,014 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
 2026-05-09 04:55:43,014 - app - INFO - Admin reports viewed
 2026-05-09 04:55:48,170 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:56:33,544 - app - INFO - Admin reports viewed
+2026-05-09 04:56:33,546 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:56:35,127 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:56:45,095 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:56:49,514 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:56:57,281 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:56:57,486 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 04:56:57,715 - app - INFO - Admin ads list viewed - 6 ads
+2026-05-09 04:56:58,747 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:57:00,402 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:57:01,544 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:57:01,829 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:57:02,156 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:57:02,576 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:57:57,253 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-09 04:57:58,945 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:57:59,246 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:58:01,049 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:58:08,162 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:58:09,517 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:58:09,867 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:58:10,934 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:58:31,134 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:58:36,460 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:58:42,884 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 04:58:53,305 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 04:58:53,696 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:58:54,335 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:58:54,641 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:58:55,216 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 04:58:55,250 - app - INFO - Admin reports viewed
+2026-05-09 04:59:56,083 - app - INFO - Admin reports viewed
+2026-05-09 04:59:56,084 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:00:56,034 - app - INFO - Admin reports viewed
+2026-05-09 05:00:56,055 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:01:17,022 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 05:01:18,175 - app - INFO - Admin ads list viewed - 6 ads
+2026-05-09 05:01:19,836 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:01:27,435 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:04:09,082 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:04:09,832 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:04:10,463 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:04:10,496 - app - INFO - Admin reports viewed
+2026-05-09 05:04:11,696 - app - INFO - Admin ads list viewed - 6 ads
+2026-05-09 05:04:16,354 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:04:16,374 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:04:16,635 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:04:17,146 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:04:17,149 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:04:17,850 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:04:18,434 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:04:18,466 - app - INFO - Admin reports viewed
+2026-05-09 05:04:21,765 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:04:21,768 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:04:22,076 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:04:22,587 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:04:22,590 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:04:22,855 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:04:23,433 - app - INFO - Admin reports viewed
+2026-05-09 05:04:23,468 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:04:25,718 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 05:04:26,186 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 05:04:44,516 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:04:48,490 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:05:27,630 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:05:33,544 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:05:55,025 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/favicon.ico
+2026-05-09 05:05:55,316 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/favicon.ico
+2026-05-09 05:06:16,578 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-09 05:06:16,928 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:06:17,832 - app - INFO - Admin reports viewed
+2026-05-09 05:06:17,834 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:07:05,550 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:07:05,553 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:07:05,873 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-09 05:07:05,876 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 05:07:05,914 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:07:06,527 - app - INFO - Admin reports viewed
+2026-05-09 05:07:06,555 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:07:09,614 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 05:07:09,915 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 05:09:43,274 - app - INFO - Admin ads list viewed - 6 ads
+2026-05-09 05:09:43,573 - app - INFO - Admin ads list viewed - 6 ads
+2026-05-09 05:11:01,772 - app - INFO - New advertisement created: ዘመናዊ አልጋ (ID: 7)
+2026-05-09 05:11:01,772 - app - WARNING - Slow request: POST /admin/ads/create - 1.84s
+2026-05-09 05:11:02,105 - app - INFO - Admin ads list viewed - 7 ads
+2026-05-09 05:11:15,216 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 05:11:15,875 - app - INFO - Admin product list viewed - 21 products
+2026-05-09 05:11:20,266 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:11:20,617 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:11:20,904 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:11:20,927 - app - INFO - Admin reports viewed
+2026-05-09 05:11:38,623 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/favicon.ico
+2026-05-09 05:11:54,562 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-09 05:11:54,857 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:11:56,742 - app - INFO - Admin reports viewed
+2026-05-09 05:11:56,775 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:11:58,156 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:12:06,143 - app - INFO - Admin already logged in, redirecting to dashboard
+2026-05-09 05:12:06,416 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:12:07,003 - app - INFO - Admin reports viewed
+2026-05-09 05:12:07,056 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:12:17,554 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:12:20,541 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-09 05:12:20,542 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/images/logo.svg
+2026-05-09 05:12:21,208 - app - INFO - Admin reports viewed
+2026-05-09 05:12:21,238 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:12:44,468 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:13:24,488 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:25:06,817 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:25:06,852 - app - INFO - Admin reports viewed
+2026-05-09 05:25:21,224 - app - INFO - Admin reports viewed
+2026-05-09 05:25:21,251 - app - INFO - Admin dashboard accessed - Products: 21, Orders: 0
+2026-05-09 05:28:28,649 - app - INFO - ==================================================
+2026-05-09 05:28:28,649 - app - INFO - Ethiosadat Application Started
+2026-05-09 05:28:28,650 - app - INFO - ==================================================
+2026-05-09 05:28:29,387 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:28:29,478 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:28:35,053 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:28:40,284 - app - INFO - Home page - Featured: 12, New: 8, Ads: 5
+2026-05-09 05:28:52,687 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
