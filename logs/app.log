@@ -53848,3 +53848,209 @@ sqlite3.ProgrammingError: Cannot operate on a closed database.
 2026-05-10 18:03:35,933 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/images/logo.svg
 2026-05-10 18:03:37,151 - app - INFO - Home page - Featured: 12, New: 8, Ads: 6
 2026-05-10 18:03:59,014 - app - INFO - Home page - Featured: 12, New: 8, Ads: 6
+2026-05-10 18:04:12,093 - app - INFO - Search 'Ded' found 1 results
+2026-05-10 18:04:23,557 - app - INFO - Admin product list viewed - 21 products
+2026-05-10 18:04:49,512 - app - INFO - Product updated: ዎል ክሎዘት (ID: 21)
+2026-05-10 18:04:49,835 - app - INFO - Admin product list viewed - 21 products
+2026-05-10 18:08:26,554 - app - INFO - New product created: አልጋ (ID: 22)
+2026-05-10 18:08:26,894 - app - INFO - Admin product list viewed - 22 products
+2026-05-10 18:08:37,930 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-10 18:09:06,546 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-10 18:09:37,749 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/uploads/products/product_44c808b8bc284ec99e9197feb2c83a59_20260510180826.webp
+2026-05-10 18:10:36,094 - app - ERROR - Registration error: name 'conn' is not defined
+2026-05-10 18:10:49,929 - app - ERROR - Exception on /terms [GET]
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app.py", line 1333, in terms
+    return render_template('customer/terms.html',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 64, in get_source
+    return self._get_source_fast(environment, template)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 98, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: customer/terms.html
+2026-05-10 18:10:49,932 - app - ERROR - 500 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/terms - 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+2026-05-10 18:10:49,933 - app - ERROR - Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app.py", line 1333, in terms
+    return render_template('customer/terms.html',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 64, in get_source
+    return self._get_source_fast(environment, template)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 98, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: customer/terms.html
+
+2026-05-10 18:10:50,593 - app - ERROR - Exception on /terms [GET]
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app.py", line 1333, in terms
+    return render_template('customer/terms.html',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 64, in get_source
+    return self._get_source_fast(environment, template)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 98, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: customer/terms.html
+2026-05-10 18:10:50,594 - app - ERROR - 500 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/terms - 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+2026-05-10 18:10:50,594 - app - ERROR - Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app.py", line 1333, in terms
+    return render_template('customer/terms.html',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 64, in get_source
+    return self._get_source_fast(environment, template)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 98, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: customer/terms.html
+
+2026-05-10 18:10:50,659 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/favicon.ico
+2026-05-10 18:10:59,451 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-10 18:11:34,083 - app - INFO - Admin ads list viewed - 7 ads
+2026-05-10 18:11:35,009 - app - INFO - Admin ads list viewed - 7 ads
+2026-05-10 18:13:14,968 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-10 18:13:16,928 - app - ERROR - Error updating advertisement: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+2026-05-10 18:13:16,930 - app - WARNING - Slow request: POST /admin/ads/edit/2 - 50.63s
+2026-05-10 18:13:19,159 - app - INFO - Admin reports viewed
+2026-05-10 18:13:21,083 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-10 18:13:24,039 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-10 18:13:26,042 - app - ERROR - Error updating advertisement: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+2026-05-10 18:13:26,043 - app - WARNING - Slow request: POST /admin/ads/edit/2 - 37.76s
+2026-05-10 18:13:36,287 - app - ERROR - Error updating advertisement: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+2026-05-10 18:13:36,289 - app - WARNING - Slow request: POST /admin/ads/edit/2 - 42.56s
+2026-05-10 18:13:51,361 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/000001
+2026-05-10 18:14:04,457 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/000001
+2026-05-10 18:14:10,255 - app - INFO - Cart viewed - Items: 1, Total: 80000.0 ETB
+2026-05-10 18:14:33,889 - app - ERROR - Error updating advertisement: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+2026-05-10 18:14:33,890 - app - WARNING - Slow request: POST /admin/ads/edit/2 - 123.26s
+2026-05-10 18:15:03,562 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-10 18:15:27,044 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/000001
+2026-05-10 18:15:32,353 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-10 18:15:32,689 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-10 18:15:38,445 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-10 18:15:53,050 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-10 18:16:01,624 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-10 18:16:39,760 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-10 18:16:42,127 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-10 18:16:45,640 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-10 18:16:47,836 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-10 18:16:49,812 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-10 18:16:50,171 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-10 18:16:50,995 - app - INFO - Admin ads list viewed - 7 ads
+2026-05-10 18:16:55,998 - app - INFO - Admin product list viewed - 22 products
+2026-05-10 18:17:03,999 - app - INFO - Admin product list viewed - 22 products
+2026-05-10 18:17:08,471 - app - INFO - Search 'Ded' found 1 results
+2026-05-10 18:17:17,648 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-10 18:17:19,162 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-10 18:17:44,112 - app - INFO - ==================================================
+2026-05-10 18:17:44,112 - app - INFO - Ethiosadat Application Started
+2026-05-10 18:17:44,112 - app - INFO - ==================================================
+2026-05-10 18:17:44,153 - app - INFO - Application shutting down...
