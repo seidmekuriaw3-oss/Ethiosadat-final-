@@ -14719,3 +14719,22 @@ sqlite3.ProgrammingError: Cannot operate on a closed database.
 sqlite3.ProgrammingError: Cannot operate on a closed database.
 
 2026-05-09 06:01:42,056 - app - WARNING - Slow request: POST /admin/products/create - 1.70s
+2026-05-09 11:11:55,400 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-09 11:11:55,401 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/images/logo.svg
+2026-05-09 11:12:14,044 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 11:12:14,379 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 11:13:28,479 - app - ERROR - Error updating product: Cannot operate on a closed database.
+2026-05-09 11:13:38,977 - app - ERROR - Error updating product: Cannot operate on a closed database.
+2026-05-09 12:49:28,662 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 12:49:33,529 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 12:49:33,822 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 13:06:07,705 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 13:06:47,776 - app - ERROR - Error updating product: Cannot operate on a closed database.
+2026-05-09 14:24:50,500 - app - ERROR - Error updating product: Cannot operate on a closed database.
+2026-05-09 14:40:52,938 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 14:40:54,107 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 14:41:03,512 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 14:41:04,461 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 14:41:08,479 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
+2026-05-09 14:57:38,023 - app - ERROR - Error updating product: Cannot operate on a closed database.
+2026-05-09 14:57:38,024 - app - WARNING - Slow request: POST /admin/products/edit/21 - 3.92s

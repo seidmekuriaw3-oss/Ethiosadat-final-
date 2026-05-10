@@ -69,7 +69,7 @@
         
         <!-- Search Box -->
         <div class="search-box">
-            <input type="text" id="search-input" placeholder="{% if lang == 'am' %}እቃዎችን እዚህ ይፈልጉ...{% else %}Search products here...{% endif %}" autocomplete="off">
+            <input type="text" id="search-input" placeholder="{{ t.search }}" autocomplete="off">
             <button onclick="searchProducts(document.getElementById('search-input').value)">🔍</button>
         </div>
         
@@ -284,32 +284,32 @@
 <nav class="bottom-nav">
     <a href="{{ url_for('index') }}" class="nav-item {% if request.endpoint == 'customer.index' %}active{% endif %}">
         <span class="nav-icon">🏠</span>
-        <span class="nav-label">{% if lang == 'am' %}መነሻ{% else %}Home{% endif %}</span>
+        <span class="nav-label">{{ t.home }}</span>
     </a>
     <a href="{{ url_for('products') }}" class="nav-item">
         <span class="nav-icon">📂</span>
-        <span class="nav-label">{% if lang == 'am' %}ምድቦች{% else %}Categories{% endif %}</span>
+        <span class="nav-label">{{ t.categories }}</span>
     </a>
     <a href="{{ url_for('view_cart') }}" class="nav-item {% if request.endpoint == 'cart.view_cart' %}active{% endif %}" style="position: relative;">
         <span class="nav-icon">🛒</span>
-        <span class="nav-label">{% if lang == 'am' %}ጋሪ{% else %}Cart{% endif %}</span>
+        <span class="nav-label">{{ t.cart }}</span>
     </a>
     <div class="nav-item" onclick="openUserModal()">
         <span class="nav-icon">👤</span>
-        <span class="nav-label">{% if lang == 'am' %}አካውንት{% else %}Account{% endif %}</span>
+        <span class="nav-label">{{ t.account }}</span>
     </div>
 </nav>
 
 <!-- ==================== CATEGORIES MODAL ==================== -->
 <div id="categories-modal" class="categories-modal" style="display: none;">
     <div class="categories-modal-header">
-        <h3>📂 {% if lang == 'am' %}ምድቦች{% else %}Categories{% endif %}</h3>
+        <h3>📂 {{ t.categories }}</h3>
         <button class="close-categories" onclick="closeCategories()">&times;</button>
     </div>
     <div class="categories-modal-body">
         <a href="{{ url_for('products') }}" class="category-item">
             <span class="category-icon">🔄</span>
-            <span class="category-name">{% if lang == 'am' %}ሁሉም{% else %}All Products{% endif %}</span>
+            <span class="category-name">{{ t.all_products }}</span>
         </a>
         {% for cat in categories %}
         <a href="{{ url_for('products', category=cat.id) }}" class="category-item">
@@ -321,7 +321,7 @@
                 {% elif cat.name_am == 'ቁምሳጥን' %}🗄️
                 {% else %}📦{% endif %}
             </span>
-            <span class="category-name">{{ cat.name_am if lang == 'am' else cat.name }}</span>
+            <span class="category-name">{{ category_name(cat) }}</span>
         </a>
         {% endfor %}
     </div>
@@ -330,7 +330,7 @@
 <!-- ==================== FULL SCREEN USER MODAL ==================== -->
 <div id="user-modal" class="fullscreen-modal">
     <div class="modal-header">
-        <h2 id="modal-title">🔐 {% if lang == 'am' %}ግባ{% else %}Login{% endif %}</h2>
+        <h2 id="modal-title">🔐 {{ t.login }}</h2>
         <button class="close-btn" onclick="closeUserModal()">&times;</button>
     </div>
     <div class="modal-body" id="modal-body">
@@ -343,13 +343,13 @@
                     <input type="email" name="email" required placeholder="your@email.com">
                 </div>
                 <div class="form-group">
-                    <label>🔒 {% if lang == 'am' %}የይለፍ ቃል{% else %}Password{% endif %}</label>
+                    <label>🔒 {{ t.password }}</label>
                     <input type="password" name="password" required placeholder="********">
                 </div>
-                <button type="submit" class="btn btn-primary">{% if lang == 'am' %}ግባ{% else %}Login{% endif %}</button>
+                <button type="submit" class="btn btn-primary">{{ t.login }}</button>
                 <div class="switch-link">
-                    {% if lang == 'am' %}አካውንት የለም{% else %}No account{% endif %}? 
-                    <a href="#" onclick="showRegisterForm()">{% if lang == 'am' %}ተመዝገብ{% else %}Register{% endif %}</a>
+                    {{ t.no_account }}? 
+                    <a href="#" onclick="showRegisterForm()">{{ t.register }}</a>
                 </div>
             </form>
         </div>
@@ -358,7 +358,7 @@
         <div id="register-form" style="display: none;">
             <form method="post" action="{{ url_for('user_register') }}" onsubmit="submitRegisterForm(event)">
                 <div class="form-group">
-                    <label>👤 {% if lang == 'am' %}ሙሉ ስም{% else %}Full Name{% endif %}</label>
+                    <label>👤 {{ t.full_name }}</label>
                     <input type="text" name="full_name" required placeholder="John Doe">
                 </div>
                 <div class="form-group">
@@ -366,21 +366,21 @@
                     <input type="email" name="email" required placeholder="your@email.com">
                 </div>
                 <div class="form-group">
-                    <label>📞 {% if lang == 'am' %}ስልክ{% else %}Phone{% endif %}</label>
+                    <label>📞 {{ t.phone_number }}</label>
                     <input type="tel" name="phone" placeholder="09xxxxxxxx">
                 </div>
                 <div class="form-group">
-                    <label>🔒 {% if lang == 'am' %}የይለፍ ቃል{% else %}Password{% endif %}</label>
+                    <label>🔒 {{ t.password }}</label>
                     <input type="password" name="password" required placeholder="********">
                 </div>
                 <div class="form-group">
-                    <label>🔒 {% if lang == 'am' %}የይለፍ ቃል አረጋግጥ{% else %}Confirm Password{% endif %}</label>
+                    <label>🔒 {{ t.confirm_password }}</label>
                     <input type="password" name="confirm_password" required placeholder="********">
                 </div>
-                <button type="submit" class="btn btn-primary">{% if lang == 'am' %}ተመዝገብ{% else %}Register{% endif %}</button>
+                <button type="submit" class="btn btn-primary">{{ t.register }}</button>
                 <div class="switch-link">
-                    {% if lang == 'am' %}አካውንት አለ{% else %}Have account{% endif %}? 
-                    <a href="#" onclick="showLoginForm()">{% if lang == 'am' %}ግባ{% else %}Login{% endif %}</a>
+                    {{ t.have_account }}? 
+                    <a href="#" onclick="showLoginForm()">{{ t.login }}</a>
                 </div>
             </form>
         </div>
@@ -393,9 +393,9 @@
                     <h3 id="profile-name"></h3>
                     <p id="profile-email"></p>
                 </div>
-                <a href="{{ url_for('user_profile') }}" class="btn btn-primary" style="margin-bottom: 10px;">📝 {% if lang == 'am' %}መገለጫ አርትዕ{% else %}Edit Profile{% endif %}</a>
-                <a href="{{ url_for('user_orders') }}" class="btn btn-outline" style="margin-bottom: 10px;">📦 {% if lang == 'am' %}የእኔ ትዕዛዞች{% else %}My Orders{% endif %}</a>
-                <a href="{{ url_for('user_logout') }}" class="btn btn-danger">🚪 {% if lang == 'am' %}ውጣ{% else %}Logout{% endif %}</a>
+                <a href="{{ url_for('user_profile') }}" class="btn btn-primary" style="margin-bottom: 10px;">📝 {{ t.edit_profile }}</a>
+                <a href="{{ url_for('user_orders') }}" class="btn btn-outline" style="margin-bottom: 10px;">📦 {{ t.my_orders }}</a>
+                <a href="{{ url_for('user_logout') }}" class="btn btn-danger">🚪 {{ t.logout }}</a>
             </div>
         </div>
     </div>
@@ -407,25 +407,25 @@
         <div class="footer-grid">
             <div class="footer-section">
                 <h3>🪑 Ethiosadat Furniture</h3>
-                <p>{% if lang == 'am' %}ጥራት ያለው የቤት እቃ በተመጣጣኝ ዋጋ{% else %}Quality furniture at affordable prices{% endif %}</p>
+                <p>{{ t.quality_tagline }}</p>
             </div>
             <div class="footer-section">
-                <h4>🔗 {% if lang == 'am' %}ፈጣን አገናኞች{% elif lang == 'ar' %}روابط سريعة{% else %}Quick Links{% endif %}</h4>
-                <a href="{{ url_for('index') }}">🏠 {% if lang == 'am' %}መነሻ{% elif lang == 'ar' %}الرئيسية{% else %}Home{% endif %}</a>
-                <a href="{{ url_for('products') }}">📦 {% if lang == 'am' %}ምርቶች{% elif lang == 'ar' %}المنتجات{% else %}Products{% endif %}</a>
-                <a href="{{ url_for('branches') }}">📍 {% if lang == 'am' %}ቅርንጫፎቻችን{% elif lang == 'ar' %}فروعنا{% else %}Our Branches{% endif %}</a>
-                <a href="{{ url_for('about') }}">ℹ️ {% if lang == 'am' %}ስለ እኛ{% elif lang == 'ar' %}معلومات عنا{% else %}About{% endif %}</a>
-                <a href="{{ url_for('contact') }}">📞 {% if lang == 'am' %}አግኙን{% elif lang == 'ar' %}اتصل بنا{% else %}Contact{% endif %}</a>
+                <h4>🔗 {{ t.quick_links }}</h4>
+                <a href="{{ url_for('index') }}">🏠 {{ t.home }}</a>
+                <a href="{{ url_for('products') }}">📦 {{ t.products }}</a>
+                <a href="{{ url_for('branches') }}">📍 {{ t.our_branches }}</a>
+                <a href="{{ url_for('about') }}">ℹ️ {{ t.about_us }}</a>
+                <a href="{{ url_for('contact') }}">📞 {{ t.contact }}</a>
             </div>
             <div class="footer-section">
-                <h4>📞 {% if lang == 'am' %}ይደውሉልን{% else %}Call Us{% endif %}</h4>
+                <h4>📞 {{ t.call_us }}</h4>
                 <p>+251 90 602 0606</p>
                 <p>info@ethiosadat.com</p>
                 <p>📍 Addis Ababa, Ethiopia</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; {{ current_year }} Ethiosadat Furniture. {% if lang == 'am' %}መብቱ በህግ የተጠበቀ ነው{% else %}All Rights Reserved{% endif %}</p>
+            <p>&copy; {{ current_year }} Ethiosadat Furniture. {{ t.copyright_text }}</p>
         </div>
     </div>
 </footer>

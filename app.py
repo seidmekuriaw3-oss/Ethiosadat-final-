@@ -213,15 +213,38 @@ def get_google_translate_widget():
 
 TEXTS = {
     'am': {
+        # Navigation & UI
         'search': 'እቃዎችን እዚህ ይፈልጉ...',
-        'all': 'ሁሉም',
-        'order_now': 'አሁን እዘዝ',
-        'about_us': 'ስለ እኛ',
-        'address': 'አድራሻ፦ አዲስ አበባ',
-        'promo': 'ልዩ ቅናሽ!',
         'home': 'መነሻ',
         'products': 'ምርቶች',
         'contact': 'አግኙን',
+        'about_us': 'ስለ እኛ',
+        'our_branches': 'ቅርንጫፎቻችን',
+        'all': 'ሁሉም',
+        'all_products': 'ሁሉም ምርቶች',
+        'categories': 'ምድቦች',
+        'featured_products': '⭐ ተመራጭ ምርቶች',
+        'new_arrivals': '🆕 አዲስ ምርቶች',
+        'add_to_cart': '🛒 ወደ ጋሪ ጨምር',
+        'view_details': 'ዝርዝር ይመልከቱ →',
+        'shop_now': 'አሁን ይግዙ →',
+        'login': 'ግባ',
+        'register': 'ተመዝገብ',
+        'logout': 'ውጣ',
+        'profile': 'መገለጫ',
+        'my_orders': 'የእኔ ትዕዛዞች',
+        'my_cart': 'የእኔ ጋሪ',
+        'in_stock': 'አለ',
+        'out_of_stock': 'የለም',
+        'quick_links': 'ፈጣን አገናኞች',
+        'call_us': 'ይደውሉልን',
+        'quality_tagline': 'ጥራት ያለው የቤት እቃ በተመጣጣኝ ዋጋ',
+        'free_shipping_msg': '🚚 ከ5,000 ብር በላይ ትዕዛዝ ነጻ ማጓጓዝ',
+        'copyright_text': 'መብቱ በህግ የተጠበቀ ነው',
+        # Product form
+        'order_now': 'አሁን እዘዝ',
+        'address': 'አድራሻ፦ አዲስ አበባ',
+        'promo': 'ልዩ ቅናሽ!',
         'sofa': 'ሶፋ',
         'bed': 'አልጋ',
         'mejlis': 'መጅሊስ',
@@ -244,17 +267,46 @@ TEXTS = {
         'additional_notes': 'ተጨማሪ ማብራሪያ',
         'submit_order': 'ትዕዛዝ ላክ',
         'added_to_cart': 'ወደ ጋሪ ተጨምሯል',
+        'password': 'የይለፍ ቃል',
+        'confirm_password': 'የይለፍ ቃል አረጋግጥ',
+        'no_account': 'አካውንት የለም',
+        'have_account': 'አካውንት አለ',
+        'edit_profile': 'መገለጫ አርትዕ',
     },
     'en': {
+        # Navigation & UI
         'search': 'Search products here...',
+        'home': 'Home',
+        'products': 'Products',
+        'contact': 'Contact Us',
+        'about_us': 'About Us',
+        'our_branches': 'Our Branches',
         'all': 'All',
+        'all_products': 'All Products',
+        'categories': 'Categories',
+        'featured_products': '⭐ Featured Products',
+        'new_arrivals': '🆕 New Arrivals',
+        'add_to_cart': '🛒 Add to Cart',
+        'view_details': 'View Details →',
+        'shop_now': 'Shop Now →',
+        'login': 'Login',
+        'register': 'Register',
+        'logout': 'Logout',
+        'profile': 'Profile',
+        'my_orders': 'My Orders',
+        'my_cart': 'My Cart',
+        'in_stock': 'In Stock',
+        'out_of_stock': 'Out of Stock',
+        'quick_links': 'Quick Links',
+        'call_us': 'Call Us',
+        'quality_tagline': 'Quality furniture at affordable prices in Addis Ababa',
+        'free_shipping_msg': '🚚 Free shipping on orders over 5,000 ETB',
+        'copyright_text': 'All Rights Reserved',
+        # Product form
         'order_now': 'Order Now',
         'about_us': 'About Us',
         'address': 'Address: Addis Ababa',
         'promo': 'Special Offer!',
-        'home': 'Home',
-        'products': 'Products',
-        'contact': 'Contact',
         'sofa': 'Sofa',
         'bed': 'Bed',
         'mejlis': 'Mejlis',
@@ -277,17 +329,45 @@ TEXTS = {
         'additional_notes': 'Additional Notes',
         'submit_order': 'Submit Order',
         'added_to_cart': 'Added to cart',
+        'password': 'Password',
+        'confirm_password': 'Confirm Password',
+        'no_account': 'No account',
+        'have_account': 'Have account',
+        'edit_profile': 'Edit Profile',
     },
     'ar': {
+        # Navigation & UI
         'search': 'ابحث عن المنتجات هنا...',
-        'all': 'الجميع',
-        'order_now': 'اطلب الآن',
-        'about_us': 'معلومات عنا',
-        'address': 'العنوان: أديس أبابا',
-        'promo': 'عرض خاص!',
         'home': 'الرئيسية',
         'products': 'المنتجات',
         'contact': 'اتصل بنا',
+        'about_us': 'معلومات عنا',
+        'our_branches': 'فروعنا',
+        'all': 'الجميع',
+        'all_products': 'جميع المنتجات',
+        'categories': 'الفئات',
+        'featured_products': '⭐ المنتجات المميزة',
+        'new_arrivals': '🆕 وصل حديثاً',
+        'add_to_cart': '🛒 أضف إلى السلة',
+        'view_details': 'عرض التفاصيل ←',
+        'shop_now': 'تسوق الآن ←',
+        'login': 'تسجيل الدخول',
+        'register': 'تسجيل',
+        'logout': 'تسجيل الخروج',
+        'profile': 'الملف الشخصي',
+        'my_orders': 'طلباتي',
+        'my_cart': 'سلتي',
+        'in_stock': 'متوفر',
+        'out_of_stock': 'غير متوفر',
+        'quick_links': 'روابط سريعة',
+        'call_us': 'اتصل بنا',
+        'quality_tagline': 'أثاث عالي الجودة بأسعار معقولة في أديس أبابا',
+        'free_shipping_msg': '🚚 شحن مجاني للطلبات التي تتجاوز 5,000 بر إثيوبي',
+        'copyright_text': 'جميع الحقوق محفوظة',
+        # Product form
+        'order_now': 'اطلب الآن',
+        'address': 'العنوان: أديس أبابا',
+        'promo': 'عرض خاص!',
         'sofa': 'أريكة',
         'bed': 'سرير',
         'mejlis': 'مجلس',
@@ -306,6 +386,11 @@ TEXTS = {
         'additional_notes': 'ملاحظات إضافية',
         'submit_order': 'تقديم الطلب',
         'added_to_cart': 'تمت الإضافة إلى السلة',
+        'password': 'كلمة المرور',
+        'confirm_password': 'تأكيد كلمة المرور',
+        'no_account': 'لا يوجد حساب',
+        'have_account': 'لديك حساب',
+        'edit_profile': 'تعديل الملف الشخصي',
     }
 }
 
@@ -366,19 +451,81 @@ def inject_language():
     def _(key):
         return get_text(key, current_lang)
 
+    def product_name(product, lang=None):
+        lng = lang or current_lang
+        try:
+            if lng == 'am':
+                return product['name_am'] or product['name'] or ''
+            elif lng == 'ar':
+                return product['name_ar'] or product['name'] or ''
+            else:
+                return product['name_en'] or product['name'] or ''
+        except (KeyError, TypeError):
+            return ''
+
+    def product_description(product, lang=None):
+        lng = lang or current_lang
+        try:
+            if lng == 'am':
+                return product['description_am'] or product['description'] or ''
+            elif lng == 'ar':
+                return product['description_ar'] or product['description'] or ''
+            else:
+                return product['description_en'] or product['description'] or ''
+        except (KeyError, TypeError):
+            return ''
+
+    def localized_ad_title(ad, lang=None):
+        lng = lang or current_lang
+        try:
+            if lng == 'am':
+                return ad['title_am'] or ad['title'] or ''
+            elif lng == 'ar':
+                return ad['title_ar'] or ad['title'] or ''
+            else:
+                return ad['title'] or ''
+        except (KeyError, TypeError):
+            return ''
+
+    def localized_ad_description(ad, lang=None):
+        lng = lang or current_lang
+        try:
+            if lng == 'am':
+                return ad['description_am'] or ad['description'] or ''
+            elif lng == 'ar':
+                return ad['description_ar'] or ad['description'] or ''
+            else:
+                return ad['description'] or ''
+        except (KeyError, TypeError):
+            return ''
+
+    def category_name(cat, lang=None):
+        lng = lang or current_lang
+        try:
+            if lng == 'am':
+                return cat['name_am'] or cat['name'] or ''
+            elif lng == 'ar':
+                return cat['name_ar'] or cat['name'] or ''
+            else:
+                return cat['name'] or ''
+        except (KeyError, TypeError):
+            return ''
+
     return {
         'lang': current_lang,
         't': TEXTS.get(current_lang, TEXTS[DEFAULT_LANGUAGE]),
-        '_': _
+        '_': _,
+        'product_name': product_name,
+        'product_description': product_description,
+        'localized_ad_title': localized_ad_title,
+        'localized_ad_description': localized_ad_description,
+        'category_name': category_name,
     }
 
 
 @app.route('/set_lang/<lang>')
 def set_language(lang):
-    if set_lang(lang):
-        flash(f'Language changed to {lang}', 'success')
-    else:
-        flash('Invalid language selection', 'error')
+    set_lang(lang)
     next_page = request.referrer
     if next_page and next_page != request.url:
         return redirect(next_page)
@@ -2688,115 +2835,113 @@ def admin_product_create():
     """Create new product."""
     lang = get_lang()
     t = TEXTS.get(lang, TEXTS['am'])
-    
-    # Get categories for dropdown
+
+    # Get categories for dropdown (GET and POST both need them on redirect)
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, name, name_am FROM categories WHERE is_active = 1 ORDER BY sort_order")
-    categories = cursor.fetchall()
-    conn.close()
-    
-    categories_list = [dict(cat) for cat in categories] if categories else []
-    
+    cursor.execute("SELECT id, name, name_am, name_ar FROM categories WHERE is_active = 1 ORDER BY sort_order")
+    categories_list = [dict(cat) for cat in cursor.fetchall()]
+
     if request.method == 'POST':
         try:
-            # Basic Information
-            # Form sends name_en/description_en for English fields
-            name = (request.form.get('name_en') or request.form.get('name', '')).strip()
+            name_en = (request.form.get('name_en') or request.form.get('name', '')).strip()
             name_am = request.form.get('name_am', '').strip()
             name_ar = request.form.get('name_ar', '').strip()
-            description = (request.form.get('description_en') or request.form.get('description', '')).strip()
+            description_en = (request.form.get('description_en') or request.form.get('description', '')).strip()
             description_am = request.form.get('description_am', '').strip()
             description_ar = request.form.get('description_ar', '').strip()
-            
-            # Pricing
+
             price = float(request.form.get('price', 0))
-            compare_price = request.form.get('compare_price')
-            compare_price = float(compare_price) if compare_price else None
-            
-            # Inventory
+            compare_price_raw = request.form.get('compare_price', '').strip()
+            compare_price = float(compare_price_raw) if compare_price_raw else None
+            cost_raw = request.form.get('cost', '').strip()
+            cost = float(cost_raw) if cost_raw else None
+
             stock_quantity = int(request.form.get('stock_quantity', 0))
+            low_stock_threshold = int(request.form.get('low_stock_threshold', 5) or 5)
             category_id = int(request.form.get('category_id', 0))
-            sku = request.form.get('sku', '').strip()
+            sku = request.form.get('sku', '').strip() or None
+            barcode = request.form.get('barcode', '').strip() or None
             material = request.form.get('material', '').strip()
             color = request.form.get('color', '').strip()
-            
-            # Settings
+            weight_raw = request.form.get('weight', '').strip()
+            weight = float(weight_raw) if weight_raw else None
+            dimensions = request.form.get('dimensions', '').strip() or None
             is_featured = 1 if request.form.get('is_featured') else 0
             is_new = 1 if request.form.get('is_new') else 0
-            
-            # SEO
             meta_title = request.form.get('meta_title', '').strip()
             meta_description = request.form.get('meta_description', '').strip()
-            
-            # Validation
-            if not name_am or not name:
+
+            if not name_am or not name_en:
                 flash('Please enter product name in both Amharic and English', 'error')
                 return redirect(url_for('admin_product_create'))
-            
             if price <= 0:
                 flash('Please enter a valid price', 'error')
                 return redirect(url_for('admin_product_create'))
-            
             if category_id <= 0:
                 flash('Please select a category', 'error')
                 return redirect(url_for('admin_product_create'))
-            
+
             # Handle image upload
             image_file = request.files.get('image')
             thumbnail_filename = ''
-            
             if image_file and image_file.filename:
                 if allowed_file(image_file.filename):
                     ext = image_file.filename.rsplit('.', 1)[1].lower()
-                    thumbnail_filename = f"product_{uuid.uuid4().hex}_{datetime_.datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
+                    fname = f"product_{uuid.uuid4().hex}_{datetime_.datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
                     upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'products')
                     os.makedirs(upload_path, exist_ok=True)
-                    image_file.save(os.path.join(upload_path, thumbnail_filename))
-                    thumbnail_filename = f'uploads/products/{thumbnail_filename}'
+                    image_file.save(os.path.join(upload_path, fname))
+                    thumbnail_filename = f'uploads/products/{fname}'
                 else:
                     flash('Invalid file type. Please upload an image.', 'error')
                     return redirect(url_for('admin_product_create'))
-            
-            conn = get_db()
-            cursor = conn.cursor()
-            cursor.execute("""
-    INSERT INTO products (
-        name, name_am, name_ar, name_en,
-        description, description_am, description_ar, description_en,
-        price, compare_price, stock_quantity, low_stock_threshold,
-        category_id, sku, material, color,
-        is_featured, is_new, is_active,
-        thumbnail, meta_title, meta_description,
-        created_at, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 5, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-""", (
-    name, name_am, name_ar, name,
-    description, description_am, description_ar, description,
-    price, compare_price, stock_quantity,
-    category_id, sku, material, color,
-    is_featured, is_new,
-    thumbnail_filename, meta_title, meta_description
-))
-            
-            conn.commit()
-            product_id = cursor.lastrowid
-            conn.close()
-            
+
+            product_id = Product.create({
+                'name': name_en,
+                'name_en': name_en,
+                'name_am': name_am,
+                'name_ar': name_ar,
+                'description': description_en,
+                'description_en': description_en,
+                'description_am': description_am,
+                'description_ar': description_ar,
+                'price': price,
+                'compare_price': compare_price,
+                'cost': cost,
+                'sku': sku,
+                'barcode': barcode,
+                'stock_quantity': stock_quantity,
+                'low_stock_threshold': low_stock_threshold,
+                'thumbnail': thumbnail_filename,
+                'is_featured': is_featured,
+                'is_new': is_new,
+                'weight': weight,
+                'dimensions': dimensions,
+                'material': material,
+                'color': color,
+                'category_id': category_id,
+                'meta_title': meta_title,
+                'meta_description': meta_description,
+            })
+
+            if product_id is None:
+                raise RuntimeError('Database insert failed — check server logs for details')
+
             app.logger.info(f"New product created: {name_am} (ID: {product_id})")
             flash(f'Product "{name_am}" created successfully!', 'success')
             return redirect(url_for('admin_products'))
-            
+
         except Exception as e:
             app.logger.error(f"Error creating product: {str(e)}")
             import traceback
             app.logger.error(traceback.format_exc())
             flash(f'Error creating product: {str(e)}', 'error')
             return redirect(url_for('admin_product_create'))
-    
-    return render_template('admin/products/create.html', 
+
+    return render_template('admin/products/create.html',
                            categories=categories_list,
-                           lang=lang, 
+                           lang=lang,
                            t=t)
 
 
@@ -2807,74 +2952,63 @@ def admin_product_edit(pid):
     """Edit existing product."""
     lang = get_lang()
     t = TEXTS.get(lang, TEXTS['am'])
-    
+
     conn = get_db()
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
-    
-    # Get product
+
     cursor.execute("SELECT * FROM products WHERE id = ?", (pid,))
     product = cursor.fetchone()
-    
     if not product:
-        conn.close()
         flash('Product not found!', 'danger')
         return redirect(url_for('admin_products'))
-    
-    # Get categories
-    cursor.execute("SELECT id, name, name_am FROM categories WHERE is_active = 1 ORDER BY sort_order")
-    categories = cursor.fetchall()
-    conn.close()
-    
-    categories_list = [dict(cat) for cat in categories] if categories else []
+
+    cursor.execute("SELECT id, name, name_am, name_ar FROM categories WHERE is_active = 1 ORDER BY sort_order")
+    categories_list = [dict(cat) for cat in cursor.fetchall()]
     product_dict = dict(product)
-    
+
     if request.method == 'POST':
         try:
-            # Basic Information
-            # Form sends name_en/description_en for English fields
-            name = (request.form.get('name_en') or request.form.get('name', '')).strip()
+            name_en = (request.form.get('name_en') or request.form.get('name', '')).strip()
             name_am = request.form.get('name_am', '').strip()
             name_ar = request.form.get('name_ar', '').strip()
-            description = (request.form.get('description_en') or request.form.get('description', '')).strip()
+            description_en = (request.form.get('description_en') or request.form.get('description', '')).strip()
             description_am = request.form.get('description_am', '').strip()
             description_ar = request.form.get('description_ar', '').strip()
-            
-            # Pricing
+
             price = float(request.form.get('price', 0))
-            compare_price = request.form.get('compare_price')
-            compare_price = float(compare_price) if compare_price else None
-            
-            # Inventory
+            compare_price_raw = request.form.get('compare_price', '').strip()
+            compare_price = float(compare_price_raw) if compare_price_raw else None
+            cost_raw = request.form.get('cost', '').strip()
+            cost = float(cost_raw) if cost_raw else None
+
             stock_quantity = int(request.form.get('stock_quantity', 0))
+            low_stock_threshold = int(request.form.get('low_stock_threshold', 5) or 5)
             category_id = int(request.form.get('category_id', 0))
-            sku = request.form.get('sku', '').strip()
+            sku = request.form.get('sku', '').strip() or None
+            barcode = request.form.get('barcode', '').strip() or None
             material = request.form.get('material', '').strip()
             color = request.form.get('color', '').strip()
-            
-            # Settings
+            weight_raw = request.form.get('weight', '').strip()
+            weight = float(weight_raw) if weight_raw else None
+            dimensions = request.form.get('dimensions', '').strip() or None
             is_featured = 1 if request.form.get('is_featured') else 0
             is_new = 1 if request.form.get('is_new') else 0
-            
-            # SEO
             meta_title = request.form.get('meta_title', '').strip()
             meta_description = request.form.get('meta_description', '').strip()
-            
+
             # Handle image upload
             image_file = request.files.get('image')
             thumbnail_filename = product_dict.get('thumbnail', '')
-            
             if image_file and image_file.filename:
                 if allowed_file(image_file.filename):
-                    # Delete old image file from disk if it exists
                     if thumbnail_filename:
-                        old_static_path = os.path.join('static', thumbnail_filename.lstrip('/'))
-                        if os.path.exists(old_static_path):
+                        old_path = os.path.join('static', thumbnail_filename.lstrip('/'))
+                        if os.path.exists(old_path):
                             try:
-                                os.remove(old_static_path)
+                                os.remove(old_path)
                             except Exception:
                                 pass
-
                     ext = image_file.filename.rsplit('.', 1)[1].lower()
                     new_fname = f"product_{uuid.uuid4().hex}_{datetime_.datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
                     upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'products')
@@ -2884,47 +3018,54 @@ def admin_product_edit(pid):
                 else:
                     flash('Invalid file type. Please upload an image.', 'error')
                     return redirect(url_for('admin_product_edit', pid=pid))
-            
-            conn = get_db()
-            cursor = conn.cursor()
-            cursor.execute("""
-    UPDATE products SET
-        name=?, name_am=?, name_ar=?, name_en=?,
-        description=?, description_am=?, description_ar=?, description_en=?,
-        price=?, compare_price=?, stock_quantity=?,
-        category_id=?, sku=?, material=?, color=?,
-        is_featured=?, is_new=?,
-        thumbnail=?, meta_title=?, meta_description=?,
-        updated_at=CURRENT_TIMESTAMP
-    WHERE id=?
-""", (
-    name, name_am, name_ar, name,
-    description, description_am, description_ar, description,
-    price, compare_price, stock_quantity,
-    category_id, sku, material, color,
-    is_featured, is_new,
-    thumbnail_filename, meta_title, meta_description,
-    pid
-))
-            
-            conn.commit()
-            conn.close()
-            
+
+            success = Product.update(pid, {
+                'name': name_en,
+                'name_en': name_en,
+                'name_am': name_am,
+                'name_ar': name_ar,
+                'description': description_en,
+                'description_en': description_en,
+                'description_am': description_am,
+                'description_ar': description_ar,
+                'price': price,
+                'compare_price': compare_price,
+                'cost': cost,
+                'sku': sku,
+                'barcode': barcode,
+                'stock_quantity': stock_quantity,
+                'low_stock_threshold': low_stock_threshold,
+                'thumbnail': thumbnail_filename,
+                'is_featured': is_featured,
+                'is_new': is_new,
+                'weight': weight,
+                'dimensions': dimensions,
+                'material': material,
+                'color': color,
+                'category_id': category_id,
+                'meta_title': meta_title,
+                'meta_description': meta_description,
+            })
+
+            if not success:
+                raise RuntimeError('Database update failed — check server logs for details')
+
             app.logger.info(f"Product updated: {name_am} (ID: {pid})")
             flash(f'Product "{name_am}" updated successfully!', 'success')
             return redirect(url_for('admin_products'))
-            
+
         except Exception as e:
             app.logger.error(f"Error updating product: {str(e)}")
-            flash('Error updating product. Please try again.', 'error')
-    
-    return render_template('admin/products/edit.html', 
+            import traceback
+            app.logger.error(traceback.format_exc())
+            flash(f'Error updating product: {str(e)}', 'error')
+            return redirect(url_for('admin_product_edit', pid=pid))
+
+    return render_template('admin/products/edit.html',
                            product=product_dict,
                            categories=categories_list,
-                           lang=lang, 
+                           lang=lang,
                            t=t)
-
-
 @app.route('/admin/products/delete/<int:pid>')
 @admin_required
 def admin_product_delete(pid):

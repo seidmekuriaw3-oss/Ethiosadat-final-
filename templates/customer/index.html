@@ -191,8 +191,8 @@
 <!-- Hero Section -->
 <div class="hero">
     <h1>🪑 Ethiosadat Furniture</h1>
-    <p>Quality furniture at affordable prices in Addis Ababa</p>
-    <p>🚚 Free shipping on orders over 5000 ETB</p>
+    <p>{{ t.quality_tagline }}</p>
+    <p>{{ t.free_shipping_msg }}</p>
 </div>
 
 <!-- ==================== MODERN SLIDER CAROUSEL ==================== -->
@@ -213,9 +213,9 @@
                        onclick="if(window.innerWidth < 768){ this.pause(); playFullscreen('{{ url_for('static', filename=ad.image) }}'); }"></video>
                 {% endif %}
                 <div class="slide-content">
-                    <h3>{{ ad.title if ad.title else '🎉 Special Offer!' }}</h3>
-                    <p>{{ ad.description if ad.description else ad.text if ad.text else 'Amazing deals on quality furniture!' }}</p>
-                    <a href="{{ ad.link if ad.link else url_for('products') }}" class="slide-btn">Shop Now →</a>
+                    <h3>{{ localized_ad_title(ad) or '🎉 ' ~ t.promo }}</h3>
+                    <p>{{ localized_ad_description(ad) or t.quality_tagline }}</p>
+                    <a href="{{ ad.link if ad.link else url_for('products') }}" class="slide-btn">{{ t.shop_now }}</a>
                 </div>
             </div>
             {% endfor %}
@@ -228,25 +228,25 @@
 
 <!-- Categories -->
 <div style="margin-bottom: 30px;">
-    <h2>📂 Categories</h2>
+    <h2>📂 {{ t.categories }}</h2>
     <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
-        <a href="{{ url_for('products') }}" class="btn btn-outline">All</a>
-        {% for category in categories %}
-        <a href="{{ url_for('products', category=category.id) }}" class="btn btn-outline">
-            {% if category.icon %}{{ category.icon }}{% endif %} {{ category.name_am }}
+        <a href="{{ url_for('products') }}" class="btn btn-outline">{{ t.all }}</a>
+        {% for cat in categories %}
+        <a href="{{ url_for('products', category=cat.id) }}" class="btn btn-outline">
+            {% if cat.icon %}{{ cat.icon }}{% endif %} {{ category_name(cat) }}
         </a>
         {% endfor %}
     </div>
 </div>
 
 <!-- Products Grid -->
-<h2>⭐ Featured Products</h2>
+<h2>{{ t.featured_products }}</h2>
 <div class="products-grid">
     {% for product in featured_products %}
     <div class="product-card" data-product-id="{{ product.id }}">
         <div style="height: 200px; background: var(--bg-hover, #f5f5f5); display: flex; align-items: center; justify-content: center; position: relative;">
             {% if product.thumbnail and product.thumbnail != '' %}
-                <img src="{{ url_for('static', filename=product.thumbnail) }}" alt="{{ product.name_am }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy"
+                <img src="{{ url_for('static', filename=product.thumbnail) }}" alt="{{ product_name(product) }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy"
                      onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'font-size:64px;\'>🪑</div>'">
             {% else %}
                 <div style="font-size: 64px;">🪑</div>
@@ -264,18 +264,18 @@
             {% endif %}
         </div>
         <div style="padding: 15px;">
-            <h3 style="font-size: 16px; margin-bottom: 5px; color: var(--text-color, #333);">{{ product.name_am if lang == 'am' else product.name }}</h3>
+            <h3 style="font-size: 16px; margin-bottom: 5px; color: var(--text-color, #333);">{{ product_name(product) }}</h3>
             <div style="margin: 10px 0;">
                 <span style="font-size: 20px; font-weight: bold; color: #1a73e8;">{{ format_price(product.price) }}</span>
                 {% if product.compare_price and product.compare_price|float > product.price|float %}
                     <span style="text-decoration: line-through; color: var(--text-muted, #999); font-size: 14px; margin-left: 8px;">{{ format_price(product.compare_price) }}</span>
                 {% endif %}
             </div>
-            <button onclick="event.stopPropagation(); if(window.addToCart) addToCart('{{ product.id }}', 1, this)" 
+            <button onclick="event.stopPropagation(); if(window.addToCart) addToCart('{{ product.id }}', 1, this)"
                     class="btn-add-to-cart">
-                🛒 Add to Cart
+                {{ t.add_to_cart }}
             </button>
-            <a href="{{ url_for('product_detail', product_id=product.id) }}" style="display: block; text-align: center; margin-top: 10px; color: var(--text-muted, #666); text-decoration: none; font-size: 14px;" onclick="event.stopPropagation();">View Details →</a>
+            <a href="{{ url_for('product_detail', product_id=product.id) }}" style="display: block; text-align: center; margin-top: 10px; color: var(--text-muted, #666); text-decoration: none; font-size: 14px;" onclick="event.stopPropagation();">{{ t.view_details }}</a>
         </div>
     </div>
     {% endfor %}
@@ -283,13 +283,13 @@
 
 <!-- New Products Section -->
 {% if new_products and new_products|length > 0 %}
-<h2 style="margin-top: 40px;">🆕 New Arrivals</h2>
+<h2 style="margin-top: 40px;">{{ t.new_arrivals }}</h2>
 <div class="products-grid">
     {% for product in new_products %}
     <div class="product-card" data-product-id="{{ product.id }}">
         <div style="height: 200px; background: var(--bg-hover, #f5f5f5); display: flex; align-items: center; justify-content: center; position: relative;">
             {% if product.thumbnail and product.thumbnail != '' %}
-                <img src="{{ url_for('static', filename=product.thumbnail) }}" alt="{{ product.name_am }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy"
+                <img src="{{ url_for('static', filename=product.thumbnail) }}" alt="{{ product_name(product) }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy"
                      onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'font-size:64px;\'>🪑</div>'">
             {% else %}
                 <div style="font-size: 64px;">🪑</div>
@@ -305,18 +305,18 @@
             </span>
         </div>
         <div style="padding: 15px;">
-            <h3 style="font-size: 16px; margin-bottom: 5px; color: var(--text-color, #333);">{{ product.name_am if lang == 'am' else product.name }}</h3>
+            <h3 style="font-size: 16px; margin-bottom: 5px; color: var(--text-color, #333);">{{ product_name(product) }}</h3>
             <div style="margin: 10px 0;">
                 <span style="font-size: 20px; font-weight: bold; color: #1a73e8;">{{ format_price(product.price) }}</span>
                 {% if product.compare_price and product.compare_price|float > product.price|float %}
                     <span style="text-decoration: line-through; color: var(--text-muted, #999); font-size: 14px; margin-left: 8px;">{{ format_price(product.compare_price) }}</span>
                 {% endif %}
             </div>
-            <button onclick="event.stopPropagation(); if(window.addToCart) addToCart('{{ product.id }}', 1, this)" 
+            <button onclick="event.stopPropagation(); if(window.addToCart) addToCart('{{ product.id }}', 1, this)"
                     class="btn-add-to-cart">
-                🛒 Add to Cart
+                {{ t.add_to_cart }}
             </button>
-            <a href="{{ url_for('product_detail', product_id=product.id) }}" style="display: block; text-align: center; margin-top: 10px; color: var(--text-muted, #666); text-decoration: none; font-size: 14px;" onclick="event.stopPropagation();">View Details →</a>
+            <a href="{{ url_for('product_detail', product_id=product.id) }}" style="display: block; text-align: center; margin-top: 10px; color: var(--text-muted, #666); text-decoration: none; font-size: 14px;" onclick="event.stopPropagation();">{{ t.view_details }}</a>
         </div>
     </div>
     {% endfor %}
