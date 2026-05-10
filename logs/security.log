@@ -14738,3 +14738,5 @@ sqlite3.ProgrammingError: Cannot operate on a closed database.
 2026-05-09 14:41:08,479 - app - ERROR - Error loading admin orders: Could not build url for endpoint 'admin_export_order'. Did you forget to specify values ['oid']?
 2026-05-09 14:57:38,023 - app - ERROR - Error updating product: Cannot operate on a closed database.
 2026-05-09 14:57:38,024 - app - WARNING - Slow request: POST /admin/products/edit/21 - 3.92s
+2026-05-10 18:03:35,932 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-10 18:03:35,933 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/images/logo.svg

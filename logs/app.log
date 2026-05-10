@@ -53837,3 +53837,14 @@ sqlite3.ProgrammingError: Cannot operate on a closed database.
 2026-05-10 17:07:19,635 - app - INFO - Home page - Featured: 12, New: 8, Ads: 6
 2026-05-10 17:07:25,147 - app - INFO - Home page - Featured: 12, New: 8, Ads: 6
 2026-05-10 17:07:37,228 - app - INFO - Home page - Featured: 12, New: 8, Ads: 6
+2026-05-10 18:03:08,857 - app - INFO - ==================================================
+2026-05-10 18:03:09,042 - app - INFO - Ethiosadat Application Started
+2026-05-10 18:03:09,043 - app - INFO - ==================================================
+2026-05-10 18:03:10,086 - app - INFO - Home page - Featured: 12, New: 8, Ads: 6
+2026-05-10 18:03:11,723 - app - INFO - Home page - Featured: 12, New: 8, Ads: 6
+2026-05-10 18:03:15,758 - app - INFO - Home page - Featured: 12, New: 8, Ads: 6
+2026-05-10 18:03:28,346 - app - INFO - Search 'ሶፋ' found 5 results
+2026-05-10 18:03:35,932 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-10 18:03:35,933 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/images/logo.svg
+2026-05-10 18:03:37,151 - app - INFO - Home page - Featured: 12, New: 8, Ads: 6
+2026-05-10 18:03:59,014 - app - INFO - Home page - Featured: 12, New: 8, Ads: 6

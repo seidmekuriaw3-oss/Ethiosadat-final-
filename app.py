@@ -213,6 +213,26 @@ def get_google_translate_widget():
 
 TEXTS = {
     'am': {
+        # Search page
+        'search_results': '🔍 የፍለጋ ውጤቶች',
+        'find_perfect': 'ለቤትዎ ምርጥ የቤት እቃ ያግኙ',
+        'showing_results_for': '🔎 ውጤቶች ለ',
+        'products_found': 'ምርቶች ተገኝተዋል',
+        'no_products_found': 'ምርት አልተገኘም',
+        'we_couldnt_find': 'ለሚፈልጉት ቃል ምርት አልተገኘም',
+        'try_tips': '💡 ይሞክሩ:',
+        'tip_different_keywords': '• ሌሎች ቃላት ይጠቀሙ',
+        'tip_check_spelling': '• ፊደሉን ያረጋግጡ',
+        'tip_browse_categories': '• ምድቦቹን ያስሱ',
+        'back_to_home': '← ወደ መነሻ ተመለስ',
+        'popular_searches': '💡 ተወዳጅ ፍለጋዎች:',
+        'try_searching_for': '💡 ለፍለጋ ይሞክሩ:',
+        'sort_relevance': '📌 ተዛማጅነት',
+        'sort_price_low_high': '💰 ዋጋ: ዝቅ → ከፍ',
+        'sort_price_high_low': '💰 ዋጋ: ከፍ → ዝቅ',
+        'sort_name_az': '📝 ስም: ሀ-ፐ',
+        'sort_name_za': '📝 ስም: ፐ-ሀ',
+        'filter_products': '🔍 ምርቶችን አጣራ',
         # Navigation & UI
         'search': 'እቃዎችን እዚህ ይፈልጉ...',
         'home': 'መነሻ',
@@ -274,6 +294,26 @@ TEXTS = {
         'edit_profile': 'መገለጫ አርትዕ',
     },
     'en': {
+        # Search page
+        'search_results': '🔍 Search Results',
+        'find_perfect': 'Find the perfect furniture for your home',
+        'showing_results_for': '🔎 Showing results for',
+        'products_found': 'product(s) found',
+        'no_products_found': 'No products found',
+        'we_couldnt_find': "We couldn't find any products matching",
+        'try_tips': '💡 Try:',
+        'tip_different_keywords': '• Using different keywords',
+        'tip_check_spelling': '• Checking the spelling',
+        'tip_browse_categories': '• Browsing our categories',
+        'back_to_home': '← Back to Home',
+        'popular_searches': '💡 Popular searches:',
+        'try_searching_for': '💡 Try searching for:',
+        'sort_relevance': '📌 Relevance',
+        'sort_price_low_high': '💰 Price: Low to High',
+        'sort_price_high_low': '💰 Price: High to Low',
+        'sort_name_az': '📝 Name: A to Z',
+        'sort_name_za': '📝 Name: Z to A',
+        'filter_products': '🔍 Filter Products',
         # Navigation & UI
         'search': 'Search products here...',
         'home': 'Home',
@@ -336,6 +376,26 @@ TEXTS = {
         'edit_profile': 'Edit Profile',
     },
     'ar': {
+        # Search page
+        'search_results': '🔍 نتائج البحث',
+        'find_perfect': 'ابحث عن الأثاث المثالي لمنزلك',
+        'showing_results_for': '🔎 نتائج عن',
+        'products_found': 'منتج وجد',
+        'no_products_found': 'لم يتم العثور على منتجات',
+        'we_couldnt_find': 'لم نجد أي منتجات تطابق',
+        'try_tips': '💡 جرب:',
+        'tip_different_keywords': '• استخدام كلمات مختلفة',
+        'tip_check_spelling': '• التحقق من الإملاء',
+        'tip_browse_categories': '• تصفح فئاتنا',
+        'back_to_home': 'العودة للرئيسية →',
+        'popular_searches': '💡 عمليات البحث الشائعة:',
+        'try_searching_for': '💡 جرب البحث عن:',
+        'sort_relevance': '📌 الصلة',
+        'sort_price_low_high': '💰 السعر: من الأدنى',
+        'sort_price_high_low': '💰 السعر: من الأعلى',
+        'sort_name_az': '📝 الاسم: أ-ي',
+        'sort_name_za': '📝 الاسم: ي-أ',
+        'filter_products': '🔍 تصفية المنتجات',
         # Navigation & UI
         'search': 'ابحث عن المنتجات هنا...',
         'home': 'الرئيسية',
@@ -1068,13 +1128,24 @@ def search():
         
         search_pattern = f'%{query}%'
         cursor.execute("""
-            SELECT p.*, c.name as category_name
+            SELECT p.*, c.name as category_name, c.name_am as category_name_am, c.name_ar as category_name_ar
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.id
-            WHERE p.is_active = 1 
-            AND (p.name LIKE ? OR p.name_am LIKE ? OR p.name_ar LIKE ?)
-            ORDER BY p.id DESC
-        """, (search_pattern, search_pattern, search_pattern))
+            WHERE p.is_active = 1
+            AND (
+                p.name LIKE ? OR p.name_en LIKE ? OR p.name_am LIKE ? OR p.name_ar LIKE ?
+                OR p.description LIKE ? OR p.description_en LIKE ?
+                OR p.description_am LIKE ? OR p.description_ar LIKE ?
+            )
+            ORDER BY
+                CASE WHEN p.name_am LIKE ? OR p.name_en LIKE ? OR p.name_ar LIKE ? THEN 0 ELSE 1 END,
+                p.is_featured DESC,
+                p.id DESC
+        """, (
+            search_pattern, search_pattern, search_pattern, search_pattern,
+            search_pattern, search_pattern, search_pattern, search_pattern,
+            search_pattern, search_pattern, search_pattern
+        ))
         
         products = cursor.fetchall()
         
