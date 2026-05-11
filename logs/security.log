@@ -14910,3 +14910,28 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-10 18:15:27,044 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/000001
 2026-05-11 01:08:36,171 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
 2026-05-11 01:08:36,171 - app - WARNING - 404 Error: http://198395ec-3efc-4762-b40b-b6ef8b1a01fb-00-zi7wiglmr8u3.riker.replit.dev/static/images/logo.svg
+2026-05-11 01:53:53,285 - app - ERROR - Registration error: NOT NULL constraint failed: users.username
+2026-05-11 01:53:59,553 - app - ERROR - Registration error: database is locked
+2026-05-11 01:53:59,554 - app - WARNING - Slow request: POST /register - 5.17s
+2026-05-11 01:54:32,007 - app - ERROR - Registration error: database is locked
+2026-05-11 01:54:32,008 - app - WARNING - Slow request: POST /register - 5.23s
+2026-05-11 01:55:00,522 - app - WARNING - 404 Error: http://198395ec-3efc-4762-b40b-b6ef8b1a01fb-00-zi7wiglmr8u3.riker.replit.dev/favicon.ico
+2026-05-11 01:55:19,627 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 172.31.113.194
+2026-05-11 01:55:40,978 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 172.31.113.194
+2026-05-11 01:56:22,673 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 01:56:22,903 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 01:56:25,552 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 01:56:25,896 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 02:00:52,804 - app - ERROR - Registration error: NOT NULL constraint failed: users.username
+2026-05-11 02:01:15,188 - app - ERROR - Registration error: database is locked
+2026-05-11 02:01:15,189 - app - WARNING - Slow request: POST /register - 5.17s
+2026-05-11 02:04:51,723 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-11 02:07:29,037 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 02:07:29,086 - app - WARNING - 404 Error: http://localhost:5000/admin/users
+2026-05-11 02:07:30,941 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 02:07:30,968 - app - ERROR - Orders error: auth/user_orders.html
+2026-05-11 02:08:14,118 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 02:08:32,991 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 02:08:33,139 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 02:10:15,506 - app - ERROR - Login error: Cannot operate on a closed database.
+2026-05-11 02:13:29,521 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'

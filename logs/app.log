@@ -54075,3 +54075,132 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 01:39:47,815 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 01:39:52,985 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 01:39:57,616 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:41:17,727 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:41:22,455 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:41:30,643 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:45:33,197 - app - INFO - ==================================================
+2026-05-11 01:45:33,197 - app - INFO - Ethiosadat Application Started
+2026-05-11 01:45:33,197 - app - INFO - ==================================================
+2026-05-11 01:45:33,235 - app - INFO - Application shutting down...
+2026-05-11 01:52:00,030 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:52:18,232 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:52:35,102 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:52:35,375 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:53:53,285 - app - ERROR - Registration error: NOT NULL constraint failed: users.username
+2026-05-11 01:53:59,553 - app - ERROR - Registration error: database is locked
+2026-05-11 01:53:59,554 - app - WARNING - Slow request: POST /register - 5.17s
+2026-05-11 01:54:32,007 - app - ERROR - Registration error: database is locked
+2026-05-11 01:54:32,008 - app - WARNING - Slow request: POST /register - 5.23s
+2026-05-11 01:54:56,865 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:55:00,522 - app - WARNING - 404 Error: http://198395ec-3efc-4762-b40b-b6ef8b1a01fb-00-zi7wiglmr8u3.riker.replit.dev/favicon.ico
+2026-05-11 01:55:19,627 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 172.31.113.194
+2026-05-11 01:55:40,978 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 172.31.113.194
+2026-05-11 01:55:53,491 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-11 01:55:53,749 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 01:55:54,592 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 01:55:54,594 - app - INFO - Admin reports viewed
+2026-05-11 01:56:04,440 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 01:56:15,533 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 01:56:18,591 - app - INFO - Admin reports viewed
+2026-05-11 01:56:19,772 - app - INFO - Admin reports viewed
+2026-05-11 01:56:20,065 - app - INFO - Admin reports viewed
+2026-05-11 01:56:22,673 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 01:56:22,903 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 01:56:22,943 - app - INFO - Admin reports viewed
+2026-05-11 01:56:23,755 - app - INFO - Admin reports viewed
+2026-05-11 01:56:24,272 - app - INFO - Admin reports viewed
+2026-05-11 01:56:25,552 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 01:56:25,893 - app - INFO - Admin reports viewed
+2026-05-11 01:56:25,896 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 01:56:26,584 - app - INFO - Admin reports viewed
+2026-05-11 01:56:26,864 - app - INFO - Admin reports viewed
+2026-05-11 01:56:29,974 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 01:56:47,532 - app - INFO - Admin reports viewed
+2026-05-11 01:56:48,314 - app - INFO - Admin reports viewed
+2026-05-11 01:56:49,545 - app - INFO - Admin reports viewed
+2026-05-11 01:56:50,143 - app - INFO - Admin reports viewed
+2026-05-11 01:56:50,985 - app - INFO - Admin reports viewed
+2026-05-11 01:56:52,192 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 01:56:53,373 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 01:56:53,952 - app - INFO - Admin reports viewed
+2026-05-11 01:56:53,991 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 01:56:58,953 - app - INFO - Admin already logged in, redirecting to dashboard
+2026-05-11 01:56:59,547 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 01:57:00,033 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 01:57:00,036 - app - INFO - Admin reports viewed
+2026-05-11 01:57:00,354 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:59:42,683 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:59:44,921 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:59:45,421 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:59:45,810 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:59:46,152 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:59:48,504 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 02:00:29,590 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-11 02:00:52,804 - app - ERROR - Registration error: NOT NULL constraint failed: users.username
+2026-05-11 02:01:15,188 - app - ERROR - Registration error: database is locked
+2026-05-11 02:01:15,189 - app - WARNING - Slow request: POST /register - 5.17s
+2026-05-11 02:02:59,230 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 02:04:19,397 - app - INFO - ==================================================
+2026-05-11 02:04:19,397 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:04:19,398 - app - INFO - ==================================================
+2026-05-11 02:04:28,355 - app - INFO - New user registered: newuser123@example.com
+2026-05-11 02:04:28,356 - app - INFO - Welcome email would be sent to newuser123@example.com
+2026-05-11 02:04:37,002 - app - INFO - User logged in: newuser123@example.com
+2026-05-11 02:04:39,226 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-11 02:04:51,723 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-11 02:07:06,239 - app - INFO - ==================================================
+2026-05-11 02:07:06,239 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:07:06,239 - app - INFO - ==================================================
+2026-05-11 02:07:13,039 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-11 02:07:14,659 - app - INFO - New user registered: customer2@test.com
+2026-05-11 02:07:14,659 - app - INFO - Welcome email would be sent to customer2@test.com
+2026-05-11 02:07:15,944 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 02:07:16,108 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-11 02:07:28,828 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 02:07:28,899 - app - INFO - Admin ads list viewed - 7 ads
+2026-05-11 02:07:28,949 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 02:07:28,969 - app - INFO - Admin reports viewed
+2026-05-11 02:07:29,037 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 02:07:29,051 - app - INFO - Admin product list viewed - 22 products
+2026-05-11 02:07:29,086 - app - WARNING - 404 Error: http://localhost:5000/admin/users
+2026-05-11 02:07:29,098 - app - INFO - Cache cleared by admin
+2026-05-11 02:07:29,112 - app - INFO - Database backup created: ethiosadat_backup_20260511_020729.db
+2026-05-11 02:07:30,810 - app - INFO - User logged in: customer2@test.com
+2026-05-11 02:07:30,941 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 02:07:30,968 - app - ERROR - Orders error: auth/user_orders.html
+2026-05-11 02:07:30,982 - app - INFO - Cart viewed - Items: 0, Total: 200.0 ETB
+2026-05-11 02:07:36,792 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 02:07:37,376 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 02:08:13,994 - app - INFO - User logged in: customer2@test.com
+2026-05-11 02:08:14,118 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 02:08:32,991 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 02:08:33,024 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 02:08:33,139 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 02:08:33,166 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 02:10:15,284 - app - INFO - ==================================================
+2026-05-11 02:10:15,285 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:10:15,285 - app - INFO - ==================================================
+2026-05-11 02:10:15,364 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-11 02:10:15,383 - app - INFO - Database initialized successfully
+2026-05-11 02:10:15,384 - app - INFO - Application initialized successfully
+2026-05-11 02:10:15,385 - app - INFO - ============================================================
+2026-05-11 02:10:15,385 - app - INFO - ETHIOSADAT FURNITURE APPLICATION READY
+2026-05-11 02:10:15,385 - app - INFO - Environment: production
+2026-05-11 02:10:15,386 - app - INFO - Debug Mode: False
+2026-05-11 02:10:15,386 - app - INFO - Cache Type: SimpleCache
+2026-05-11 02:10:15,386 - app - INFO - ============================================================
+2026-05-11 02:10:15,506 - app - ERROR - Login error: Cannot operate on a closed database.
+2026-05-11 02:10:15,566 - app - INFO - Application shutting down...
+2026-05-11 02:13:05,528 - app - INFO - ==================================================
+2026-05-11 02:13:05,529 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:13:05,529 - app - INFO - ==================================================
+2026-05-11 02:13:05,750 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 02:13:13,824 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-11 02:13:15,148 - app - INFO - User logged in: customer2@test.com
+2026-05-11 02:13:23,033 - app - INFO - Admin ads list viewed - 7 ads
+2026-05-11 02:13:23,069 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 02:13:23,080 - app - INFO - Admin reports viewed
+2026-05-11 02:13:23,643 - app - INFO - User logged in: customer2@test.com
+2026-05-11 02:13:29,521 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 02:13:29,575 - app - INFO - Cart viewed - Items: 0, Total: 200.0 ETB
+2026-05-11 02:13:42,936 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6

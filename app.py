@@ -172,7 +172,7 @@ def inject_globals():
             cur.execute("SELECT COUNT(*) FROM orders WHERE status = 'pending'")
             row = cur.fetchone()
             pending_orders_count = row[0] if row else 0
-            conn.close()
+
         except Exception:
             pass
 
@@ -850,7 +850,7 @@ def index():
         """)
         categories = cursor.fetchall()
         
-        conn.close()
+
         
         # Convert to dict for template
         def row_to_dict(row):
@@ -883,8 +883,7 @@ def index():
         app.logger.error(f"Home page error: {str(e)}")
         import traceback
         app.logger.error(traceback.format_exc())
-        if conn:
-            conn.close()
+
         return render_template('customer/index.html', 
                                featured_products=[], 
                                new_products=[],
@@ -940,7 +939,7 @@ def product_detail(product_id):
         related_list = [dict(p) for p in related_products] if related_products else []
         
         # ዳታቤዙን እዚህ ጋር እንዘጋዋለን
-        conn.close()
+
         
         # የተቀረው የኮድህ ክፍል (Price calculation)
         if product_dict.get('thumbnail') is None or str(product_dict.get('thumbnail')) == 'None':
@@ -961,8 +960,7 @@ def product_detail(product_id):
                                
     except Exception as e:
         app.logger.error(f"Product detail error: {str(e)}")
-        if conn:
-            conn.close()
+
         flash('Unable to load product', 'error')
         return redirect(url_for('index'))
 
@@ -1016,7 +1014,7 @@ def category_products(category_id=None):
             """)
         
         products = cursor.fetchall()
-        conn.close()
+
         
         products_list = [dict(p) for p in products] if products else []
         categories_list = [dict(cat) for cat in categories] if categories else []
@@ -1035,8 +1033,7 @@ def category_products(category_id=None):
         app.logger.error(f"Category error: {str(e)}")
         import traceback
         app.logger.error(traceback.format_exc())
-        if conn:
-            conn.close()
+
         flash('Unable to load category products. Please try again.', 'error')
         return render_template('customer/category.html',
                                products=[],
@@ -1081,7 +1078,7 @@ def products():
         cursor.execute("SELECT * FROM categories WHERE is_active = 1 ORDER BY sort_order ASC")
         categories = cursor.fetchall()
         
-        conn.close()
+
         
         products_list = [dict(p) for p in products] if products else []
         categories_list = [dict(cat) for cat in categories] if categories else []
@@ -1099,8 +1096,7 @@ def products():
                                
     except Exception as e:
         app.logger.error(f"Products page error: {str(e)}")
-        if conn:
-            conn.close()
+
         return render_template('customer/product_grid.html',
                                products=[],
                                categories=[],
@@ -1153,7 +1149,7 @@ def search():
         cursor.execute("SELECT * FROM categories WHERE is_active = 1 ORDER BY sort_order ASC LIMIT 6")
         categories = cursor.fetchall()
         
-        conn.close()
+
         
         products_list = [dict(p) for p in products] if products else []
         categories_list = [dict(cat) for cat in categories] if categories else []
@@ -1171,8 +1167,7 @@ def search():
         app.logger.error(f"Search error: {str(e)}")
         import traceback
         app.logger.error(traceback.format_exc())
-        if conn:
-            conn.close()
+
         flash('Search failed. Please try again.', 'error')
         return render_template('customer/search.html', 
                                products=[], 
@@ -1229,7 +1224,7 @@ def contact():
                 VALUES (?, ?, ?, ?)
             """, (name, email, phone, message))
             conn.commit()
-            conn.close()
+
         except Exception as e:
             app.logger.error(f"Error saving contact: {str(e)}")
         
@@ -1477,24 +1472,25 @@ def user_login():
         flash('You are already logged in!', 'info')
         return redirect(url_for('user_profile'))
     
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    
     if request.method == 'POST':
         email = request.form.get('email', '').strip().lower()
         password = request.form.get('password', '')
         
         if not email or not password:
+            if is_ajax:
+                return jsonify({'success': False, 'error': 'Please enter both email and password'})
             flash('Please enter both email and password', 'error')
             return render_template('auth/user_login.html', lang=lang, t=t)
         
         try:
             conn = get_db()
-            conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM users WHERE email = ? AND is_active = 1", (email,))
             user = cursor.fetchone()
-            conn.close()
             
             if user and check_password_hash(user['password_hash'], password):
-                # Set session
                 session['user_id'] = user['id']
                 session['user_name'] = user['full_name']
                 session['user_email'] = user['email']
@@ -1502,22 +1498,27 @@ def user_login():
                 session.permanent = True
                 
                 app.logger.info(f"User logged in: {email}")
-                flash(f'Welcome back, {user["full_name"]}!', 'success')
                 
-                # Merge guest cart with user cart
                 merge_guest_cart(user['id'])
                 
-                # Redirect to next page or home
+                if is_ajax:
+                    return jsonify({'success': True, 'message': f'Welcome back, {user["full_name"]}!'})
+                
+                flash(f'Welcome back, {user["full_name"]}!', 'success')
                 next_page = request.args.get('next')
                 if next_page and next_page.startswith('/'):
                     return redirect(next_page)
                 return redirect(url_for('index'))
             else:
                 app.logger.warning(f"Failed login attempt for email: {email}")
+                if is_ajax:
+                    return jsonify({'success': False, 'error': 'Invalid email or password'})
                 flash('Invalid email or password', 'error')
                 
         except Exception as e:
             app.logger.error(f"Login error: {str(e)}")
+            if is_ajax:
+                return jsonify({'success': False, 'error': 'Login failed. Please try again.'})
             flash('Login failed. Please try again.', 'error')
     
     return render_template('auth/user_login.html', lang=lang, t=t)
@@ -1553,7 +1554,7 @@ def merge_guest_cart(user_id):
                 )
         
         conn.commit()
-        conn.close()
+
         
         # Clear session cart
         session.pop('cart', None)
@@ -1602,24 +1603,37 @@ def user_register():
                 flash(error, 'error')
             return render_template('auth/user_register.html', lang=lang, t=t)
         
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
         try:
             conn = get_db()
-            conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
             
             # Check if email exists
             cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
             if cursor.fetchone():
+                if is_ajax:
+                    return jsonify({'success': False, 'error': 'Email already registered. Please login.'})
                 flash('Email already registered. Please login.', 'error')
-                conn.close()
                 return render_template('auth/user_register.html', lang=lang, t=t)
+            
+            # Derive a unique username from email
+            username_base = email.split('@')[0].lower()
+            username = username_base
+            # Ensure uniqueness
+            suffix = 1
+            while True:
+                cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
+                if not cursor.fetchone():
+                    break
+                username = f"{username_base}{suffix}"
+                suffix += 1
             
             # Create user
             password_hash = generate_password_hash(password, method='pbkdf2:sha256')
             cursor.execute("""
-                INSERT INTO users (full_name, email, phone, password_hash, is_admin, is_active, created_at)
-                VALUES (?, ?, ?, ?, 0, 1, CURRENT_TIMESTAMP)
-            """, (full_name, email, phone, password_hash))
+                INSERT INTO users (username, full_name, email, phone, password_hash, is_admin, is_active, created_at)
+                VALUES (?, ?, ?, ?, ?, 0, 1, CURRENT_TIMESTAMP)
+            """, (username, full_name, email, phone, password_hash))
             
             conn.commit()
             user_id = cursor.lastrowid
@@ -1632,9 +1646,6 @@ def user_register():
             session.permanent = True
             
             app.logger.info(f"New user registered: {email}")
-            flash('Registration successful! Welcome to Ethiosadat Furniture!', 'success')
-            
-            conn.close()
             
             # Send welcome email (optional)
             send_welcome_email(email, full_name)
@@ -1642,10 +1653,16 @@ def user_register():
             # Merge guest cart
             merge_guest_cart(user_id)
             
+            if is_ajax:
+                return jsonify({'success': True, 'message': 'Registration successful! Welcome to Ethiosadat Furniture!'})
+            
+            flash('Registration successful! Welcome to Ethiosadat Furniture!', 'success')
             return redirect(url_for('index'))
             
         except Exception as e:
             app.logger.error(f"Registration error: {str(e)}")
+            if is_ajax:
+                return jsonify({'success': False, 'error': 'Registration failed. Please try again.'})
             flash('Registration failed. Please try again.', 'error')
     
     return render_template('auth/user_register.html', lang=lang, t=t)
@@ -1700,7 +1717,7 @@ def user_profile():
         """, (session['user_id'],))
         order_stats = cursor.fetchone()
         
-        conn.close()
+
         
         return render_template('auth/user_profile.html', 
                                user=dict(user) if user else None,
@@ -1737,7 +1754,7 @@ def update_profile():
             WHERE id = ?
         """, (full_name, phone, address, city, session['user_id']))
         conn.commit()
-        conn.close()
+
         
         # Update session
         session['user_name'] = full_name
@@ -1768,7 +1785,7 @@ def change_password():
         password_hash = generate_password_hash(new_password, method='pbkdf2:sha256')
         cursor.execute("UPDATE users SET password_hash = ? WHERE id = ?", (password_hash, session['user_id']))
         conn.commit()
-        conn.close()
+
         
         app.logger.info(f"Password changed for user {session['user_email']}")
         return jsonify({'success': True, 'message': 'Password changed successfully'})
@@ -1797,7 +1814,7 @@ def delete_account():
         # Delete user (cascade will delete orders and cart items)
         cursor.execute("DELETE FROM users WHERE id = ?", (session['user_id'],))
         conn.commit()
-        conn.close()
+
         
         # Clear session
         session.clear()
@@ -1827,7 +1844,7 @@ def user_orders():
             ORDER BY id DESC
         """, (session['user_id'],))
         orders = cursor.fetchall()
-        conn.close()
+
         
         orders_list = [dict(order) for order in orders] if orders else []
         
@@ -1868,7 +1885,7 @@ def order_detail(order_id):
             WHERE oi.order_id = ?
         """, (order_id,))
         items = cursor.fetchall()
-        conn.close()
+
         
         return render_template('auth/order_detail.html',
                                order=dict(order),
@@ -2051,7 +2068,7 @@ def reset_password(token):
             password_hash = generate_password_hash(password, method='pbkdf2:sha256')
             cursor.execute("UPDATE users SET password_hash = ? WHERE email = ?", (password_hash, stored_email))
             conn.commit()
-            conn.close()
+
             
             # Clear reset session data
             session.pop('reset_token', None)
@@ -2092,7 +2109,7 @@ def view_cart():
             """, (session['user_id'],))
             
             rows = cursor.fetchall()
-            conn.close()
+
             
             for row in rows:
                 # Apply 10% discount for logged in users
@@ -2130,7 +2147,7 @@ def view_cart():
                 """, list(cart.keys()))
                 
                 products = cursor.fetchall()
-                conn.close()
+
                 
                 for p in products:
                     quantity = cart.get(str(p['id']), 0)
@@ -2206,14 +2223,14 @@ def add_to_cart():
         product = cursor.fetchone()
         
         if not product:
-            conn.close()
+
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return jsonify({'success': False, 'error': 'Product not found'}), 404
             flash('Product not found!', 'danger')
             return redirect(request.referrer or url_for('index'))
         
         if product[4] < quantity:
-            conn.close()
+
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
             flash(f'Sorry, only {product[4]} items available in stock!', 'warning')
@@ -2239,7 +2256,7 @@ def add_to_cart():
                     """, (new_quantity, existing[0]))
                     message = 'Cart updated successfully!'
                 else:
-                    conn.close()
+
                     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                         return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
                     flash(f'Sorry, only {product[4]} items available in stock!', 'warning')
@@ -2252,7 +2269,7 @@ def add_to_cart():
                 message = 'Product added to cart!'
             
             conn.commit()
-            conn.close()
+
         else:
             # Add to session cart
             cart = session.get('cart', {})
@@ -2315,7 +2332,7 @@ def update_cart():
         product = cursor.fetchone()
         
         if product and quantity > product[0]:
-            conn.close()
+
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return jsonify({'success': False, 'error': f'Only {product[0]} items available'}), 400
             flash(f'Sorry, only {product[0]} items available in stock!', 'warning')
@@ -2333,7 +2350,7 @@ def update_cart():
             session['cart'] = cart
             session.modified = True
         
-        conn.close()
+
         
         # Calculate new totals
         subtotal = get_cart_total()
@@ -2392,7 +2409,7 @@ def remove_from_cart(product_id):
                 WHERE user_id = ? AND product_id = ?
             """, (session['user_id'], product_id))
             conn.commit()
-            conn.close()
+
         else:
             cart = session.get('cart', {})
             cart_key = str(product_id)
@@ -2419,7 +2436,7 @@ def clear_cart():
             cursor = conn.cursor()
             cursor.execute("DELETE FROM cart_items WHERE user_id = ?", (session['user_id'],))
             conn.commit()
-            conn.close()
+
         else:
             session.pop('cart', None)
         
@@ -2461,18 +2478,20 @@ def checkout():
         flash('Your cart is empty', 'warning')
         return redirect(url_for('view_cart'))
     
-    # Calculate totals
+    # Calculate totals (use column names via sqlite3.Row)
     subtotal = 0
     items_list = []
     for item in cart_items:
-        discounted_price = item[5] * 0.9  # 10% discount
-        item_subtotal = discounted_price * item[4]
+        price = item['price'] if item['price'] else 0
+        quantity = item['quantity'] if item['quantity'] else 1
+        discounted_price = price * 0.9  # 10% discount
+        item_subtotal = discounted_price * quantity
         subtotal += item_subtotal
         items_list.append({
-            'product_id': item[1],
-            'name': item[6],
-            'name_am': item[7],
-            'quantity': item[4],
+            'product_id': item['product_id'],
+            'name': item['name'],
+            'name_am': item['name_am'] if item['name_am'] else item['name'],
+            'quantity': quantity,
             'price': discounted_price
         })
     
@@ -2524,7 +2543,7 @@ def checkout():
                 cursor = conn.cursor()
                 cursor.execute("DELETE FROM cart_items WHERE user_id = ?", (session['user_id'],))
                 conn.commit()
-                conn.close()
+
                 
                 # Send WhatsApp notification
                 send_order_whatsapp(session['user_name'], shipping_phone, items_list, total, order_id)
@@ -2592,7 +2611,7 @@ def create_order(user_id, items, subtotal, discount, shipping_fee, total,
             """, (item['quantity'], item['quantity'], item['product_id']))
         
         conn.commit()
-        conn.close()
+
         
         app.logger.info(f"Order created: {order_number} by user {user_id}")
         return order_id
@@ -2669,7 +2688,7 @@ def order_confirmation(order_id):
             WHERE oi.order_id = ?
         """, (order_id,))
         items = cursor.fetchall()
-        conn.close()
+
         
         whatsapp_url = send_order_whatsapp(
             session['user_name'],
@@ -2729,7 +2748,7 @@ def get_cart_total():
             """, (session['user_id'],))
             result = cursor.fetchone()
             total = result[0] or 0
-            conn.close()
+
         except Exception as e:
             app.logger.error(f"Error getting cart total: {str(e)}")
     else:
@@ -2741,7 +2760,7 @@ def get_cart_total():
                 placeholders = ','.join(['?'] * len(cart))
                 cursor.execute(f"SELECT id, price FROM products WHERE id IN ({placeholders})", list(cart.keys()))
                 products = cursor.fetchall()
-                conn.close()
+
                 for p in products:
                     quantity = cart.get(str(p[0]), 0)
                     total += p[1] * quantity
@@ -2819,7 +2838,7 @@ def admin_dashboard():
         pv_row = cursor.fetchone()
         total_page_views = int(pv_row[0]) if pv_row and pv_row[0] else 0
         
-        conn.close()
+
 
         with _visitor_lock:
             live_visitors = len(_active_visitors)
@@ -2885,7 +2904,7 @@ def admin_products():
         cursor.execute("SELECT * FROM categories WHERE is_active = 1 ORDER BY sort_order")
         categories = cursor.fetchall()
         
-        conn.close()
+
         
         products_list = [dict(p) for p in products] if products else []
         categories_list = [dict(cat) for cat in categories] if categories else []
@@ -3175,7 +3194,7 @@ def admin_product_delete(pid):
         else:
             flash('Product not found.', 'error')
         
-        conn.close()
+
         return redirect(url_for('admin_products'))
         
     except Exception as e:
@@ -3194,12 +3213,12 @@ def admin_product_toggle_featured(pid):
         cursor.execute("SELECT is_featured FROM products WHERE id = ?", (pid,))
         row = cursor.fetchone()
         if not row:
-            conn.close()
+
             return jsonify({'success': False, 'error': 'Product not found'}), 404
         new_state = 0 if row[0] else 1
         cursor.execute("UPDATE products SET is_featured = ? WHERE id = ?", (new_state, pid))
         conn.commit()
-        conn.close()
+
 
         return jsonify({'success': True, 'is_featured': bool(new_state)})
         
@@ -3220,7 +3239,7 @@ def admin_product_update_stock(pid):
         cursor = conn.cursor()
         cursor.execute("UPDATE products SET stock_quantity = ? WHERE id = ?", (stock_quantity, pid))
         conn.commit()
-        conn.close()
+
         
         return jsonify({'success': True, 'stock_quantity': stock_quantity})
         
@@ -3262,7 +3281,7 @@ def admin_bulk_delete_products():
         # Hard delete from DB
         cursor.execute(f"DELETE FROM products WHERE id IN ({placeholders})", ids)
         conn.commit()
-        conn.close()
+
 
         app.logger.info(f"Bulk hard-deleted {len(ids)} products")
 
@@ -3289,7 +3308,7 @@ def admin_export_products():
             ORDER BY p.id DESC
         """)
         products = cursor.fetchall()
-        conn.close()
+
         
         import csv
         from io import StringIO
@@ -3334,7 +3353,7 @@ def admin_ads():
             ORDER BY sort_order ASC, id DESC
         """)
         ads = cursor.fetchall()
-        conn.close()
+
         
         ads_list = []
         if ads:
@@ -3431,7 +3450,7 @@ def admin_ad_create():
             
             conn.commit()
             ad_id = cursor.lastrowid
-            conn.close()
+
             
             app.logger.info(f"New advertisement created: {title or description[:50]} (ID: {ad_id})")
             flash('Advertisement created successfully!', 'success')
@@ -3549,7 +3568,7 @@ def admin_ad_toggle(aid):
         cursor = conn.cursor()
         cursor.execute("UPDATE advertisements SET is_active = ? WHERE id = ?", (1 if is_active else 0, aid))
         conn.commit()
-        conn.close()
+
         
         app.logger.info(f"Ad {aid} status toggled to: {'active' if is_active else 'inactive'}")
         return jsonify({'success': True, 'is_active': is_active})
@@ -3579,7 +3598,7 @@ def admin_ad_delete(aid):
         
         cursor.execute("DELETE FROM advertisements WHERE id = ?", (aid,))
         conn.commit()
-        conn.close()
+
         
         app.logger.info(f"Advertisement deleted: ID {aid}")
         return jsonify({'success': True, 'message': 'Advertisement deleted successfully'})
@@ -3672,7 +3691,7 @@ def admin_orders():
         """)
         status_counts = {row['status']: row['count'] for row in cursor.fetchall()}
         
-        conn.close()
+
         
         orders_list = [dict(order) for order in orders] if orders else []
         
@@ -3726,7 +3745,7 @@ def admin_order_detail(oid):
         """, (oid,))
         items = cursor.fetchall()
         
-        conn.close()
+
         
         order_dict = dict(order)
         items_list = [dict(item) for item in items] if items else []
@@ -3758,7 +3777,7 @@ def admin_order_update_status(oid):
         cursor = conn.cursor()
         cursor.execute("UPDATE orders SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?", (status, oid))
         conn.commit()
-        conn.close()
+
         
         app.logger.info(f"Order {oid} status updated to: {status}")
         
@@ -3788,7 +3807,7 @@ def admin_delete_order(oid):
         cursor.execute("DELETE FROM order_items WHERE order_id = ?", (oid,))
         cursor.execute("DELETE FROM orders WHERE id = ?", (oid,))
         conn.commit()
-        conn.close()
+
         
         app.logger.info(f"Order {oid} deleted")
         flash('Order deleted successfully!', 'success')
@@ -3829,7 +3848,7 @@ def admin_export_order(oid):
         """, (oid,))
         items = cursor.fetchall()
         
-        conn.close()
+
         
         export_data = {
             'order': dict(order),
@@ -3872,7 +3891,7 @@ def admin_order_invoice(oid):
         """, (oid,))
         items = cursor.fetchall()
         
-        conn.close()
+
         
         # Generate HTML invoice
         html = f"""
@@ -3938,7 +3957,75 @@ def admin_order_invoice(oid):
         app.logger.error(f"Error generating invoice: {str(e)}")
         flash('Error generating invoice.', 'error')
         return redirect(url_for('admin_order_detail', oid=oid))
-# ==================== 22. ADMIN REPORTS ====================
+# ==================== 22. ADMIN USERS ====================
+
+@app.route('/admin/users')
+@admin_required
+def admin_users():
+    """Admin users management page."""
+    lang = get_lang()
+    t = TEXTS.get(lang, TEXTS['am'])
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT id, username, email, full_name, phone, is_admin, is_active, created_at, last_login
+            FROM users
+            ORDER BY created_at DESC
+        """)
+        users = [dict(u) for u in cursor.fetchall()]
+        return render_template('admin/users/index.html', users=users, lang=lang, t=t)
+    except Exception as e:
+        app.logger.error(f"Admin users error: {str(e)}")
+        flash('Error loading users.', 'error')
+        return redirect(url_for('admin_dashboard'))
+
+
+@app.route('/admin/users/toggle/<int:uid>', methods=['POST'])
+@admin_required
+def admin_toggle_user(uid):
+    """Toggle user active status."""
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT is_active, is_admin FROM users WHERE id = ?", (uid,))
+        user = cursor.fetchone()
+        if not user:
+            return jsonify({'success': False, 'error': 'User not found'}), 404
+        if user['is_admin']:
+            return jsonify({'success': False, 'error': 'Cannot deactivate admin accounts'}), 403
+        new_status = 0 if user['is_active'] else 1
+        cursor.execute("UPDATE users SET is_active = ? WHERE id = ?", (new_status, uid))
+        conn.commit()
+        return jsonify({'success': True, 'is_active': new_status})
+    except Exception as e:
+        app.logger.error(f"Toggle user error: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/admin/users/delete/<int:uid>', methods=['POST'])
+@admin_required
+def admin_delete_user(uid):
+    """Delete a user account."""
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT is_admin FROM users WHERE id = ?", (uid,))
+        user = cursor.fetchone()
+        if not user:
+            return jsonify({'success': False, 'error': 'User not found'}), 404
+        if user['is_admin']:
+            return jsonify({'success': False, 'error': 'Cannot delete admin accounts'}), 403
+        cursor.execute("DELETE FROM cart_items WHERE user_id = ?", (uid,))
+        cursor.execute("DELETE FROM users WHERE id = ?", (uid,))
+        conn.commit()
+        return jsonify({'success': True})
+    except Exception as e:
+        app.logger.error(f"Delete user error: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+# ==================== 23. ADMIN REPORTS ====================
 
 @app.route('/admin/reports')
 @admin_required
@@ -4018,7 +4105,7 @@ def admin_reports():
         """)
         low_stock = cursor.fetchall()
         
-        conn.close()
+
         
         # Convert to dict
         categories_list = [dict(cat) for cat in categories] if categories else []
@@ -4108,7 +4195,7 @@ def admin_reports_sales():
         """)
         daily_sales = cursor.fetchall()
         
-        conn.close()
+
         
         orders_list = [dict(order) for order in orders] if orders else []
         daily_sales_list = [dict(sale) for sale in daily_sales] if daily_sales else []
@@ -4181,7 +4268,7 @@ def admin_reports_products():
         """)
         categories = cursor.fetchall()
         
-        conn.close()
+
         
         products_list = [dict(p) for p in products] if products else []
         stats_dict = dict(stats) if stats else {}
@@ -4280,10 +4367,10 @@ def admin_settings():
             app.logger.error(f"Error saving settings: {str(e)}")
             flash('Error saving settings.', 'error')
         
-        conn.close()
+
         return redirect(url_for('admin_settings'))
     
-    conn.close()
+
     
     return render_template('admin/settings.html',
                            settings=settings,
@@ -4378,7 +4465,7 @@ def admin_send_notification():
             
             notification_id = cursor.lastrowid
             conn.commit()
-            conn.close()
+
             
             # Send push notification via Firebase
             send_push_notification(title, body, image_url, link, target)
@@ -4428,7 +4515,7 @@ def api_cart_count():
             cursor.execute("SELECT SUM(quantity) FROM cart_items WHERE user_id = ?", (session['user_id'],))
             result = cursor.fetchone()
             count = result[0] or 0
-            conn.close()
+
         
         return jsonify({'success': True, 'cart_count': count})
         
@@ -4456,7 +4543,7 @@ def api_get_cart():
             """, (session['user_id'],))
             
             rows = cursor.fetchall()
-            conn.close()
+
             
             for row in rows:
                 discounted_price = row['price'] * 0.9 if session.get('user_id') else row['price']
@@ -4486,7 +4573,7 @@ def api_get_cart():
                 """, list(cart.keys()))
                 
                 products = cursor.fetchall()
-                conn.close()
+
                 
                 for p in products:
                     quantity = cart.get(str(p['id']), 0)
@@ -4546,11 +4633,11 @@ def api_cart_add():
         product = cursor.fetchone()
         
         if not product:
-            conn.close()
+
             return jsonify({'success': False, 'error': 'Product not found'}), 404
         
         if product[4] < quantity:
-            conn.close()
+
             return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
         
         if session.get('user_id'):
@@ -4566,7 +4653,7 @@ def api_cart_add():
                 if product[4] >= new_quantity:
                     cursor.execute("UPDATE cart_items SET quantity = ? WHERE id = ?", (new_quantity, existing[0]))
                 else:
-                    conn.close()
+
                     return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
             else:
                 cursor.execute("""
@@ -4586,10 +4673,10 @@ def api_cart_add():
                 session['cart'] = cart
                 session.modified = True
             else:
-                conn.close()
+
                 return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
         
-        conn.close()
+
         
         # Get updated cart count
         cart_count = get_cart_count()
@@ -4626,7 +4713,7 @@ def api_cart_update():
         product = cursor.fetchone()
         
         if product and quantity > product[0]:
-            conn.close()
+
             return jsonify({'success': False, 'error': f'Only {product[0]} items available'}), 400
         
         if session.get('user_id'):
@@ -4641,7 +4728,7 @@ def api_cart_update():
             session['cart'] = cart
             session.modified = True
         
-        conn.close()
+
         
         return jsonify({'success': True, 'message': 'Cart updated'})
         
@@ -4668,7 +4755,7 @@ def api_cart_remove():
                 WHERE user_id = ? AND product_id = ?
             """, (session['user_id'], product_id))
             conn.commit()
-            conn.close()
+
         else:
             cart = session.get('cart', {})
             cart_key = str(product_id)
@@ -4752,7 +4839,7 @@ def api_products():
         
         cursor.execute(query, params)
         products = cursor.fetchall()
-        conn.close()
+
         
         products_list = []
         for p in products:
@@ -4805,7 +4892,7 @@ def api_get_product(product_id):
         """, (product_id,))
         
         product = cursor.fetchone()
-        conn.close()
+
         
         if not product:
             return jsonify({'success': False, 'error': 'Product not found'}), 404
@@ -4878,7 +4965,7 @@ def api_categories():
         """)
         
         categories = cursor.fetchall()
-        conn.close()
+
         
         categories_list = [dict(cat) for cat in categories] if categories else []
         
@@ -4920,7 +5007,7 @@ def api_search_products():
         """, (search_pattern, search_pattern, search_pattern, limit))
         
         products = cursor.fetchall()
-        conn.close()
+
         
         products_list = [dict(p) for p in products] if products else []
         
@@ -4951,7 +5038,7 @@ def api_branches():
         """)
         
         branches = cursor.fetchall()
-        conn.close()
+
         
         branches_list = []
         for branch in branches:
@@ -5000,7 +5087,7 @@ def api_submit_order():
         cart_items = cursor.fetchall()
         
         if not cart_items:
-            conn.close()
+
             return jsonify({'success': False, 'error': 'Cart is empty'}), 400
         
         # Calculate totals
@@ -5057,7 +5144,7 @@ def api_submit_order():
         cursor.execute("DELETE FROM cart_items WHERE user_id = ?", (session['user_id'],))
         
         conn.commit()
-        conn.close()
+
         
         # Send WhatsApp notification
         whatsapp_url = send_order_whatsapp(
@@ -5248,7 +5335,7 @@ def seed_demo_data():
         print("Demo products added")
     
     conn.commit()
-    conn.close()
+
     print("Demo data seeding complete!")
 
 
@@ -5265,7 +5352,7 @@ def list_products():
         ORDER BY p.id DESC
     """)
     products = cursor.fetchall()
-    conn.close()
+
     
     if not products:
         print("No products found.")
@@ -5306,7 +5393,7 @@ def show_stats():
     cursor.execute("SELECT COUNT(*) FROM orders WHERE status = 'pending'")
     pending = cursor.fetchone()[0]
     
-    conn.close()
+
     
     print("\n" + "=" * 50)
     print("ETHIOSADAT DATABASE STATISTICS")
@@ -5561,7 +5648,7 @@ def track_order(order_number):
         """, (order_number,))
         
         order = cursor.fetchone()
-        conn.close()
+
         
         if not order:
             flash('Order not found!', 'error')
@@ -5580,7 +5667,7 @@ def track_order(order_number):
             WHERE oi.order_id = ?
         """, (order_dict['id'],))
         items = cursor.fetchall()
-        conn.close()
+
         
         items_list = [dict(item) for item in items] if items else []
         
@@ -5633,7 +5720,7 @@ def wishlist():
         """, (session['user_id'],))
         
         wishlist_items = cursor.fetchall()
-        conn.close()
+
         
         wishlist_list = [dict(item) for item in wishlist_items] if wishlist_items else []
         
@@ -5681,7 +5768,7 @@ def api_wishlist_add():
         """, (session['user_id'], product_id))
         
         conn.commit()
-        conn.close()
+
         
         return jsonify({'success': True, 'message': 'Added to wishlist'})
         
@@ -5707,7 +5794,7 @@ def api_wishlist_remove():
             DELETE FROM wishlist WHERE user_id = ? AND product_id = ?
         """, (session['user_id'], product_id))
         conn.commit()
-        conn.close()
+
         
         return jsonify({'success': True, 'message': 'Removed from wishlist'})
         
@@ -5762,14 +5849,14 @@ def api_apply_coupon():
         coupon = cursor.fetchone()
         
         if not coupon:
-            conn.close()
+
             return jsonify({'success': False, 'error': 'Invalid or expired coupon code'}), 400
         
         # Get cart subtotal
         subtotal = get_cart_total()
         
         if subtotal < coupon[4]:  # min_order
-            conn.close()
+
             return jsonify({'success': False, 'error': f'Minimum order of {coupon[4]} ETB required'}), 400
         
         # Calculate discount
@@ -5788,7 +5875,7 @@ def api_apply_coupon():
         }
         session.modified = True
         
-        conn.close()
+
         
         return jsonify({
             'success': True,
@@ -5822,7 +5909,7 @@ def product_reviews(product_id):
             """, (product_id,))
             
             reviews = cursor.fetchall()
-            conn.close()
+
             
             reviews_list = [dict(review) for review in reviews] if reviews else []
             
@@ -5880,7 +5967,7 @@ def product_reviews(product_id):
             """, (product_id, session['user_id']))
             
             if cursor.fetchone():
-                conn.close()
+
                 return jsonify({'success': False, 'error': 'You have already reviewed this product'}), 400
             
             cursor.execute("""
@@ -5889,7 +5976,7 @@ def product_reviews(product_id):
             """, (product_id, session['user_id'], rating, comment))
             
             conn.commit()
-            conn.close()
+
             
             app.logger.info(f"New review added for product {product_id} by user {session['user_id']}")
             
@@ -5933,7 +6020,7 @@ def subscribe_newsletter():
         """, (email,))
         
         conn.commit()
-        conn.close()
+
         
         return jsonify({'success': True, 'message': 'Successfully subscribed to newsletter!'})
         
@@ -5965,7 +6052,7 @@ def admin_reviews():
         """)
         
         reviews = cursor.fetchall()
-        conn.close()
+
         
         reviews_list = [dict(review) for review in reviews] if reviews else []
         
@@ -5989,7 +6076,7 @@ def admin_approve_review(review_id):
         cursor = conn.cursor()
         cursor.execute("UPDATE reviews SET is_approved = 1 WHERE id = ?", (review_id,))
         conn.commit()
-        conn.close()
+
         
         return jsonify({'success': True, 'message': 'Review approved'})
         
@@ -6007,7 +6094,7 @@ def admin_delete_review(review_id):
         cursor = conn.cursor()
         cursor.execute("DELETE FROM reviews WHERE id = ?", (review_id,))
         conn.commit()
-        conn.close()
+
         
         return jsonify({'success': True, 'message': 'Review deleted'})
         
@@ -6045,7 +6132,7 @@ def sitemap_xml():
         cursor.execute("SELECT id, created_at FROM categories WHERE is_active = 1")
         categories = cursor.fetchall()
         
-        conn.close()
+
         
         base_url = request.url_root.rstrip('/')
         current_date = datetime_.datetime.now().strftime('%Y-%m-%d')
@@ -6126,7 +6213,7 @@ def get_cached_categories():
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM categories WHERE is_active = 1 ORDER BY sort_order")
         categories = cursor.fetchall()
-        conn.close()
+
         return [dict(cat) for cat in categories] if categories else []
     except Exception as e:
         app.logger.error(f"Error getting cached categories: {str(e)}")
@@ -6273,7 +6360,7 @@ def health_check_details():
         cursor = conn.cursor()
         cursor.execute("SELECT 1")
         health_status['services']['database'] = 'connected'
-        conn.close()
+
     except Exception as e:
         health_status['services']['database'] = f'error: {str(e)}'
         health_status['status'] = 'unhealthy'
