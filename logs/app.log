@@ -54058,3 +54058,9 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-10 18:21:33,334 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-10 18:23:21,441 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-10 18:23:21,756 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:07:16,662 - app - INFO - ==================================================
+2026-05-11 01:07:16,662 - app - INFO - Ethiosadat Application Started
+2026-05-11 01:07:16,662 - app - INFO - ==================================================
+2026-05-11 01:07:17,589 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:07:23,254 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:07:31,482 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
