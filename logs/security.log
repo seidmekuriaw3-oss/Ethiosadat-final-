@@ -14953,3 +14953,7 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 03:31:43,068 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
 2026-05-11 03:33:54,435 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
 2026-05-11 03:34:01,000 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-11 03:40:44,453 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 172.31.95.34
+2026-05-11 03:42:59,659 - app - WARNING - Slow request: POST /admin/ads/edit/2 - 2.22s
+2026-05-11 03:44:39,090 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 03:44:39,364 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
