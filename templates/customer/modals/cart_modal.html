@@ -373,8 +373,10 @@
         showCartLoading();
         
         fetch('{{ url_for("api_get_cart") }}')
-            .then(response => response.json())
-            .then(data => {
+            .then(response => response.text())
+            .then(text => {
+                if (!text || !text.trim()) { showCartError(); return; }
+                const data = JSON.parse(text);
                 if (data.success) {
                     cartModalCart = data.items || [];
                     renderCartModal(data);
@@ -382,10 +384,7 @@
                     showCartError();
                 }
             })
-            .catch(error => {
-                console.error('Error fetching cart:', error);
-                showCartError();
-            });
+            .catch(() => showCartError());
     }
     
     function showCartLoading() {

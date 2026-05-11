@@ -2,14 +2,14 @@
 <!-- Main JavaScript files and initializations -->
 
 <!-- Core Scripts -->
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
-<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
-<script src="{{ url_for('static', filename='js/filter.js') }}"></script>
-<script src="{{ url_for('static', filename='js/slider.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}?v=2"></script>
+<script src="{{ url_for('static', filename='js/cart.js') }}?v=2"></script>
+<script src="{{ url_for('static', filename='js/filter.js') }}?v=2"></script>
+<script src="{{ url_for('static', filename='js/slider.js') }}?v=2"></script>
 
 <!-- Component Scripts -->
-<script src="{{ url_for('static', filename='js/components/modal.js') }}"></script>
-<script src="{{ url_for('static', filename='js/components/toast.js') }}"></script>
+<script src="{{ url_for('static', filename='js/components/modal.js') }}?v=2"></script>
+<script src="{{ url_for('static', filename='js/components/toast.js') }}?v=2"></script>
 
 <!-- Page Specific Scripts (Optional) -->
 {% block extra_scripts %}{% endblock %}
@@ -460,7 +460,17 @@
         window.addEventListener('load', function() {
             navigator.serviceWorker.register('{{ url_for("static", filename="service-worker.js") }}')
                 .then(registration => {
-                    console.log('ServiceWorker registered:', registration.scope);
+                    console.log('ServiceWorker registered successfully:', registration.scope);
+                    registration.addEventListener('updatefound', function() {
+                        const newWorker = registration.installing;
+                        if (newWorker) {
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'activated' && navigator.serviceWorker.controller) {
+                                    window.location.reload();
+                                }
+                            });
+                        }
+                    });
                 })
                 .catch(error => {
                     console.log('ServiceWorker registration failed:', error);

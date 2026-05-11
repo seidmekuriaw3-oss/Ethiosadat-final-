@@ -6388,23 +6388,9 @@ def get_cached_categories():
 
 @app.after_request
 def compress_response(response):
-    """Compress response for better performance."""
-    # Skip compression for small responses
-    if response.content_length and response.content_length < 1024:
-        return response
-    
-    # Skip compression for static files
-    if request.path.startswith('/static/'):
-        return response
-    
-    # Skip compression for API responses that might be streaming
-    if request.path.startswith('/api/') and response.content_length and response.content_length > 10 * 1024 * 1024:
-        return response
-    
-    # Add compression headers
-    response.headers['Content-Encoding'] = 'gzip'
-    response.headers['Vary'] = 'Accept-Encoding'
-    
+    """Add cache-control headers for API responses."""
+    if request.path.startswith('/api/'):
+        response.headers['Cache-Control'] = 'no-store'
     return response
 
 

@@ -431,13 +431,15 @@
     // Initialize cart count on page load
     document.addEventListener('DOMContentLoaded', function() {
         fetch('{{ url_for("api_cart_count") }}')
-            .then(res => res.json())
-            .then(data => {
+            .then(res => res.text())
+            .then(text => {
+                if (!text || !text.trim()) return;
+                const data = JSON.parse(text);
                 if (data.success) {
                     updateBottomCartCount(data.cart_count);
                 }
             })
-            .catch(err => console.error('Error fetching cart count:', err));
+            .catch(() => {});
     });
     
     // Make functions globally available

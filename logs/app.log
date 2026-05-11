@@ -54562,3 +54562,68 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 18:50:36,772 - app - INFO - ==================================================
 2026-05-11 18:50:36,829 - app - INFO - Application shutting down...
 2026-05-11 18:54:45,945 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 18:56:54,444 - app - INFO - ==================================================
+2026-05-11 18:56:54,445 - app - INFO - Ethiosadat Application Started
+2026-05-11 18:56:54,445 - app - INFO - ==================================================
+2026-05-11 19:11:08,347 - app - INFO - ==================================================
+2026-05-11 19:11:08,347 - app - INFO - Ethiosadat Application Started
+2026-05-11 19:11:08,347 - app - INFO - ==================================================
+2026-05-11 19:11:08,424 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-11 19:11:08,432 - app - INFO - Database initialized successfully
+2026-05-11 19:11:08,433 - app - INFO - Application initialized successfully
+2026-05-11 19:11:08,433 - app - INFO - ============================================================
+2026-05-11 19:11:08,434 - app - INFO - ETHIOSADAT FURNITURE APPLICATION READY
+2026-05-11 19:11:08,434 - app - INFO - Environment: production
+2026-05-11 19:11:08,434 - app - INFO - Debug Mode: False
+2026-05-11 19:11:08,435 - app - INFO - Cache Type: SimpleCache
+2026-05-11 19:11:08,435 - app - INFO - ============================================================
+2026-05-11 19:11:08,435 - app - INFO - Application shutting down...
+2026-05-11 19:11:15,238 - app - INFO - ==================================================
+2026-05-11 19:11:15,238 - app - INFO - Ethiosadat Application Started
+2026-05-11 19:11:15,239 - app - INFO - ==================================================
+2026-05-11 19:11:18,520 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:11:21,318 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:11:49,727 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:12:31,869 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:12:32,546 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:12:37,698 - app - WARNING - 404 Error: http://f9f5897d-809f-419d-836a-ddcb182c2a47-00-rqmihst8ms6u.riker.replit.dev/favicon.ico
+2026-05-11 19:12:43,545 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-11 19:12:44,105 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 19:12:46,036 - app - INFO - Admin reports viewed
+2026-05-11 19:12:46,043 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 19:12:49,117 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 19:12:51,481 - app - INFO - Admin product list viewed - 22 products
+2026-05-11 19:13:00,531 - app - INFO - Admin product list viewed - 22 products
+2026-05-11 19:13:11,138 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:13:19,732 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:13:20,281 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:13:22,979 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:13:28,375 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:13:46,321 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 19:13:46,323 - app - INFO - Admin reports viewed
+2026-05-11 19:14:46,321 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 19:14:46,327 - app - INFO - Admin reports viewed
+2026-05-11 19:15:25,532 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 19:15:31,429 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 19:15:33,000 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:15:51,723 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-11 19:15:53,098 - app - INFO - Admin ads list viewed - 7 ads
+2026-05-11 19:15:53,940 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 19:15:54,198 - app - INFO - Admin product list viewed - 22 products
+2026-05-11 19:15:54,754 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 19:15:55,892 - app - INFO - Admin reports viewed
+2026-05-11 19:15:55,896 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 19:16:02,723 - app - INFO - Admin product list viewed - 22 products
+2026-05-11 19:16:07,161 - app - INFO - Admin product list viewed - 22 products
+2026-05-11 19:16:14,687 - app - INFO - Admin ads list viewed - 7 ads
+2026-05-11 19:16:15,592 - app - INFO - Admin ads list viewed - 7 ads
+2026-05-11 19:16:20,931 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 19:16:25,450 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 19:16:28,108 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 19:16:39,447 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 19:17:41,177 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:19:47,400 - app - INFO - ==================================================
+2026-05-11 19:19:47,400 - app - INFO - Ethiosadat Application Started
+2026-05-11 19:19:47,400 - app - INFO - ==================================================
+2026-05-11 19:19:48,322 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:20:03,211 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6

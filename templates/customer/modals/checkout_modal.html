@@ -316,8 +316,10 @@
     // Fetch cart data for checkout
     function fetchCartForCheckout() {
         fetch('{{ url_for("api_get_cart") }}')
-            .then(response => response.json())
-            .then(data => {
+            .then(response => response.text())
+            .then(text => {
+                if (!text || !text.trim()) { closeCheckoutModal(); return; }
+                const data = JSON.parse(text);
                 if (data.success) {
                     currentCartData = data;
                     renderCheckoutSummary(data);
@@ -326,11 +328,7 @@
                     closeCheckoutModal();
                 }
             })
-            .catch(error => {
-                console.error('Error fetching cart:', error);
-                if (window.showToast) window.showToast('Error loading cart', 'error');
-                closeCheckoutModal();
-            });
+            .catch(() => closeCheckoutModal());
     }
     
     // Render checkout summary

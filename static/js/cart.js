@@ -85,8 +85,10 @@ class CartManager {
     
     fetchCartData(retryCount = 0) {
         fetch(CART_API.cart)
-            .then(res => res.json())
-            .then(data => {
+            .then(res => res.text())
+            .then(text => {
+                if (!text || !text.trim()) return;
+                const data = JSON.parse(text);
                 if (data.success) {
                     this.cart = data.items || data.cart || [];
                     this.count = data.item_count || data.count || 0;
@@ -98,12 +100,7 @@ class CartManager {
                     this.saveToStorage();
                 }
             })
-            .catch(error => {
-                console.error('Error fetching cart:', error);
-                if (retryCount < CART_CONFIG.maxRetries) {
-                    setTimeout(() => this.fetchCartData(retryCount + 1), CART_CONFIG.retryDelay);
-                }
-            });
+            .catch(() => {});
     }
     
     updateUI() {

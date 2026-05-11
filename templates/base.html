@@ -428,10 +428,10 @@
 </footer>
 
 <!-- ==================== SCRIPTS ==================== -->
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
-<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
-<script src="{{ url_for('static', filename='js/components/modal.js') }}"></script>
-<script src="{{ url_for('static', filename='js/components/toast.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}?v=2"></script>
+<script src="{{ url_for('static', filename='js/cart.js') }}?v=2"></script>
+<script src="{{ url_for('static', filename='js/components/modal.js') }}?v=2"></script>
+<script src="{{ url_for('static', filename='js/components/toast.js') }}?v=2"></script>
 
 <script>
     // ==================== CART COUNT UPDATE ====================
@@ -652,13 +652,15 @@
     // ==================== FETCH CART COUNT ====================
     function fetchCartCount() {
         fetch('{{ url_for("api_cart_count") }}')
-            .then(res => res.json())
-            .then(data => {
+            .then(res => res.text())
+            .then(text => {
+                if (!text || !text.trim()) return;
+                const data = JSON.parse(text);
                 if (data.success) {
                     updateCartCounts(data.cart_count);
                 }
             })
-            .catch(err => console.error('Error fetching cart count:', err));
+            .catch(() => {});
     }
     
     // ==================== CLOSE MODALS ON ESCAPE ====================
