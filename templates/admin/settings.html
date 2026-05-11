@@ -276,6 +276,46 @@
         </div>
     </form>
 
+    <!-- Change Password -->
+    <div class="settings-card" id="change-password">
+        <h3>
+            <span>🔑</span> Change Admin Password
+        </h3>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                {% if 'password' in message.lower() %}
+                <div style="padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 14px;
+                    {% if category == 'success' %}background:#e8f5e9; color:#2e7d32; border:1px solid #a5d6a7;
+                    {% else %}background:#ffebee; color:#c62828; border:1px solid #ef9a9a;{% endif %}">
+                    {{ message }}
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+        <form method="post" action="{{ url_for('admin_change_password') }}" onsubmit="return validatePasswordForm()">
+            <div class="form-group">
+                <label>Current Password</label>
+                <input type="password" name="current_password" id="current_password" placeholder="Enter current password" autocomplete="current-password">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" name="new_password" id="new_password" placeholder="Min 8 characters" autocomplete="new-password">
+                    <small>At least 8 characters</small>
+                </div>
+                <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <input type="password" name="confirm_password" id="confirm_password" placeholder="Repeat new password" autocomplete="new-password">
+                </div>
+            </div>
+            <div style="margin-top: 4px;">
+                <button type="submit" class="btn btn-primary" style="padding: 11px 24px;">
+                    🔒 Update Password
+                </button>
+            </div>
+        </form>
+    </div>
+
     <!-- Danger Zone -->
     <div class="settings-card danger-zone">
         <h3>
@@ -522,11 +562,35 @@
         }
     });
     
+    // Validate change password form
+    function validatePasswordForm() {
+        const current = document.getElementById('current_password')?.value || '';
+        const newPw = document.getElementById('new_password')?.value || '';
+        const confirm = document.getElementById('confirm_password')?.value || '';
+
+        if (!current || !newPw || !confirm) {
+            window.showToast ? window.showToast('All password fields are required.', 'error') : alert('All password fields are required.');
+            return false;
+        }
+        if (newPw.length < 8) {
+            window.showToast ? window.showToast('New password must be at least 8 characters.', 'error') : alert('New password must be at least 8 characters.');
+            return false;
+        }
+        if (newPw !== confirm) {
+            window.showToast ? window.showToast('Passwords do not match.', 'error') : alert('Passwords do not match.');
+            return false;
+        }
+        const btn = document.querySelector('#change-password button[type="submit"]');
+        if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner-sm"></span> Updating...'; }
+        return true;
+    }
+
     // Make functions globally available
     window.resetToDefaults = resetToDefaults;
     window.clearCache = clearCache;
     window.backupDatabase = backupDatabase;
     window.rebuildIndexes = rebuildIndexes;
     window.validateForm = validateForm;
+    window.validatePasswordForm = validatePasswordForm;
 </script>
 {% endblock %}

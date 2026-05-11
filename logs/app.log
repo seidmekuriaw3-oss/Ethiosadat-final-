@@ -54330,3 +54330,9 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 03:33:54,341 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
 2026-05-11 03:33:54,435 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
 2026-05-11 03:34:01,000 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-11 03:38:57,270 - app - INFO - ==================================================
+2026-05-11 03:38:57,270 - app - INFO - Ethiosadat Application Started
+2026-05-11 03:38:57,270 - app - INFO - ==================================================
+2026-05-11 03:39:03,411 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-11 03:39:09,868 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-11 03:39:26,363 - app - INFO - Admin password changed for user id=1

@@ -4466,6 +4466,51 @@ def admin_settings():
                            t=t)
 
 
+@app.route('/admin/settings/change-password', methods=['POST'])
+@admin_required
+def admin_change_password():
+    """Change admin password."""
+    current_password = request.form.get('current_password', '').strip()
+    new_password = request.form.get('new_password', '').strip()
+    confirm_password = request.form.get('confirm_password', '').strip()
+
+    if not current_password or not new_password or not confirm_password:
+        flash('All password fields are required.', 'error')
+        return redirect(url_for('admin_settings') + '#change-password')
+
+    if new_password != confirm_password:
+        flash('New password and confirmation do not match.', 'error')
+        return redirect(url_for('admin_settings') + '#change-password')
+
+    if len(new_password) < 8:
+        flash('New password must be at least 8 characters long.', 'error')
+        return redirect(url_for('admin_settings') + '#change-password')
+
+    conn = get_db()
+    cursor = conn.cursor()
+    try:
+        admin_id = session.get('admin_id') or session.get('user_id')
+        cursor.execute("SELECT id, password_hash FROM users WHERE id = ? AND is_admin = 1", (admin_id,))
+        admin = cursor.fetchone()
+
+        if not admin or not check_password_hash(admin[1], current_password):
+            flash('Current password is incorrect.', 'error')
+            return redirect(url_for('admin_settings') + '#change-password')
+
+        new_hash = generate_password_hash(new_password, method='pbkdf2:sha256')
+        cursor.execute("UPDATE users SET password_hash = ? WHERE id = ?", (new_hash, admin[0]))
+        conn.commit()
+        app.logger.info(f"Admin password changed for user id={admin[0]}")
+        flash('Password changed successfully!', 'success')
+    except Exception as e:
+        app.logger.error(f"Error changing admin password: {str(e)}")
+        flash('Error changing password. Please try again.', 'error')
+    finally:
+        conn.close()
+
+    return redirect(url_for('admin_settings') + '#change-password')
+
+
 @app.route('/admin/clear-cache', methods=['GET', 'POST'])
 @admin_required
 def admin_clear_cache():
