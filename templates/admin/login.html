@@ -329,6 +329,22 @@
             <button type="submit" id="loginBtn">Login to Dashboard</button>
         </form>
         
+        <!-- Admin Demo Hint -->
+        <div style="
+            margin-top: 20px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+        " onclick="fillAdminDemo()" title="Click to auto-fill">
+            <p style="margin: 0 0 6px; font-weight: 600; color: #333;">🔑 Admin Credentials <span style="font-weight:normal;">(click to fill)</span></p>
+            <p style="margin: 2px 0;"><strong>Email:</strong> <code style="background:#e0e0e0;padding:1px 5px;border-radius:4px;">admin@ethiosadat.com</code></p>
+            <p style="margin: 2px 0;"><strong>Password:</strong> <code style="background:#e0e0e0;padding:1px 5px;border-radius:4px;">Admin@2026</code></p>
+        </div>
+
         <div class="footer-links">
             <a href="{{ url_for('index') }}">← Back to Store</a> | 
             <a href="{{ url_for('contact') }}">Need Help?</a>
@@ -415,6 +431,21 @@
                 btn.textContent = 'Login to Dashboard';
             }
         });
+        
+        // Auto-fill admin demo credentials
+        function fillAdminDemo() {
+            const emailEl = document.getElementById('email');
+            const passEl = document.getElementById('password');
+            if (emailEl) emailEl.value = 'admin@ethiosadat.com';
+            if (passEl) passEl.value = 'Admin@2026';
+            [emailEl, passEl].forEach(el => {
+                if (!el) return;
+                el.style.transition = 'background 0.4s';
+                el.style.background = '#e8f0fe';
+                setTimeout(() => { el.style.background = ''; }, 800);
+            });
+        }
+        window.fillAdminDemo = fillAdminDemo;
         
         console.log('Admin login page loaded');
         

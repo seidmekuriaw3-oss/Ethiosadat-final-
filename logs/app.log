@@ -54301,3 +54301,32 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 03:23:06,225 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 03:23:12,033 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 03:23:49,872 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-11 03:24:23,623 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:24:27,136 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-11 03:24:27,136 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/images/logo.svg
+2026-05-11 03:24:27,599 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:25:11,736 - app - INFO - New user registered: seidmekuriaw3@gmail.com
+2026-05-11 03:25:11,736 - app - INFO - Welcome email would be sent to seidmekuriaw3@gmail.com
+2026-05-11 03:25:30,306 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 03:25:30,894 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:25:32,231 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 03:25:32,552 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:25:42,812 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/favicon.ico
+2026-05-11 03:25:55,951 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 172.31.95.34
+2026-05-11 03:26:12,040 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 172.31.95.34
+2026-05-11 03:26:18,564 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:26:22,121 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:27:51,927 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:28:11,749 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 172.31.95.34
+2026-05-11 03:28:31,434 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:30:48,250 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-11 03:31:43,068 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-11 03:32:25,415 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-11 03:32:26,329 - app - INFO - User logged in: customer@ethiosadat.com
+2026-05-11 03:32:45,248 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-11 03:32:45,774 - app - INFO - User logged in: customer@ethiosadat.com
+2026-05-11 03:33:53,001 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-11 03:33:53,243 - app - INFO - User logged in: customer@ethiosadat.com
+2026-05-11 03:33:54,341 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 03:33:54,435 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
+2026-05-11 03:34:01,000 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
