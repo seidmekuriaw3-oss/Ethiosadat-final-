@@ -3,6 +3,7 @@ modules = ["nodejs-24", "python-3.11"]
 [deployment]
 router = "application"
 deploymentTarget = "autoscale"
+run = ["gunicorn", "--bind=0.0.0.0:8080", "--reuse-port", "--workers=2", "--timeout=120", "wsgi:app"]
 
 [deployment.postBuild]
 args = ["pnpm", "store", "prune"]
@@ -29,7 +30,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "fuser -k 5000/tcp 2>/dev/null; sleep 1; python app.py"
+args = "pkill -f 'python app.py' 2>/dev/null; sleep 2; python app.py"
 waitForPort = 5000
 
 [agent]
@@ -46,10 +47,6 @@ externalPort = 3001
 
 [[ports]]
 localPort = 5000
-externalPort = 80
-
-[[ports]]
-localPort = 8081
 externalPort = 80
 
 [nix]

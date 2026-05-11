@@ -54525,3 +54525,35 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 18:16:32,947 - app - INFO - ==================================================
 2026-05-11 18:16:39,809 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 18:16:46,373 - app - WARNING - 404 Error: http://localhost:5000/static/000001
+2026-05-11 18:36:47,622 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-11 18:36:47,623 - app - INFO - Database initialized successfully
+2026-05-11 18:36:47,624 - app - INFO - Application initialized successfully
+2026-05-11 18:36:47,624 - app - INFO - ============================================================
+2026-05-11 18:36:47,624 - app - INFO - ETHIOSADAT FURNITURE APPLICATION READY
+2026-05-11 18:36:47,624 - app - INFO - Environment: production
+2026-05-11 18:36:47,624 - app - INFO - Debug Mode: False
+2026-05-11 18:36:47,624 - app - INFO - Cache Type: SimpleCache
+2026-05-11 18:36:47,624 - app - INFO - ============================================================
+2026-05-11 18:36:50,787 - app - INFO - Application shutting down...
+2026-05-11 18:38:11,154 - app - INFO - ==================================================
+2026-05-11 18:38:11,154 - app - INFO - Ethiosadat Application Started
+2026-05-11 18:38:11,155 - app - INFO - ==================================================
+2026-05-11 18:46:04,804 - app - INFO - ==================================================
+2026-05-11 18:46:04,804 - app - INFO - Ethiosadat Application Started
+2026-05-11 18:46:04,804 - app - INFO - ==================================================
+2026-05-11 18:46:04,862 - app - INFO - Application shutting down...
+2026-05-11 18:46:51,411 - app - INFO - ==================================================
+2026-05-11 18:46:51,412 - app - INFO - Ethiosadat Application Started
+2026-05-11 18:46:51,412 - app - INFO - ==================================================
+2026-05-11 18:46:51,464 - app - INFO - Application shutting down...
+2026-05-11 18:47:34,944 - app - INFO - ==================================================
+2026-05-11 18:47:34,944 - app - INFO - Ethiosadat Application Started
+2026-05-11 18:47:34,945 - app - INFO - ==================================================
+2026-05-11 18:47:34,998 - app - INFO - Application shutting down...
+2026-05-11 18:48:55,529 - app - INFO - ==================================================
+2026-05-11 18:48:55,529 - app - INFO - Ethiosadat Application Started
+2026-05-11 18:48:55,532 - app - INFO - ==================================================
+2026-05-11 18:48:57,927 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 18:49:04,567 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 18:49:13,014 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 18:49:13,619 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
