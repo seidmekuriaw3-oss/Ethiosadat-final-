@@ -482,7 +482,7 @@ def api_register():
     
     # Create user
     from werkzeug.security import generate_password_hash
-    password_hash = generate_password_hash(password, method='bcrypt')
+    password_hash = generate_password_hash(password, method='pbkdf2:sha256')
     
     cursor.execute("""
         INSERT INTO users (full_name, email, phone, password_hash, is_admin, is_active)

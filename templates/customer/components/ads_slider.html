@@ -477,7 +477,8 @@
             if (isAutoPlay) startAutoPlay();
         });
         
-        // Initialize
+        // Initialize first slide — bypass same-index guard by resetting currentIndex
+        currentIndex = -1;
         goToSlide(0, true);
         if (isAutoPlay) {
             startAutoPlay();

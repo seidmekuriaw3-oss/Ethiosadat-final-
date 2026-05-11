@@ -14962,3 +14962,5 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 03:51:37,862 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
 2026-05-11 03:51:44,192 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
 2026-05-11 04:46:59,530 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
+2026-05-11 05:29:12,419 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-11 05:29:21,144 - app - WARNING - 404 Error: http://localhost:5000/admin/dashboard

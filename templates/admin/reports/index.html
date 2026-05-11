@@ -268,92 +268,90 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Server-rendered data injected directly — no fetch needed for initial load
+    const _reportData = {
+        totalOrders: {{ total_orders|default(0) }},
+        totalRevenue: {{ total_revenue|default(0) }},
+        pendingOrders: {{ pending_orders|default(0) }},
+        completedOrders: {{ completed_orders|default(0) }},
+        totalProducts: {{ total_products|default(0) }},
+        monthlySales: {{ monthly_sales|tojson if monthly_sales else '[]' }}
+    };
+
     let salesChart = null;
 
     // Initialize charts on page load
     document.addEventListener('DOMContentLoaded', function() {
+        initReportStats();
         loadSalesChart();
-        loadOrderStats();
-        loadLowStockCount();
         animateProgressBars();
     });
 
-    // Load sales chart
+    // Populate KPI and stat cards from server data
+    function initReportStats() {
+        const t = _reportData.totalOrders;
+        const r = _reportData.totalRevenue;
+        const avg = t > 0 ? (r / t).toFixed(2) : 0;
+
+        document.getElementById('totalOrders').textContent = t.toLocaleString();
+        document.getElementById('totalRevenue').textContent = r.toLocaleString() + ' ETB';
+        document.getElementById('avgOrderValue').textContent = Number(avg).toLocaleString() + ' ETB';
+        document.getElementById('salesTotalOrders').textContent = t;
+        document.getElementById('salesTotalRevenue').textContent = r.toLocaleString() + ' ETB';
+        document.getElementById('salesAvgOrder').textContent = Number(avg).toLocaleString();
+        document.getElementById('pendingOrders').textContent = _reportData.pendingOrders;
+        document.getElementById('deliveredOrders').textContent = _reportData.completedOrders;
+
+        // Low stock from server-rendered low_stock list length
+        const lowStockItems = document.querySelectorAll('[data-low-stock]');
+        const lowCount = {{ low_stock|length if low_stock else 0 }};
+        const el = document.getElementById('lowStockCount');
+        if (el) el.textContent = lowCount;
+    }
+
+    // Build sales chart from server-rendered monthly_sales data
     function loadSalesChart() {
-        fetch('{{ url_for("admin_reports") }}')
-            .then(response => response.json())
-            .then(data => {
-                const ctx = document.getElementById('salesChart').getContext('2d');
-                
-                if (salesChart) salesChart.destroy();
-                
-                salesChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: data.labels || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                        datasets: [{
-                            label: 'Revenue (ETB)',
-                            data: data.values || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                            borderColor: '#1a73e8',
-                            backgroundColor: 'rgba(26, 115, 232, 0.1)',
-                            borderWidth: 2,
-                            fill: true,
-                            tension: 0.4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        plugins: {
-                            legend: { position: 'top' },
-                            tooltip: { callbacks: { label: (ctx) => `${ctx.raw.toLocaleString()} ETB` } }
-                        },
-                        scales: {
-                            y: { beginAtZero: true, title: { display: true, text: 'Amount (ETB)' } },
-                            x: { title: { display: true, text: 'Month' } }
-                        }
-                    }
-                });
-            })
-            .catch(err => console.error('Error loading sales chart:', err));
-    }
+        const ctx = document.getElementById('salesChart');
+        if (!ctx) return;
 
-    // Load order statistics
-    function loadOrderStats() {
-        fetch('{{ url_for("admin_reports") }}')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('pendingOrders').textContent = data.pending || 0;
-                    document.getElementById('confirmedOrders').textContent = data.confirmed || 0;
-                    document.getElementById('processingOrders').textContent = data.processing || 0;
-                    document.getElementById('shippedOrders').textContent = data.shipped || 0;
-                    document.getElementById('deliveredOrders').textContent = data.delivered || 0;
-                    document.getElementById('cancelledOrders').textContent = data.cancelled || 0;
-                    document.getElementById('totalOrders').textContent = (data.total || 0).toLocaleString();
-                    document.getElementById('totalRevenue').textContent = (data.total_revenue || 0).toLocaleString() + ' ETB';
-                    document.getElementById('salesTotalOrders').textContent = data.total || 0;
-                    document.getElementById('salesTotalRevenue').textContent = (data.total_revenue || 0).toLocaleString() + ' ETB';
-                    
-                    const avgOrder = data.total > 0 ? (data.total_revenue / data.total).toFixed(2) : 0;
-                    document.getElementById('avgOrderValue').textContent = avgOrder.toLocaleString() + ' ETB';
-                    document.getElementById('salesAvgOrder').textContent = avgOrder.toLocaleString();
-                }
-            })
-            .catch(err => console.error('Error loading order stats:', err));
-    }
+        const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        let labels = monthNames;
+        let values = new Array(12).fill(0);
 
-    // Load low stock count
-    function loadLowStockCount() {
-        fetch('{{ url_for("api_cart_count") }}')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('lowStockCount').textContent = data.low_stock || 0;
-                    document.getElementById('outOfStockCount').textContent = data.out_of_stock || 0;
+        if (_reportData.monthlySales && _reportData.monthlySales.length > 0) {
+            labels = _reportData.monthlySales.map(m => m.month || '');
+            values = _reportData.monthlySales.map(m => m.revenue || m.total_revenue || 0);
+        }
+
+        if (salesChart) salesChart.destroy();
+
+        salesChart = new Chart(ctx.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue (ETB)',
+                    data: values,
+                    borderColor: '#1a73e8',
+                    backgroundColor: 'rgba(26, 115, 232, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { callbacks: { label: (c) => `${c.raw.toLocaleString()} ETB` } }
+                },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'Amount (ETB)' } },
+                    x: { title: { display: true, text: 'Month' } }
                 }
-            })
-            .catch(err => console.error('Error loading low stock count:', err));
+            }
+        });
     }
 
     // Animate progress bars

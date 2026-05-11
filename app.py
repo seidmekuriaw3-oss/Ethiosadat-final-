@@ -4219,6 +4219,11 @@ def admin_reports():
                                top_products=top_products_list,
                                low_stock=low_stock_list,
                                total_products=total_products,
+                               total_orders=total_orders,
+                               total_revenue=total_revenue,
+                               total_customers=total_customers,
+                               pending_orders=pending_orders,
+                               completed_orders=completed_orders,
                                lang=lang,
                                t=t)
                                
