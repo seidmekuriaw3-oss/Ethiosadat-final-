@@ -54485,3 +54485,43 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 05:46:40,459 - app - INFO - Ethiosadat Application Started
 2026-05-11 05:46:40,459 - app - INFO - ==================================================
 2026-05-11 05:46:45,300 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-11 18:14:09,994 - app - INFO - ==================================================
+2026-05-11 18:14:09,994 - app - INFO - Ethiosadat Application Started
+2026-05-11 18:14:09,994 - app - INFO - ==================================================
+2026-05-11 18:14:10,035 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-11 18:14:10,044 - app - INFO - Database initialized successfully
+2026-05-11 18:14:10,046 - app - INFO - Application initialized successfully
+2026-05-11 18:14:10,047 - app - INFO - ============================================================
+2026-05-11 18:14:10,047 - app - INFO - ETHIOSADAT FURNITURE APPLICATION READY
+2026-05-11 18:14:10,047 - app - INFO - Environment: production
+2026-05-11 18:14:10,047 - app - INFO - Debug Mode: False
+2026-05-11 18:14:10,047 - app - INFO - Cache Type: SimpleCache
+2026-05-11 18:14:10,048 - app - INFO - ============================================================
+2026-05-11 18:14:10,048 - app - INFO - Application shutting down...
+2026-05-11 18:14:15,380 - app - INFO - ==================================================
+2026-05-11 18:14:15,380 - app - INFO - Ethiosadat Application Started
+2026-05-11 18:14:15,380 - app - INFO - ==================================================
+2026-05-11 18:14:15,419 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-11 18:14:15,429 - app - INFO - Database initialized successfully
+2026-05-11 18:14:15,430 - app - INFO - Application initialized successfully
+2026-05-11 18:14:15,430 - app - INFO - ============================================================
+2026-05-11 18:14:15,430 - app - INFO - ETHIOSADAT FURNITURE APPLICATION READY
+2026-05-11 18:14:15,431 - app - INFO - Environment: production
+2026-05-11 18:14:15,431 - app - INFO - Debug Mode: False
+2026-05-11 18:14:15,431 - app - INFO - Cache Type: SimpleCache
+2026-05-11 18:14:15,431 - app - INFO - ============================================================
+2026-05-11 18:14:15,431 - app - INFO - Application shutting down...
+2026-05-11 18:14:33,537 - app - INFO - ==================================================
+2026-05-11 18:14:33,537 - app - INFO - Ethiosadat Application Started
+2026-05-11 18:14:33,537 - app - INFO - ==================================================
+2026-05-11 18:14:34,452 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 18:14:39,152 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 18:14:46,425 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 18:16:16,549 - app - INFO - ==================================================
+2026-05-11 18:16:16,549 - app - INFO - Ethiosadat Application Started
+2026-05-11 18:16:16,549 - app - INFO - ==================================================
+2026-05-11 18:16:32,947 - app - INFO - ==================================================
+2026-05-11 18:16:32,947 - app - INFO - Ethiosadat Application Started
+2026-05-11 18:16:32,947 - app - INFO - ==================================================
+2026-05-11 18:16:39,809 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 18:16:46,373 - app - WARNING - 404 Error: http://localhost:5000/static/000001
