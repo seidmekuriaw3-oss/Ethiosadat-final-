@@ -107,6 +107,15 @@
             ">
                 <span class="nav-icon">📦</span>
                 <span class="nav-text">All Products</span>
+                {% if low_stock_count and low_stock_count > 0 %}
+                <span class="badge" style="
+                    margin-left: auto;
+                    background: #ff9800;
+                    padding: 2px 8px;
+                    border-radius: 20px;
+                    font-size: 11px;
+                " title="{{ low_stock_count }} low stock item(s)">⚠️ {{ low_stock_count }}</span>
+                {% else %}
                 <span class="badge" id="productsCount" style="
                     margin-left: auto;
                     background: rgba(255,255,255,0.2);
@@ -114,6 +123,7 @@
                     border-radius: 20px;
                     font-size: 11px;
                 ">{{ products_count|default(0) }}</span>
+                {% endif %}
             </a>
             
             <a href="{{ url_for('admin_product_create') }}" class="nav-item" style="

@@ -233,7 +233,10 @@
             </thead>
             <tbody id="productsTableBody">
                 {% for product in products %}
-                <tr class="product-row" data-id="{{ product.id }}" data-category="{{ product.category_id }}" data-stock="{{ product.stock_quantity|default(0) }}" style="border-bottom: 1px solid var(--border-color, #eee);">
+                {% set stock = product.stock_quantity|default(0) %}
+                {% set threshold = product.low_stock_threshold|default(5) %}
+                {% set is_low = stock > 0 and stock <= threshold %}
+                <tr class="product-row" data-id="{{ product.id }}" data-category="{{ product.category_id }}" data-stock="{{ stock }}" style="border-bottom: 1px solid var(--border-color, #eee);{% if is_low %} border-left: 4px solid #ff9800; background: rgba(255,152,0,0.04);{% endif %}">
                     <td style="padding: 12px; text-align: center;">
                         <input type="checkbox" class="product-select" value="{{ product.id }}" onchange="updateBulkActions()" style="cursor: pointer;">
                     </td>
@@ -262,14 +265,15 @@
                         </span>
                     </td>
                     <td style="padding: 12px; text-align: center;">
-                        {% set stock = product.stock_quantity|default(0) %}
                         <span class="stock-badge 
-                            {% if stock > 10 %}stock-high
-                            {% elif stock > 0 %}stock-medium
-                            {% else %}stock-out{% endif %}">
-                            {% if stock > 10 %}✓ {{ stock }}
-                            {% elif stock > 0 %}⚠️ {{ stock }}
-                            {% else %}✗ Out{% endif %}
+                            {% if stock == 0 %}stock-out
+                            {% elif is_low %}stock-low
+                            {% elif stock <= 10 %}stock-medium
+                            {% else %}stock-high{% endif %}">
+                            {% if stock == 0 %}✗ Out
+                            {% elif is_low %}⚠️ {{ stock }}
+                            {% elif stock <= 10 %}~ {{ stock }}
+                            {% else %}✓ {{ stock }}{% endif %}
                         </span>
                     </td>
                     <td style="padding: 12px; text-align: center;">

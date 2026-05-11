@@ -192,6 +192,7 @@ def inject_globals():
     platform = get_platform()
 
     pending_orders_count = 0
+    low_stock_count = 0
     if session.get('admin') or session.get('is_admin'):
         try:
             conn = get_db()
@@ -199,6 +200,13 @@ def inject_globals():
             cur.execute("SELECT COUNT(*) FROM orders WHERE status = 'pending'")
             row = cur.fetchone()
             pending_orders_count = row[0] if row else 0
+
+            cur.execute("""
+                SELECT COUNT(*) FROM products
+                WHERE stock_quantity <= low_stock_threshold AND stock_quantity > 0
+            """)
+            ls_row = cur.fetchone()
+            low_stock_count = ls_row[0] if ls_row else 0
 
         except Exception:
             pass
@@ -215,6 +223,7 @@ def inject_globals():
         'google_translate_widget': get_google_translate_widget(),
         'app_name': 'Ethiosadat Furniture',
         'pending_orders_count': pending_orders_count,
+        'low_stock_count': low_stock_count,
     }
 
 
