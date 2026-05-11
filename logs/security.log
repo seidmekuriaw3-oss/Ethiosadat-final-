@@ -14957,3 +14957,8 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 03:42:59,659 - app - WARNING - Slow request: POST /admin/ads/edit/2 - 2.22s
 2026-05-11 03:44:39,090 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
 2026-05-11 03:44:39,364 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 03:50:53,041 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
+2026-05-11 03:51:16,051 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
+2026-05-11 03:51:37,862 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
+2026-05-11 03:51:44,192 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
+2026-05-11 04:46:59,530 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001

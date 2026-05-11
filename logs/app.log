@@ -54372,3 +54372,31 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 03:45:50,573 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 03:47:58,140 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 03:48:05,190 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:49:58,323 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:50:15,902 - app - INFO - Cart viewed - Items: 0, Total: 200.0 ETB
+2026-05-11 03:50:18,119 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:50:37,280 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:50:53,041 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
+2026-05-11 03:51:16,051 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
+2026-05-11 03:51:37,862 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
+2026-05-11 03:51:44,192 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
+2026-05-11 03:52:21,079 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:53:08,423 - app - INFO - User logged out: Seid
+2026-05-11 03:53:09,828 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:53:23,606 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 03:53:26,340 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 03:53:26,341 - app - INFO - Admin reports viewed
+2026-05-11 03:53:31,198 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 03:53:41,304 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 03:53:47,686 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 04:46:42,405 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 04:46:45,821 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 04:46:46,187 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 04:46:46,206 - app - INFO - Admin reports viewed
+2026-05-11 04:46:47,172 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 04:46:49,828 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 04:46:59,530 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
+2026-05-11 04:47:02,282 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 04:47:19,323 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 04:47:20,938 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-11 04:47:21,257 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
