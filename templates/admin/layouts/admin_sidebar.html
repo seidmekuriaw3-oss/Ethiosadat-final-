@@ -399,7 +399,7 @@
                 text-decoration: none;
                 transition: all 0.3s;
                 border-left: 3px solid transparent;
-            ">
+            " onclick="event.preventDefault(); fetch('{{ url_for('admin_clear_cache') }}', {method:'POST'}).then(()=>{ if(window.showToast) window.showToast('Cache cleared!','success'); })">
                 <span class="nav-icon">🗑️</span>
                 <span class="nav-text">Clear Cache</span>
             </a>

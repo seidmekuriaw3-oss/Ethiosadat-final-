@@ -1603,12 +1603,15 @@ def user_register():
             return render_template('auth/user_register.html', lang=lang, t=t)
         
         try:
+            conn = get_db()
+            conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
             
             # Check if email exists
             cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
             if cursor.fetchone():
                 flash('Email already registered. Please login.', 'error')
+                conn.close()
                 return render_template('auth/user_register.html', lang=lang, t=t)
             
             # Create user
@@ -1630,6 +1633,8 @@ def user_register():
             
             app.logger.info(f"New user registered: {email}")
             flash('Registration successful! Welcome to Ethiosadat Furniture!', 'success')
+            
+            conn.close()
             
             # Send welcome email (optional)
             send_welcome_email(email, full_name)
@@ -3377,19 +3382,20 @@ def admin_ad_create():
             title = request.form.get('title', '').strip()
             title_am = request.form.get('title_am', '').strip()
             title_ar = request.form.get('title_ar', '').strip()
-            description = request.form.get('description', '').strip()
+            # Support both 'ad_text' (form field name) and 'description' (legacy)
+            description = request.form.get('ad_text', request.form.get('description', '')).strip()
             description_am = request.form.get('description_am', '').strip()
             description_ar = request.form.get('description_ar', '').strip()
             link = request.form.get('link', '').strip()
             sort_order = int(request.form.get('sort_order', 0))
             is_active = 1 if request.form.get('is_active') else 0
             
-            start_date = request.form.get('start_date')
-            end_date = request.form.get('end_date')
+            start_date = request.form.get('start_date') or None
+            end_date = request.form.get('end_date') or None
             
             # Validate required fields
             if not description and not title:
-                flash('Please enter either title or description', 'error')
+                flash('Please enter advertisement text or title', 'error')
                 return redirect(url_for('admin_ad_create'))
             
             # Handle media upload
@@ -3465,15 +3471,16 @@ def admin_ad_edit(aid):
             title = request.form.get('title', '').strip()
             title_am = request.form.get('title_am', '').strip()
             title_ar = request.form.get('title_ar', '').strip()
-            description = request.form.get('description', '').strip()
+            # Support both 'ad_text' (form field name) and 'description' (legacy)
+            description = request.form.get('ad_text', request.form.get('description', '')).strip()
             description_am = request.form.get('description_am', '').strip()
             description_ar = request.form.get('description_ar', '').strip()
-            link = request.form.get('link', '').strip()  # ባዶ ቢሆንም ይሰራል
+            link = request.form.get('link', '').strip()
             sort_order = int(request.form.get('sort_order', 0))
             is_active = 1 if request.form.get('is_active') else 0
 
-            start_date = request.form.get('start_date')
-            end_date = request.form.get('end_date')
+            start_date = request.form.get('start_date') or None
+            end_date = request.form.get('end_date') or None
 
             # Handle media upload
             media_file = request.files.get('media')
@@ -3531,13 +3538,18 @@ def admin_ad_edit(aid):
 def admin_ad_toggle(aid):
     """Toggle advertisement active status."""
     try:
-        data = request.get_json()
-        is_active = data.get('is_active', False)
+        data = request.get_json() or {}
+        # Support both 'status' (JS sends 'active'/'inactive') and 'is_active' (boolean)
+        if 'status' in data:
+            is_active = data['status'] == 'active'
+        else:
+            is_active = bool(data.get('is_active', False))
         
         conn = get_db()
         cursor = conn.cursor()
         cursor.execute("UPDATE advertisements SET is_active = ? WHERE id = ?", (1 if is_active else 0, aid))
         conn.commit()
+        conn.close()
         
         app.logger.info(f"Ad {aid} status toggled to: {'active' if is_active else 'inactive'}")
         return jsonify({'success': True, 'is_active': is_active})
@@ -4279,7 +4291,7 @@ def admin_settings():
                            t=t)
 
 
-@app.route('/admin/clear-cache', methods=['POST'])
+@app.route('/admin/clear-cache', methods=['GET', 'POST'])
 @admin_required
 def admin_clear_cache():
     """Clear application cache."""
@@ -4298,7 +4310,7 @@ def admin_clear_cache():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
-@app.route('/admin/backup-database', methods=['POST'])
+@app.route('/admin/backup-database', methods=['GET', 'POST'])
 @admin_required
 def admin_backup_database():
     """Create database backup."""

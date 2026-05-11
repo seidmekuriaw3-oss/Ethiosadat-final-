@@ -54064,3 +54064,14 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 01:07:17,589 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 01:07:23,254 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 01:07:31,482 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:08:32,403 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:08:36,171 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-11 01:08:36,171 - app - WARNING - 404 Error: http://198395ec-3efc-4762-b40b-b6ef8b1a01fb-00-zi7wiglmr8u3.riker.replit.dev/static/images/logo.svg
+2026-05-11 01:08:36,559 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:23:07,899 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:39:47,214 - app - INFO - ==================================================
+2026-05-11 01:39:47,214 - app - INFO - Ethiosadat Application Started
+2026-05-11 01:39:47,214 - app - INFO - ==================================================
+2026-05-11 01:39:47,815 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:39:52,985 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 01:39:57,616 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6

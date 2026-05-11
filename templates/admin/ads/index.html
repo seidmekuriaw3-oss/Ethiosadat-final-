@@ -181,7 +181,7 @@
                     </td>
                     <td style="padding: 12px; text-align: center;">
                         <button class="ad-status {% if ad.is_active %}status-active{% else %}status-inactive{% endif %}"
-                                onclick="toggleAdStatus"({{ ad.id }}", this, "{{ url_for('admin_ad_toggle', aid=ad.id) }}')">
+                                onclick="toggleAdStatus({{ ad.id }}, this, '{{ url_for('admin_ad_toggle', aid=ad.id) }}')">
                             {% if ad.is_active %}Active{% else %}Inactive{% endif %}
                         </button>
                     </td>
@@ -192,7 +192,7 @@
                         <a href="{{ url_for('admin_ad_edit', aid=ad.id) }}"
                            style="background: none; border: none; color: #ff9800; cursor: pointer; margin-right: 8px; text-decoration: none; display: inline-block;"
                            title="Edit">✏️</a>
-                        <button onclick="deleteAd"({{ ad.id }}", "{{ url_for('admin_ad_delete', aid=ad.id) }}')"
+                        <button onclick="deleteAd({{ ad.id }}, '{{ url_for('admin_ad_delete', aid=ad.id) }}')"
                                 style="background: none; border: none; color: #f44336; cursor: pointer;"
                                 title="Delete">🗑️</button>
                     </td>

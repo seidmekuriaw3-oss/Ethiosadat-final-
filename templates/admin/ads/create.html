@@ -492,14 +492,10 @@
         return div.innerHTML;
     }
 
-    // Add auto-save listeners
+    // Initialize character count on load
     const adText = document.getElementById('ad_text');
     const adTitle = document.getElementById('ad_title');
     const adLink = document.getElementById('ad_link');
-    
-    if (adText) adText.addEventListener('input', autoSaveDraft);
-    if (adTitle) adTitle.addEventListener('input', autoSaveDraft);
-    if (adLink) adLink.addEventListener('input', autoSaveDraft);
 
     // Initialize character count
     updateCharCount();

@@ -33,12 +33,15 @@
                     <!-- Media (if exists) -->
                     {% if ad.image and ad.image|trim != '' %}
                         {% if ad.image.endswith(('.mp4', '.webm', '.mov', '.avi', '.ogg')) %}
-                            <video class="slide-media" style="max-height: 120px; border-radius: 12px; margin-bottom: 20px;" autoplay muted loop playsinline>
-                                <source src="{{ url_for('static', filename=ad.image) }}" type="video/mp4">
-                            </video>
+                            <div style="position: relative; display: inline-block; cursor: pointer;" onclick="toggleAdVideo(this)">
+                                <video class="slide-media ad-video" style="max-height: 200px; border-radius: 12px; margin-bottom: 20px;" autoplay muted loop playsinline>
+                                    <source src="{{ url_for('static', filename=ad.image) }}" type="video/mp4">
+                                </video>
+                                <div class="video-play-hint" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(0,0,0,0.5); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 20px; pointer-events: none; transition: opacity 0.3s;">🔇</div>
+                            </div>
                         {% else %}
                             <img class="slide-media" src="{{ url_for('static', filename=ad.image) }}" 
-                                 style="max-height: 120px; border-radius: 12px; margin-bottom: 20px; object-fit: cover;"
+                                 style="max-height: 200px; border-radius: 12px; margin-bottom: 20px; object-fit: cover;"
                                  alt="Advertisement"
                                  loading="lazy">
                         {% endif %}
@@ -496,6 +499,23 @@
             if (progressInterval) clearInterval(progressInterval);
         });
     })();
+    
+    // Click-to-unmute/mute ad videos
+    function toggleAdVideo(wrapper) {
+        const video = wrapper.querySelector('video');
+        const hint = wrapper.querySelector('.video-play-hint');
+        if (!video) return;
+        
+        if (video.muted) {
+            video.muted = false;
+            video.play();
+            if (hint) { hint.textContent = '🔊'; hint.style.opacity = '0'; }
+            setTimeout(() => { if (hint) hint.style.opacity = '1'; }, 1500);
+        } else {
+            video.muted = true;
+            if (hint) { hint.textContent = '🔇'; hint.style.opacity = '1'; }
+        }
+    }
 </script>
 
 {% else %}

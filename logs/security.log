@@ -14908,3 +14908,5 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-10 18:14:33,889 - app - ERROR - Error updating advertisement: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
 2026-05-10 18:14:33,890 - app - WARNING - Slow request: POST /admin/ads/edit/2 - 123.26s
 2026-05-10 18:15:27,044 - app - WARNING - 404 Error: http://8ce8c819-5c2f-4ffe-a4e8-7e5216223a47-00-g8ildqzysnr3.worf.replit.dev/static/000001
+2026-05-11 01:08:36,171 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-11 01:08:36,171 - app - WARNING - 404 Error: http://198395ec-3efc-4762-b40b-b6ef8b1a01fb-00-zi7wiglmr8u3.riker.replit.dev/static/images/logo.svg
