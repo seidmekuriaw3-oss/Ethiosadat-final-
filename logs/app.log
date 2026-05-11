@@ -54204,3 +54204,5 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 02:13:29,521 - app - ERROR - Profile error: 'str object' has no attribute 'strftime'
 2026-05-11 02:13:29,575 - app - INFO - Cart viewed - Items: 0, Total: 200.0 ETB
 2026-05-11 02:13:42,936 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 02:19:03,545 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 02:19:11,104 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
