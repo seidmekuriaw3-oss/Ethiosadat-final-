@@ -14972,3 +14972,4 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 05:46:45,300 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
 2026-05-11 18:16:46,373 - app - WARNING - 404 Error: http://localhost:5000/static/000001
 2026-05-11 19:12:37,698 - app - WARNING - 404 Error: http://f9f5897d-809f-419d-836a-ddcb182c2a47-00-rqmihst8ms6u.riker.replit.dev/favicon.ico
+2026-05-11 20:11:02,424 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico

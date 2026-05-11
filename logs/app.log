@@ -54627,3 +54627,10 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 19:19:47,400 - app - INFO - ==================================================
 2026-05-11 19:19:48,322 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 19:20:03,211 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 19:54:50,919 - app - INFO - ==================================================
+2026-05-11 19:54:50,920 - app - INFO - Ethiosadat Application Started
+2026-05-11 19:54:50,920 - app - INFO - ==================================================
+2026-05-11 19:54:52,117 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 20:11:02,424 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-11 20:12:40,843 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-11 20:12:51,623 - app - INFO - Admin logged in: admin@ethiosadat.com
