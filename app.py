@@ -4271,7 +4271,7 @@ def admin_reports_sales():
         orders = cursor.fetchall()
         
         # Calculate totals
-        total_revenue = sum(o[8] for o in orders) if orders else 0  # total column index
+        total_revenue = sum(o['total'] for o in orders) if orders else 0
         total_orders = len(orders)
         avg_order_value = total_revenue / total_orders if total_orders > 0 else 0
         
@@ -4290,15 +4290,41 @@ def admin_reports_sales():
         
 
         
-        orders_list = [dict(order) for order in orders] if orders else []
+        # Get top products by sales
+        cursor.execute("""
+            SELECT p.name_am as name, c.name_am as category,
+                   COALESCE(SUM(oi.quantity), 0) as units_sold,
+                   COALESCE(SUM(oi.quantity * oi.price_at_time), 0) as revenue
+            FROM products p
+            LEFT JOIN categories c ON p.category_id = c.id
+            LEFT JOIN order_items oi ON p.id = oi.product_id
+            GROUP BY p.id
+            ORDER BY units_sold DESC
+            LIMIT 10
+        """)
+        top_products = cursor.fetchall()
+        top_products_list = [dict(tp) for tp in top_products] if top_products else []
+
+        orders_list = []
+        for order in orders:
+            od = dict(order)
+            od['customer_name'] = od.pop('full_name', None) or 'Guest'
+            od['date'] = (od.get('created_at') or '')[:10]
+            orders_list.append(od)
+
         daily_sales_list = [dict(sale) for sale in daily_sales] if daily_sales else []
+        chart_labels = [s.get('date', '') for s in daily_sales_list]
+        chart_values = [s.get('revenue') or 0 for s in daily_sales_list]
         
         return render_template('admin/reports/sales.html',
                                orders=orders_list,
                                total_revenue=total_revenue,
                                total_orders=total_orders,
-                               avg_order_value=avg_order_value,
+                               avg_order_value=round(avg_order_value, 2),
                                daily_sales=daily_sales_list,
+                               top_products=top_products_list,
+                               chart_labels=chart_labels,
+                               chart_values=chart_values,
                                start_date=start_date,
                                end_date=end_date,
                                lang=lang,
@@ -4510,8 +4536,6 @@ def admin_change_password():
     except Exception as e:
         app.logger.error(f"Error changing admin password: {str(e)}")
         flash('Error changing password. Please try again.', 'error')
-    finally:
-        conn.close()
 
     return redirect(url_for('admin_settings') + '#change-password')
 

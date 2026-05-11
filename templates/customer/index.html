@@ -210,7 +210,7 @@
                 <video class="slide-bg-video"
                        src="{{ url_for('static', filename=ad.image) }}"
                        autoplay muted loop playsinline
-                       onclick="if(window.innerWidth < 768){ this.pause(); playFullscreen('{{ url_for('static', filename=ad.image) }}'); }"></video>
+                       onclick="this.pause(); playFullscreen('{{ url_for('static', filename=ad.image) }}');"></video>
                 {% endif %}
                 <div class="slide-content">
                     <h3>{{ localized_ad_title(ad) or '🎉 ' ~ t.promo }}</h3>

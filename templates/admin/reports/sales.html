@@ -256,33 +256,42 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Server-rendered data — no fetch needed
+    const _salesData = {
+        stats: {
+            total_revenue: {{ total_revenue|default(0) }},
+            total_orders: {{ total_orders|default(0) }},
+            avg_order_value: {{ avg_order_value|default(0) }},
+            total_items: 0
+        },
+        chart: {
+            labels: {{ chart_labels|tojson if chart_labels else '[]' }},
+            values: {{ chart_values|tojson if chart_values else '[]' }}
+        },
+        top_products: {{ top_products|tojson if top_products else '[]' }},
+        orders: {{ orders|tojson if orders else '[]' }}
+    };
+
     let salesChart = null;
     let currentPage = 1;
     const rowsPerPage = 10;
-    let currentOrders = [];
+    let currentOrders = _salesData.orders;
 
-    // Helper functions
     function showToast(message, type) {
-        if (window.showToast) {
-            window.showToast(message, type);
-        } else {
-            alert(message);
-        }
-    }
-    
-    function showLoading(show) {
-        if (window.showLoading) {
-            if (show) window.showLoading();
-            else window.hideLoading();
-        }
+        if (window.showToast) window.showToast(message, type);
+        else console.warn(message);
     }
 
-    // Load sales data on page load
+    // Initialize from server data on page load
     document.addEventListener('DOMContentLoaded', function() {
-        loadSalesData();
+        updateStats(_salesData.stats);
+        updateChart(_salesData.chart);
+        updateTopProducts(_salesData.top_products);
+        updateOrdersTable();
+        updatePagination();
     });
 
-    // Date range selector change
+    // Date range selector change — reload page with params
     function onDateRangeChange() {
         const rangeSelect = document.getElementById('dateRange');
         const customDiv = document.getElementById('customDateRange');
@@ -290,60 +299,18 @@
             customDiv.style.display = 'flex';
         } else {
             customDiv.style.display = 'none';
-            loadSalesData();
         }
     }
 
-    // Apply custom date range
+    // Apply custom date range — reload page with GET params
     function applyCustomRange() {
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
         if (startDate && endDate) {
-            loadSalesData(startDate, endDate);
+            window.location.href = '{{ url_for("admin_reports_sales") }}?start_date=' + startDate + '&end_date=' + endDate;
         } else {
             showToast('Please select both start and end dates', 'warning');
         }
-    }
-
-    // Load sales data
-    function loadSalesData(start = null, end = null) {
-        showLoading(true);
-        
-        let url = '{{ url_for("admin_reports") }}';
-        const params = new URLSearchParams();
-        
-        if (start && end) {
-            params.append('start', start);
-            params.append('end', end);
-        } else {
-            const range = document.getElementById('dateRange').value;
-            params.append('range', range);
-        }
-        
-        if (params.toString()) {
-            url += '?' + params.toString();
-        }
-        
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    updateStats(data.stats);
-                    updateChart(data.chart);
-                    updateTopProducts(data.top_products);
-                    currentOrders = data.orders || [];
-                    currentPage = 1;
-                    updateOrdersTable();
-                    updatePagination();
-                } else {
-                    showToast(data.error || 'Failed to load sales data', 'error');
-                }
-            })
-            .catch(err => {
-                console.error('Error loading sales data:', err);
-                showToast('Error loading sales data', 'error');
-            })
-            .finally(() => showLoading(false));
     }
 
     // Update statistics
@@ -489,14 +456,9 @@
         updatePagination();
     }
 
-    // Reset filters
+    // Reset filters — reload page without params
     function resetFilters() {
-        document.getElementById('dateRange').value = 'week';
-        document.getElementById('customDateRange').style.display = 'none';
-        document.getElementById('startDate').value = '';
-        document.getElementById('endDate').value = '';
-        currentPage = 1;
-        loadSalesData();
+        window.location.href = '{{ url_for("admin_reports_sales") }}';
     }
 
     // Export to CSV

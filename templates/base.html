@@ -78,9 +78,6 @@
             <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'customer.index' %}active{% endif %}" title="{% if lang == 'am' %}መነሻ{% else %}Home{% endif %}">
                 🏠
             </a>
-            <a href="#" onclick="toggleCategories(); return false;" title="{% if lang == 'am' %}ምድቦች{% else %}Categories{% endif %}">
-                📂
-            </a>
             <a href="{{ url_for('branches') }}" class="{% if request.endpoint == 'branches' %}active{% endif %}" title="{% if lang == 'am' %}ቅርንጫፎቻችን{% elif lang == 'ar' %}فروعنا{% else %}Our Branches{% endif %}">
                 📍
             </a>

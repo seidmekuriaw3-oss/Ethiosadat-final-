@@ -54445,3 +54445,43 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 05:29:12,419 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
 2026-05-11 05:29:21,144 - app - WARNING - 404 Error: http://localhost:5000/admin/dashboard
 2026-05-11 05:29:23,302 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 05:34:30,721 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 05:34:34,846 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-11 05:34:34,846 - app - WARNING - 404 Error: http://fbbccc02-f838-4fca-872a-742a45fe5d74-00-2x0ycr99ldpc.kirk.replit.dev/static/images/logo.svg
+2026-05-11 05:34:35,256 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 05:34:50,946 - app - WARNING - 404 Error: http://fbbccc02-f838-4fca-872a-742a45fe5d74-00-2x0ycr99ldpc.kirk.replit.dev/favicon.ico
+2026-05-11 05:35:06,548 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-11 05:35:06,909 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 05:35:08,071 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 05:35:08,076 - app - INFO - Admin reports viewed
+2026-05-11 05:35:12,942 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 05:35:13,254 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 05:35:27,494 - app - INFO - Admin reports viewed
+2026-05-11 05:35:32,776 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 05:35:46,116 - app - INFO - Admin reports viewed
+2026-05-11 05:35:55,220 - app - INFO - Admin reports viewed
+2026-05-11 05:36:08,540 - app - INFO - Admin reports viewed
+2026-05-11 05:36:16,801 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 05:36:17,151 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 05:36:17,162 - app - INFO - Admin reports viewed
+2026-05-11 05:36:25,139 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 05:37:38,700 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 05:39:04,068 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 05:39:05,649 - app - INFO - Admin reports viewed
+2026-05-11 05:39:05,676 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 05:39:10,068 - app - INFO - Admin product list viewed - 22 products
+2026-05-11 05:39:14,469 - app - INFO - Admin product list viewed - 22 products
+2026-05-11 05:39:42,947 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 05:39:44,258 - app - INFO - Admin reports viewed
+2026-05-11 05:39:44,281 - app - INFO - Admin dashboard accessed - Products: 22, Orders: 0
+2026-05-11 05:39:53,251 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-11 05:39:57,247 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 05:46:07,912 - app - INFO - ==================================================
+2026-05-11 05:46:07,912 - app - INFO - Ethiosadat Application Started
+2026-05-11 05:46:07,912 - app - INFO - ==================================================
+2026-05-11 05:46:22,050 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 05:46:27,740 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 05:46:40,459 - app - INFO - ==================================================
+2026-05-11 05:46:40,459 - app - INFO - Ethiosadat Application Started
+2026-05-11 05:46:40,459 - app - INFO - ==================================================
+2026-05-11 05:46:45,300 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico

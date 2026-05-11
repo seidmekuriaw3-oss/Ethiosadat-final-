@@ -14964,3 +14964,9 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 04:46:59,530 - app - WARNING - 404 Error: http://86828f1b-de41-41c1-a28c-6ba5c1a359b1-00-3dnh33mc59i9n.kirk.replit.dev/static/000001
 2026-05-11 05:29:12,419 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
 2026-05-11 05:29:21,144 - app - WARNING - 404 Error: http://localhost:5000/admin/dashboard
+2026-05-11 05:34:34,846 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-11 05:34:34,846 - app - WARNING - 404 Error: http://fbbccc02-f838-4fca-872a-742a45fe5d74-00-2x0ycr99ldpc.kirk.replit.dev/static/images/logo.svg
+2026-05-11 05:34:50,946 - app - WARNING - 404 Error: http://fbbccc02-f838-4fca-872a-742a45fe5d74-00-2x0ycr99ldpc.kirk.replit.dev/favicon.ico
+2026-05-11 05:36:16,801 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 05:36:17,151 - app - ERROR - Error loading products report: 'str object' has no attribute 'strftime'
+2026-05-11 05:46:45,300 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
