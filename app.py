@@ -150,9 +150,36 @@ def init_db_tables():
     init_db()
 
 
+def seed_categories_if_empty():
+    """Seed default categories on every startup if the table is empty."""
+    import sqlite3 as _sqlite3
+    from config import Config as _Config
+    db_path = _Config.DATABASE_PATH
+    conn = _sqlite3.connect(db_path)
+    conn.row_factory = _sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM categories")
+    count = cur.fetchone()[0]
+    if count == 0:
+        defaults = [
+            ('Living Room', 'ሳሎን', 'غرفة المعيشة', '🛋️', 1),
+            ('Bedroom',     'መኝታ ክፍል', 'غرفة النوم', '🛏️', 2),
+            ('Office',      'ቢሮ', 'مكتب', '💼', 3),
+            ('Dining',      'መመገቢያ', 'غرفة الطعام', '🍽️', 4),
+        ]
+        cur.executemany(
+            "INSERT INTO categories (name, name_am, name_ar, icon, sort_order) VALUES (?, ?, ?, ?, ?)",
+            defaults
+        )
+        conn.commit()
+        print(f"✅ Seeded {len(defaults)} default categories")
+    conn.close()
+
+
 # Initialize database on startup
 with app.app_context():
     init_db_tables()
+    seed_categories_if_empty()
 
 
 # ==================== 4. CONTEXT PROCESSORS ====================
@@ -798,6 +825,55 @@ def health_check():
 
     status_code = 200 if health_status['status'] == 'healthy' else 503
     return jsonify(health_status), status_code
+
+
+@app.route('/fix-everything')
+def fix_everything():
+    """Test route: ensures categories exist and returns a status report."""
+    import sqlite3 as _sqlite3
+    from config import Config as _Config
+    db_path = _Config.DATABASE_PATH
+    conn = _sqlite3.connect(db_path)
+    conn.row_factory = _sqlite3.Row
+    cur = conn.cursor()
+
+    cur.execute("SELECT COUNT(*) FROM categories")
+    before = cur.fetchone()[0]
+
+    inserted = 0
+    if before == 0:
+        defaults = [
+            ('Living Room', 'ሳሎን',      'غرفة المعيشة', '🛋️', 1),
+            ('Bedroom',     'መኝታ ክፍል',  'غرفة النوم',   '🛏️', 2),
+            ('Office',      'ቢሮ',        'مكتب',          '💼',  3),
+            ('Dining',      'መመገቢያ',    'غرفة الطعام',  '🍽️', 4),
+        ]
+        cur.executemany(
+            "INSERT INTO categories (name, name_am, name_ar, icon, sort_order) VALUES (?, ?, ?, ?, ?)",
+            defaults
+        )
+        conn.commit()
+        inserted = len(defaults)
+
+    cur.execute("SELECT COUNT(*) FROM categories")
+    after = cur.fetchone()[0]
+    cur.execute("SELECT COUNT(*) FROM products")
+    products_count = cur.fetchone()[0]
+    cur.execute("SELECT COUNT(*) FROM orders")
+    orders_count = cur.fetchone()[0]
+    conn.close()
+
+    return jsonify({
+        'status': 'ok',
+        'categories_before': before,
+        'categories_inserted': inserted,
+        'categories_after': after,
+        'products': products_count,
+        'orders': orders_count,
+        'message': 'All fixes applied successfully!' if inserted else 'Categories already present — no changes needed.'
+    })
+
+
 # ==================== 10. CUSTOMER ROUTES ====================
 
 @app.route('/')
@@ -1997,6 +2073,8 @@ def forgot_password():
             return render_template('auth/forgot_password.html', lang=lang, t=t)
         
         try:
+            conn = get_db()
+            conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
             cursor.execute("SELECT id, full_name FROM users WHERE email = ? AND is_active = 1", (email,))
             user = cursor.fetchone()
@@ -4037,6 +4115,7 @@ def admin_reports():
     
     try:
         conn = get_db()
+        conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
         # Get total counts
@@ -5595,7 +5674,9 @@ def detect_platform():
                 "ON CONFLICT(key) DO UPDATE SET value = CAST(CAST(value AS INTEGER) + 1 AS TEXT)"
             )
             _pv_conn.commit()
-            _pv_conn.close()
+            # Do NOT call _pv_conn.close() here — get_db() manages the
+            # connection lifecycle via Flask's g; closing it here would
+            # invalidate g.db for all subsequent route handlers.
         except Exception:
             pass
 

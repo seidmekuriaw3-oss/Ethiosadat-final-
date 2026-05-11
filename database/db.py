@@ -25,26 +25,39 @@ def get_db():
     """
     Get database connection from Flask's g object.
     Creates a new connection if one doesn't exist.
-    
+    Falls back to a direct connection if outside request context.
+
     Returns:
         sqlite3.Connection: Database connection with row_factory set to sqlite3.Row
     """
-    if 'db' not in g:
+    try:
+        if 'db' not in g:
+            db_path = get_database_path()
+
+            db_dir = os.path.dirname(db_path)
+            if db_dir and not os.path.exists(db_dir):
+                os.makedirs(db_dir, exist_ok=True)
+
+            conn = sqlite3.connect(db_path)
+            conn.row_factory = sqlite3.Row
+            conn.execute("PRAGMA foreign_keys = ON")
+            g.db = conn
+
+        if g.db is None:
+            raise RuntimeError("g.db is None after assignment")
+
+        return g.db
+
+    except RuntimeError:
+        # Outside request context — return a direct connection
         db_path = get_database_path()
-        
-        # Ensure database directory exists
         db_dir = os.path.dirname(db_path)
         if db_dir and not os.path.exists(db_dir):
             os.makedirs(db_dir, exist_ok=True)
-            print(f"📁 Created database directory: {db_dir}")
-        
-        g.db = sqlite3.connect(db_path)
-        g.db.row_factory = sqlite3.Row
-        
-        # Enable foreign keys
-        g.db.execute("PRAGMA foreign_keys = ON")
-    
-    return g.db
+        conn = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA foreign_keys = ON")
+        return conn
 
 
 def close_db(e=None):

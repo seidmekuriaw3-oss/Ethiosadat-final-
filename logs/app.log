@@ -54214,3 +54214,82 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 02:38:12,541 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 02:38:18,207 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
 2026-05-11 02:38:26,767 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-11 02:41:47,289 - app - INFO - ==================================================
+2026-05-11 02:41:47,290 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:41:47,290 - app - INFO - ==================================================
+2026-05-11 02:41:56,461 - app - WARNING - 404 Error: http://localhost:5000/fix-everything
+2026-05-11 02:42:03,028 - app - WARNING - 404 Error: http://localhost:5000/fix-everything
+2026-05-11 02:42:31,130 - app - INFO - ==================================================
+2026-05-11 02:42:31,130 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:42:31,131 - app - INFO - ==================================================
+2026-05-11 02:42:31,214 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-11 02:42:31,230 - app - INFO - Database initialized successfully
+2026-05-11 02:42:31,232 - app - INFO - Application initialized successfully
+2026-05-11 02:42:31,233 - app - INFO - ============================================================
+2026-05-11 02:42:31,233 - app - INFO - ETHIOSADAT FURNITURE APPLICATION READY
+2026-05-11 02:42:31,234 - app - INFO - Environment: production
+2026-05-11 02:42:31,234 - app - INFO - Debug Mode: False
+2026-05-11 02:42:31,234 - app - INFO - Cache Type: SimpleCache
+2026-05-11 02:42:31,234 - app - INFO - ============================================================
+2026-05-11 02:42:31,235 - app - INFO - Application shutting down...
+2026-05-11 02:42:38,724 - app - WARNING - 404 Error: http://localhost:5000/fix-everything
+2026-05-11 02:43:25,362 - app - WARNING - 404 Error: http://localhost:5000/fix-everything
+2026-05-11 02:44:20,864 - app - INFO - ==================================================
+2026-05-11 02:44:20,864 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:44:20,864 - app - INFO - ==================================================
+2026-05-11 02:44:28,601 - app - WARNING - 404 Error: http://localhost:5000/fix-everything
+2026-05-11 02:44:53,362 - app - INFO - ==================================================
+2026-05-11 02:44:53,362 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:44:53,362 - app - INFO - ==================================================
+2026-05-11 02:44:53,442 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-11 02:44:53,458 - app - INFO - Database initialized successfully
+2026-05-11 02:44:53,460 - app - INFO - Application initialized successfully
+2026-05-11 02:44:53,460 - app - INFO - ============================================================
+2026-05-11 02:44:53,460 - app - INFO - ETHIOSADAT FURNITURE APPLICATION READY
+2026-05-11 02:44:53,461 - app - INFO - Environment: production
+2026-05-11 02:44:53,461 - app - INFO - Debug Mode: False
+2026-05-11 02:44:53,461 - app - INFO - Cache Type: SimpleCache
+2026-05-11 02:44:53,461 - app - INFO - ============================================================
+2026-05-11 02:44:53,462 - app - INFO - Application shutting down...
+2026-05-11 02:45:01,110 - app - INFO - ==================================================
+2026-05-11 02:45:01,111 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:45:01,111 - app - INFO - ==================================================
+2026-05-11 02:45:01,191 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-11 02:45:01,208 - app - INFO - Database initialized successfully
+2026-05-11 02:45:01,210 - app - INFO - Application initialized successfully
+2026-05-11 02:45:01,210 - app - INFO - ============================================================
+2026-05-11 02:45:01,210 - app - INFO - ETHIOSADAT FURNITURE APPLICATION READY
+2026-05-11 02:45:01,211 - app - INFO - Environment: production
+2026-05-11 02:45:01,211 - app - INFO - Debug Mode: False
+2026-05-11 02:45:01,211 - app - INFO - Cache Type: SimpleCache
+2026-05-11 02:45:01,212 - app - INFO - ============================================================
+2026-05-11 02:45:01,213 - app - INFO - Application shutting down...
+2026-05-11 02:45:29,950 - app - INFO - ==================================================
+2026-05-11 02:45:29,950 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:45:29,950 - app - INFO - ==================================================
+2026-05-11 02:45:30,016 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-11 02:45:30,033 - app - INFO - Database initialized successfully
+2026-05-11 02:45:30,034 - app - INFO - Application initialized successfully
+2026-05-11 02:45:30,035 - app - INFO - ============================================================
+2026-05-11 02:45:30,035 - app - INFO - ETHIOSADAT FURNITURE APPLICATION READY
+2026-05-11 02:45:30,035 - app - INFO - Environment: production
+2026-05-11 02:45:30,036 - app - INFO - Debug Mode: False
+2026-05-11 02:45:30,036 - app - INFO - Cache Type: SimpleCache
+2026-05-11 02:45:30,036 - app - INFO - ============================================================
+2026-05-11 02:45:30,098 - app - INFO - Application shutting down...
+2026-05-11 02:45:32,034 - app - INFO - ==================================================
+2026-05-11 02:45:32,034 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:45:32,034 - app - INFO - ==================================================
+2026-05-11 02:45:32,099 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-11 02:45:32,115 - app - INFO - Database initialized successfully
+2026-05-11 02:45:32,116 - app - INFO - Application initialized successfully
+2026-05-11 02:45:32,117 - app - INFO - ============================================================
+2026-05-11 02:45:32,117 - app - INFO - ETHIOSADAT FURNITURE APPLICATION READY
+2026-05-11 02:45:32,117 - app - INFO - Environment: production
+2026-05-11 02:45:32,118 - app - INFO - Debug Mode: False
+2026-05-11 02:45:32,118 - app - INFO - Cache Type: SimpleCache
+2026-05-11 02:45:32,118 - app - INFO - ============================================================
+2026-05-11 02:45:32,174 - app - INFO - Application shutting down...
+2026-05-11 02:46:39,645 - app - INFO - ==================================================
+2026-05-11 02:46:39,645 - app - INFO - Ethiosadat Application Started
+2026-05-11 02:46:39,645 - app - INFO - ==================================================
