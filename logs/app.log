@@ -54905,3 +54905,39 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 10:39:49,196 - app - INFO - Admin reports viewed
 2026-05-12 10:39:49,301 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
 2026-05-12 10:39:49,321 - app - INFO - Admin reports viewed
+2026-05-12 10:42:33,244 - app - INFO - ==================================================
+2026-05-12 10:42:33,244 - app - INFO - Ethiosadat Application Started
+2026-05-12 10:42:33,244 - app - INFO - ==================================================
+2026-05-12 10:42:40,118 - app - INFO - Admin product list viewed - 1 products
+2026-05-12 10:42:44,150 - app - INFO - Admin reports viewed
+2026-05-12 10:42:44,790 - app - INFO - Admin reports viewed
+2026-05-12 10:42:58,020 - app - INFO - Admin ads list viewed - 1 ads
+2026-05-12 10:43:01,331 - app - INFO - Admin ads list viewed - 1 ads
+2026-05-12 10:43:02,961 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:43:04,136 - app - INFO - Admin reports viewed
+2026-05-12 10:43:04,770 - app - INFO - Admin reports viewed
+2026-05-12 10:43:06,317 - app - INFO - Admin ads list viewed - 1 ads
+2026-05-12 10:43:06,945 - app - INFO - Admin ads list viewed - 1 ads
+2026-05-12 10:43:13,882 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:43:14,346 - app - INFO - Admin reports viewed
+2026-05-12 10:43:14,816 - app - INFO - Admin reports viewed
+2026-05-12 10:43:17,083 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
+2026-05-12 10:43:17,415 - app - INFO - Admin reports viewed
+2026-05-12 10:43:17,990 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
+2026-05-12 10:43:18,334 - app - INFO - Admin reports viewed
+2026-05-12 10:43:22,798 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
+2026-05-12 10:43:23,129 - app - INFO - Admin reports viewed
+2026-05-12 10:43:25,476 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:43:25,941 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:43:29,047 - app - INFO - Admin ads list viewed - 1 ads
+2026-05-12 10:43:34,056 - app - INFO - Admin reports viewed
+2026-05-12 10:43:34,568 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:43:38,203 - app - INFO - Admin reports viewed
+2026-05-12 10:43:39,146 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:43:39,710 - app - INFO - Admin reports viewed
+2026-05-12 10:43:41,266 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:43:51,467 - app - INFO - Admin ads list viewed - 1 ads
+2026-05-12 10:43:53,411 - app - INFO - Admin product list viewed - 1 products
+2026-05-12 10:43:55,878 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:44:01,949 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 10:44:06,866 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 0

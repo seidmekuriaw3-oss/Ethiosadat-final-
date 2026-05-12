@@ -15070,3 +15070,6 @@ LINE 1: SELECT p.*, c.name as category_name,
                     ^
 
 2026-05-12 10:39:49,301 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
+2026-05-12 10:43:17,083 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
+2026-05-12 10:43:17,990 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
+2026-05-12 10:43:22,798 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
