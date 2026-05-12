@@ -55271,3 +55271,35 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 12:43:34,384 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
 2026-05-12 12:43:40,354 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
 2026-05-12 12:43:40,649 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
+2026-05-12 12:43:43,524 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 12:44:14,257 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:46:10,788 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
+2026-05-12 12:48:36,448 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:48:48,937 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:49:38,057 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:49:46,831 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:49:48,487 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
+2026-05-12 12:49:56,951 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:50:08,265 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 12:50:32,240 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 12:50:32,642 - app - INFO - Admin dashboard accessed - Products: 13, Orders: 0, Stock alerts: 11 (10 out, 1 low)
+2026-05-12 12:50:33,658 - app - INFO - Admin dashboard accessed - Products: 13, Orders: 0, Stock alerts: 11 (10 out, 1 low)
+2026-05-12 12:50:33,676 - app - INFO - Admin reports viewed
+2026-05-12 12:50:39,271 - app - INFO - Admin already logged in, redirecting to dashboard
+2026-05-12 12:50:39,580 - app - INFO - Admin dashboard accessed - Products: 13, Orders: 0, Stock alerts: 11 (10 out, 1 low)
+2026-05-12 12:50:40,378 - app - INFO - Admin dashboard accessed - Products: 13, Orders: 0, Stock alerts: 11 (10 out, 1 low)
+2026-05-12 12:50:40,414 - app - INFO - Admin reports viewed
+2026-05-12 12:50:43,561 - app - INFO - Admin product list viewed - 13 products
+2026-05-12 12:50:43,866 - app - INFO - Admin product list viewed - 13 products
+2026-05-12 12:53:14,521 - app - INFO - Product updated: አልጋ (ID: 13)
+2026-05-12 12:53:14,825 - app - INFO - Admin product list viewed - 13 products
+2026-05-12 12:53:26,759 - app - INFO - Home page - Featured: 3, New: 4, Ads: 0
+2026-05-12 12:53:37,072 - app - INFO - Home page - Featured: 3, New: 4, Ads: 0
+2026-05-12 12:58:34,573 - app - INFO - ==================================================
+2026-05-12 12:58:34,573 - app - INFO - Ethiosadat Application Started
+2026-05-12 12:58:34,574 - app - INFO - ==================================================
+2026-05-12 12:58:35,401 - app - INFO - Home page - Featured: 3, New: 4, Ads: 0
+2026-05-12 12:58:35,651 - app - INFO - Home page - Featured: 3, New: 4, Ads: 0
+2026-05-12 12:59:03,482 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 12:59:03,503 - app - INFO - Admin dashboard accessed - Products: 13, Orders: 0, Stock alerts: 1 (0 out, 1 low)
+2026-05-12 12:59:03,598 - app - INFO - Bulk import: 1 products saved by admin 'admin'

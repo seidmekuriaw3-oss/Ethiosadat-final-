@@ -2338,36 +2338,46 @@ def add_to_cart():
             flash('Product not found!', 'danger')
             return redirect(request.referrer or url_for('index'))
         
-        if product[4] is not None and product[4] > 0 and product[4] < quantity:
+        stock = product[4]  # None = unlimited, 0 = out of stock, >0 = tracked
+
+        # Explicitly out of stock (admin set to 0)
+        if stock is not None and stock == 0:
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
-            flash(f'Sorry, only {product[4]} items available in stock!', 'warning')
+                return jsonify({'success': False, 'error': 'Out of stock'}), 400
+            flash('Sorry, this product is currently out of stock.', 'warning')
             return redirect(request.referrer or url_for('index'))
-        
+
+        # Insufficient tracked stock for requested quantity
+        if stock is not None and stock > 0 and stock < quantity:
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
+            flash(f'Sorry, only {stock} items available in stock!', 'warning')
+            return redirect(request.referrer or url_for('index'))
+
         product_name = product[1] or product[2]
         product_price = product[3]
-        
+
         if session.get('user_id'):
             # Add to database cart
             cursor.execute("""
                 SELECT id, quantity FROM cart_items 
                 WHERE user_id = ? AND product_id = ?
             """, (session['user_id'], product_id))
-            
+
             existing = cursor.fetchone()
-            
+
             if existing:
                 new_quantity = existing[1] + quantity
-                if product[4] >= new_quantity:
+                # Allow when stock is unlimited (None) or sufficient
+                if stock is None or stock >= new_quantity:
                     cursor.execute("""
                         UPDATE cart_items SET quantity = ? WHERE id = ?
                     """, (new_quantity, existing[0]))
                     message = 'Cart updated successfully!'
                 else:
-
                     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                        return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
-                    flash(f'Sorry, only {product[4]} items available in stock!', 'warning')
+                        return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
+                    flash(f'Sorry, only {stock} items available in stock!', 'warning')
                     return redirect(request.referrer or url_for('index'))
             else:
                 cursor.execute("""
@@ -2375,25 +2385,26 @@ def add_to_cart():
                     VALUES (?, ?, ?)
                 """, (session['user_id'], product_id, quantity))
                 message = 'Product added to cart!'
-            
+
             conn.commit()
 
         else:
-            # Add to session cart
+            # Add to session cart (guest)
             cart = session.get('cart', {})
             cart_key = str(product_id)
             current_quantity = cart.get(cart_key, 0)
             new_quantity = current_quantity + quantity
-            
-            if product[4] >= new_quantity:
+
+            # Allow when stock is unlimited (None) or sufficient
+            if stock is None or stock >= new_quantity:
                 cart[cart_key] = new_quantity
                 session['cart'] = cart
                 session.modified = True
                 message = 'Product added to cart!'
             else:
                 if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                    return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
-                flash(f'Sorry, only {product[4]} items available in stock!', 'warning')
+                    return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
+                flash(f'Sorry, only {stock} items available in stock!', 'warning')
                 return redirect(request.referrer or url_for('index'))
         
         # Get cart count
@@ -3741,11 +3752,11 @@ def admin_import_products():
                                    'message': f'Must be a number (got "{compare_price_raw}").'})
                 continue
 
-        stock_raw = row.get('stock', '0')
+        stock_raw = row.get('stock', '').strip()
         try:
-            stock = int(float(stock_raw)) if stock_raw else 0
+            stock = int(float(stock_raw)) if stock_raw else 99
         except (ValueError, TypeError):
-            stock = 0
+            stock = 99
 
         category_raw = row.get('category', '').strip()
         category_id = cat_lookup.get(category_raw.lower())
@@ -5420,44 +5431,51 @@ def api_cart_add():
 
             return jsonify({'success': False, 'error': 'Product not found'}), 404
         
-        if product[4] is not None and product[4] > 0 and product[4] < quantity:
-            return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
-        
+        stock = product[4]  # None = unlimited, 0 = out of stock, >0 = tracked
+
+        # Explicitly out of stock (admin set to 0)
+        if stock is not None and stock == 0:
+            return jsonify({'success': False, 'error': 'Out of stock'}), 400
+
+        # Insufficient tracked stock for the requested quantity
+        if stock is not None and stock > 0 and stock < quantity:
+            return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
+
         if session.get('user_id'):
             cursor.execute("""
-                SELECT id, quantity FROM cart_items 
+                SELECT id, quantity FROM cart_items
                 WHERE user_id = ? AND product_id = ?
             """, (session['user_id'], product_id))
-            
+
             existing = cursor.fetchone()
-            
+
             if existing:
                 new_quantity = existing[1] + quantity
-                if product[4] >= new_quantity:
+                # Allow when stock is unlimited (None) or sufficient
+                if stock is None or stock >= new_quantity:
                     cursor.execute("UPDATE cart_items SET quantity = ? WHERE id = ?", (new_quantity, existing[0]))
                 else:
-
-                    return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
+                    return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
             else:
                 cursor.execute("""
                     INSERT INTO cart_items (user_id, product_id, quantity)
                     VALUES (?, ?, ?)
                 """, (session['user_id'], product_id, quantity))
-            
+
             conn.commit()
         else:
             cart = session.get('cart', {})
             cart_key = str(product_id)
             current_quantity = cart.get(cart_key, 0)
             new_quantity = current_quantity + quantity
-            
-            if product[4] >= new_quantity:
+
+            # Allow when stock is unlimited (None) or sufficient
+            if stock is None or stock >= new_quantity:
                 cart[cart_key] = new_quantity
                 session['cart'] = cart
                 session.modified = True
             else:
-
-                return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
+                return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
         
 
         

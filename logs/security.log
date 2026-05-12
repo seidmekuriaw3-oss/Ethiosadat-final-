@@ -15090,3 +15090,7 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 12:43:20,100 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
 2026-05-12 12:43:40,354 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
 2026-05-12 12:43:40,649 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
+2026-05-12 12:43:43,524 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 12:46:10,788 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
+2026-05-12 12:49:48,487 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
+2026-05-12 12:50:08,265 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
