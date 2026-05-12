@@ -55203,3 +55203,23 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 11:49:29,911 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
 2026-05-12 11:56:16,894 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
 2026-05-12 12:01:19,853 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 12:18:40,105 - app - INFO - ==================================================
+2026-05-12 12:18:40,105 - app - INFO - Ethiosadat Application Started
+2026-05-12 12:18:40,105 - app - INFO - ==================================================
+2026-05-12 12:18:40,473 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-12 12:18:40,504 - app - INFO - Database initialized successfully
+2026-05-12 12:18:40,505 - app - INFO - Application initialized successfully
+2026-05-12 12:18:40,506 - app - INFO - ============================================================
+2026-05-12 12:18:40,506 - app - INFO - ETHIOSADAT FURNITURE APPLICATION READY
+2026-05-12 12:18:40,506 - app - INFO - Environment: development
+2026-05-12 12:18:40,507 - app - INFO - Debug Mode: False
+2026-05-12 12:18:40,507 - app - INFO - Cache Type: SimpleCache
+2026-05-12 12:18:40,507 - app - INFO - ============================================================
+2026-05-12 12:18:40,508 - app - INFO - Application shutting down...
+2026-05-12 12:18:46,585 - app - INFO - ==================================================
+2026-05-12 12:18:46,585 - app - INFO - Ethiosadat Application Started
+2026-05-12 12:18:46,586 - app - INFO - ==================================================
+2026-05-12 12:18:47,662 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 12:18:48,994 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 12:19:02,853 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 12:19:25,982 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
