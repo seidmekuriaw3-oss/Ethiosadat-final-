@@ -54810,3 +54810,98 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 10:18:54,353 - app - INFO - Admin logged in: admin@ethiosadat.com
 2026-05-12 10:18:54,375 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
 2026-05-12 10:18:54,415 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:20:57,233 - app - INFO - New product created: አልጋ (ID: 1)
+2026-05-12 10:20:57,525 - app - INFO - Admin product list viewed - 1 products
+2026-05-12 10:21:04,154 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 10:21:14,492 - app - INFO - Admin ads list viewed - 0 ads
+2026-05-12 10:21:14,792 - app - INFO - Admin ads list viewed - 0 ads
+2026-05-12 10:26:17,959 - app - INFO - New advertisement created: New arrivals (ID: 1)
+2026-05-12 10:26:17,959 - app - WARNING - Slow request: POST /admin/ads/create - 37.33s
+2026-05-12 10:26:18,268 - app - INFO - Admin ads list viewed - 1 ads
+2026-05-12 10:26:24,012 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 10:27:08,920 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-12 10:27:08,921 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/static/images/logo.svg
+2026-05-12 10:27:10,008 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-12 10:27:10,009 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/static/images/logo.svg
+2026-05-12 10:27:15,231 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 10:28:11,374 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 10:28:15,466 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/favicon.ico
+2026-05-12 10:28:28,537 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 10:28:28,826 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 0
+2026-05-12 10:28:29,940 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 0
+2026-05-12 10:28:29,970 - app - INFO - Admin reports viewed
+2026-05-12 10:29:13,387 - app - INFO - ==================================================
+2026-05-12 10:29:13,387 - app - INFO - Ethiosadat Application Started
+2026-05-12 10:29:13,387 - app - INFO - ==================================================
+2026-05-12 10:29:13,488 - app - INFO - Application shutting down...
+2026-05-12 10:29:29,909 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 0
+2026-05-12 10:29:29,930 - app - INFO - Admin reports viewed
+2026-05-12 10:30:42,464 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:30:46,970 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:31:07,631 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-12 10:31:07,632 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/static/images/logo.svg
+2026-05-12 10:31:44,922 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/favicon.ico
+2026-05-12 10:32:50,367 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:33:26,584 - app - INFO - ==================================================
+2026-05-12 10:33:26,585 - app - INFO - Ethiosadat Application Started
+2026-05-12 10:33:26,585 - app - INFO - ==================================================
+2026-05-12 10:33:39,532 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:33:39,907 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:33:42,325 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 0
+2026-05-12 10:33:49,333 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:33:52,631 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:34:05,309 - app - INFO - Admin product list viewed - 1 products
+2026-05-12 10:34:06,084 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-12 10:34:08,422 - app - INFO - Admin product list viewed - 1 products
+2026-05-12 10:34:08,867 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:34:11,798 - app - INFO - Admin reports viewed
+2026-05-12 10:34:12,398 - app - INFO - Admin reports viewed
+2026-05-12 10:34:15,433 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:34:15,722 - app - INFO - Admin reports viewed
+2026-05-12 10:34:23,640 - app - INFO - Admin reports viewed
+2026-05-12 10:34:24,958 - app - INFO - Admin product list viewed - 1 products
+2026-05-12 10:34:26,833 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:34:27,879 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 0
+2026-05-12 10:34:29,390 - app - INFO - Admin product list viewed - 1 products
+2026-05-12 10:34:33,833 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:34:34,129 - app - INFO - Admin reports viewed
+2026-05-12 10:34:34,274 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:34:34,558 - app - INFO - Admin reports viewed
+2026-05-12 10:34:39,820 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:34:40,417 - app - INFO - Admin reports viewed
+2026-05-12 10:34:40,611 - app - ERROR - Error loading products report: column "c.name" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.*, c.name as category_name,
+                    ^
+
+2026-05-12 10:34:40,980 - app - INFO - Admin reports viewed
+2026-05-12 10:34:41,229 - app - ERROR - Error loading products report: column "c.name" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.*, c.name as category_name,
+                    ^
+
+2026-05-12 10:34:41,688 - app - INFO - Admin reports viewed
+2026-05-12 10:34:48,564 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:34:49,336 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:35:01,138 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 0
+2026-05-12 10:35:01,377 - app - INFO - Admin product list viewed - 1 products
+2026-05-12 10:35:04,686 - app - INFO - Admin product list viewed - 1 products
+2026-05-12 10:39:38,260 - app - INFO - ==================================================
+2026-05-12 10:39:38,260 - app - INFO - Ethiosadat Application Started
+2026-05-12 10:39:38,260 - app - INFO - ==================================================
+2026-05-12 10:39:40,068 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 10:39:49,126 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 10:39:49,150 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 0
+2026-05-12 10:39:49,196 - app - INFO - Admin reports viewed
+2026-05-12 10:39:49,301 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
+2026-05-12 10:39:49,321 - app - INFO - Admin reports viewed

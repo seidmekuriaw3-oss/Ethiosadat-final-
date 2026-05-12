@@ -15036,3 +15036,37 @@ LINE 1: SELECT p.*, c.name as category_name,
 
 2026-05-12 10:17:57,226 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/favicon.ico
 2026-05-12 10:17:58,405 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 10:26:17,959 - app - WARNING - Slow request: POST /admin/ads/create - 37.33s
+2026-05-12 10:27:08,920 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-12 10:27:08,921 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/static/images/logo.svg
+2026-05-12 10:27:10,008 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-12 10:27:10,009 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/static/images/logo.svg
+2026-05-12 10:28:15,466 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/favicon.ico
+2026-05-12 10:31:07,631 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-12 10:31:07,632 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/static/images/logo.svg
+2026-05-12 10:31:44,922 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/favicon.ico
+2026-05-12 10:34:15,433 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:34:33,833 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:34:34,274 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:34:39,820 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:34:40,611 - app - ERROR - Error loading products report: column "c.name" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.*, c.name as category_name,
+                    ^
+
+2026-05-12 10:34:41,229 - app - ERROR - Error loading products report: column "c.name" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.*, c.name as category_name,
+                    ^
+
+2026-05-12 10:39:49,301 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable

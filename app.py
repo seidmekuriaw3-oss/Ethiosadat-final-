@@ -4298,7 +4298,6 @@ def admin_reports():
     
     try:
         conn = get_db()
-        conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
         # Get total counts
@@ -4323,11 +4322,11 @@ def admin_reports():
         
         # Get category distribution
         cursor.execute("""
-            SELECT c.name_am, c.name, COUNT(p.id) as product_count
+            SELECT c.id, c.name_am, c.name, COUNT(p.id) as product_count
             FROM categories c
             LEFT JOIN products p ON p.category_id = c.id AND p.is_active = 1
             WHERE c.is_active = 1
-            GROUP BY c.id
+            GROUP BY c.id, c.name_am, c.name
             ORDER BY product_count DESC
         """)
         categories = cursor.fetchall()
@@ -4351,7 +4350,7 @@ def admin_reports():
                    SUM(oi.quantity * oi.price_at_time) as revenue
             FROM order_items oi
             JOIN products p ON oi.product_id = p.id
-            GROUP BY p.id
+            GROUP BY p.id, p.name_am, p.name
             ORDER BY total_sold DESC
             LIMIT 10
         """)
@@ -4433,10 +4432,10 @@ def admin_reports_sales():
         params = []
         
         if start_date:
-            query += " AND DATE(o.created_at) >= ?"
+            query += " AND DATE(o.created_at) >= %s"
             params.append(start_date)
         if end_date:
-            query += " AND DATE(o.created_at) <= ?"
+            query += " AND DATE(o.created_at) <= %s"
             params.append(end_date)
         
         query += " ORDER BY o.created_at DESC"
@@ -4466,13 +4465,13 @@ def admin_reports_sales():
         
         # Get top products by sales
         cursor.execute("""
-            SELECT p.name_am as name, c.name_am as category,
+            SELECT p.id, p.name_am as name, c.name_am as category,
                    COALESCE(SUM(oi.quantity), 0) as units_sold,
                    COALESCE(SUM(oi.quantity * oi.price_at_time), 0) as revenue
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.id
             LEFT JOIN order_items oi ON p.id = oi.product_id
-            GROUP BY p.id
+            GROUP BY p.id, p.name_am, c.name_am
             ORDER BY units_sold DESC
             LIMIT 10
         """)
@@ -4524,14 +4523,18 @@ def admin_reports_products():
         
         # Get products with sales data
         cursor.execute("""
-            SELECT p.*, c.name as category_name,
+            SELECT p.id, p.name_am, p.name, p.name_ar, p.price, p.compare_price,
+                   p.stock_quantity, p.low_stock_threshold, p.is_featured,
+                   p.thumbnail, p.created_at, c.name as category_name,
                    COALESCE(SUM(oi.quantity), 0) as total_sold,
                    COALESCE(SUM(oi.quantity * oi.price_at_time), 0) as total_revenue
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.id
             LEFT JOIN order_items oi ON p.id = oi.product_id
             WHERE p.is_active = 1
-            GROUP BY p.id
+            GROUP BY p.id, p.name_am, p.name, p.name_ar, p.price, p.compare_price,
+                     p.stock_quantity, p.low_stock_threshold, p.is_featured,
+                     p.thumbnail, p.created_at, c.name
             ORDER BY total_sold DESC, p.id DESC
         """)
         products = cursor.fetchall()
@@ -4556,7 +4559,7 @@ def admin_reports_products():
             FROM categories c
             LEFT JOIN products p ON p.category_id = c.id AND p.is_active = 1
             WHERE c.is_active = 1
-            GROUP BY c.id
+            GROUP BY c.id, c.name_am, c.name
             ORDER BY c.name_am ASC
         """)
         categories = cursor.fetchall()
