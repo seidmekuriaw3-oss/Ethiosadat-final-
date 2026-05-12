@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ethiosadat-cache-v2';
+const CACHE_NAME = 'ethiosadat-cache-v3';
 
 const STATIC_ASSETS = [
     '/static/css/style.css',
@@ -27,11 +27,18 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-    if (event.request.method !== 'GET') return;
+    // Non-GET requests (POST, PUT, DELETE, etc.) must always go directly
+    // to the network. A bare `return` here consumes the fetch event without
+    // calling respondWith(), which causes some browsers to resolve with an
+    // empty response instead of falling through to the network.
+    if (event.request.method !== 'GET') {
+        event.respondWith(fetch(event.request));
+        return;
+    }
 
     const url = new URL(event.request.url);
 
-    // API routes: always go to network, never serve from cache.
+    // API GET routes: always go to network, never serve from cache.
     // If network fails, return a valid JSON error so the app won't crash.
     if (url.pathname.startsWith('/api/')) {
         event.respondWith(
