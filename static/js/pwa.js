@@ -41,41 +41,7 @@ class PWAManager {
     }
 
     registerServiceWorker() {
-        if (!('serviceWorker' in navigator)) {
-            console.warn('Service workers are not supported in this browser');
-            return;
-        }
-
-        navigator.serviceWorker.register(PWA_CONFIG.swUrl)
-            .then(registration => {
-                this.swRegistration = registration;
-                console.log('Service Worker registered successfully:', registration.scope);
-                
-                // Check for updates
-                this.checkForUpdates();
-                
-                // Listen for updates
-                registration.addEventListener('updatefound', () => {
-                    this.swUpdateFound = true;
-                    const newWorker = registration.installing;
-                    console.log('Service Worker update found!');
-                    
-                    newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            this.showUpdateNotification();
-                        }
-                    });
-                });
-            })
-            .catch(error => {
-                console.error('Service Worker registration failed:', error);
-            });
-        
-        // Handle controller changes
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            console.log('Service Worker controller changed');
-            window.location.reload();
-        });
+        // Service worker removed
     }
 
     setupEventListeners() {

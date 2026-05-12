@@ -1269,36 +1269,8 @@ function supportsWebP() {
     return false;
 }
 
-// ==================== Service Worker Registration (PWA) ====================
-function initServiceWorker() {
-    // Check if service worker is supported and we're in a secure context
-    if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/static/service-worker.js')
-                .then(registration => {
-                    console.log('ServiceWorker registered successfully:', registration.scope);
-                    
-                    // Check for updates
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        console.log('ServiceWorker update found!');
-                        
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                // New update available
-                                if (window.showToast) {
-                                    window.showToast('New version available! Refresh to update.', 'info', 10000);
-                                }
-                            }
-                        });
-                    });
-                })
-                .catch(error => {
-                    console.log('ServiceWorker registration failed:', error);
-                });
-        });
-    }
-}
+// Service worker removed
+function initServiceWorker() {}
 
 // Request notification permission
 function requestNotificationPermission() {

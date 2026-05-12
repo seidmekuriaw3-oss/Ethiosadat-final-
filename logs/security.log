@@ -15102,3 +15102,5 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 14:30:22,378 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/favicon.ico
 2026-05-12 14:38:22,285 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/product/1/test-add/1
 2026-05-12 14:38:24,733 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/product/1/test-add/1
+2026-05-12 14:48:14,987 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/static/service-worker.js
+2026-05-12 14:50:03,057 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/static/service-worker.js
