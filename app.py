@@ -2338,20 +2338,13 @@ def add_to_cart():
             flash('Product not found!', 'danger')
             return redirect(request.referrer or url_for('index'))
         
-        stock = product[4]  # None = unlimited, 0 = out of stock, >0 = tracked
+        product_stock = product[4]  # None = unlimited, 0 = truly out of stock, >0 = in stock
 
-        # Explicitly out of stock (admin set to 0)
-        if stock is not None and stock == 0:
+        # Only block when stock is explicitly 0 (or negative)
+        if product_stock is not None and product_stock <= 0:
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return jsonify({'success': False, 'error': 'Out of stock'}), 400
+                return jsonify({'success': False, 'message': 'This item is truly out of stock'}), 400
             flash('Sorry, this product is currently out of stock.', 'warning')
-            return redirect(request.referrer or url_for('index'))
-
-        # Insufficient tracked stock for requested quantity
-        if stock is not None and stock > 0 and stock < quantity:
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
-            flash(f'Sorry, only {stock} items available in stock!', 'warning')
             return redirect(request.referrer or url_for('index'))
 
         product_name = product[1] or product[2]
@@ -2368,17 +2361,10 @@ def add_to_cart():
 
             if existing:
                 new_quantity = existing[1] + quantity
-                # Allow when stock is unlimited (None) or sufficient
-                if stock is None or stock >= new_quantity:
-                    cursor.execute("""
-                        UPDATE cart_items SET quantity = ? WHERE id = ?
-                    """, (new_quantity, existing[0]))
-                    message = 'Cart updated successfully!'
-                else:
-                    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                        return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
-                    flash(f'Sorry, only {stock} items available in stock!', 'warning')
-                    return redirect(request.referrer or url_for('index'))
+                cursor.execute("""
+                    UPDATE cart_items SET quantity = ? WHERE id = ?
+                """, (new_quantity, existing[0]))
+                message = 'Cart updated successfully!'
             else:
                 cursor.execute("""
                     INSERT INTO cart_items (user_id, product_id, quantity)
@@ -2393,19 +2379,10 @@ def add_to_cart():
             cart = session.get('cart', {})
             cart_key = str(product_id)
             current_quantity = cart.get(cart_key, 0)
-            new_quantity = current_quantity + quantity
-
-            # Allow when stock is unlimited (None) or sufficient
-            if stock is None or stock >= new_quantity:
-                cart[cart_key] = new_quantity
-                session['cart'] = cart
-                session.modified = True
-                message = 'Product added to cart!'
-            else:
-                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                    return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
-                flash(f'Sorry, only {stock} items available in stock!', 'warning')
-                return redirect(request.referrer or url_for('index'))
+            cart[cart_key] = current_quantity + quantity
+            session['cart'] = cart
+            session.modified = True
+            message = 'Product added to cart!'
         
         # Get cart count
         cart_count = get_cart_count()
@@ -5431,15 +5408,11 @@ def api_cart_add():
 
             return jsonify({'success': False, 'error': 'Product not found'}), 404
         
-        stock = product[4]  # None = unlimited, 0 = out of stock, >0 = tracked
+        product_stock = product[4]  # None = unlimited, 0 = truly out of stock, >0 = in stock
 
-        # Explicitly out of stock (admin set to 0)
-        if stock is not None and stock == 0:
-            return jsonify({'success': False, 'error': 'Out of stock'}), 400
-
-        # Insufficient tracked stock for the requested quantity
-        if stock is not None and stock > 0 and stock < quantity:
-            return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
+        # Only block when stock is explicitly 0 (or negative)
+        if product_stock is not None and product_stock <= 0:
+            return jsonify({'success': False, 'message': 'This item is truly out of stock'}), 400
 
         if session.get('user_id'):
             cursor.execute("""
@@ -5451,11 +5424,7 @@ def api_cart_add():
 
             if existing:
                 new_quantity = existing[1] + quantity
-                # Allow when stock is unlimited (None) or sufficient
-                if stock is None or stock >= new_quantity:
-                    cursor.execute("UPDATE cart_items SET quantity = ? WHERE id = ?", (new_quantity, existing[0]))
-                else:
-                    return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
+                cursor.execute("UPDATE cart_items SET quantity = ? WHERE id = ?", (new_quantity, existing[0]))
             else:
                 cursor.execute("""
                     INSERT INTO cart_items (user_id, product_id, quantity)
@@ -5467,15 +5436,9 @@ def api_cart_add():
             cart = session.get('cart', {})
             cart_key = str(product_id)
             current_quantity = cart.get(cart_key, 0)
-            new_quantity = current_quantity + quantity
-
-            # Allow when stock is unlimited (None) or sufficient
-            if stock is None or stock >= new_quantity:
-                cart[cart_key] = new_quantity
-                session['cart'] = cart
-                session.modified = True
-            else:
-                return jsonify({'success': False, 'error': f'Only {stock} items available'}), 400
+            cart[cart_key] = current_quantity + quantity
+            session['cart'] = cart
+            session.modified = True
         
 
         

@@ -396,15 +396,19 @@
         }
         
         // Stock status
-        const stock = product.stock_quantity || 0;
+        // null/undefined means unlimited stock; only 0 means truly out of stock
+        const rawStock = product.stock_quantity;
+        const isUnlimited = (rawStock === null || rawStock === undefined);
+        const stock = isUnlimited ? null : rawStock;
         const addToCartBtn = document.getElementById('modalAddToCartBtn');
-        
+
         if (stockEl) {
-            if (stock > 10) {
-                stockEl.innerHTML = '<span style="color: #4caf50;">✓ In Stock (' + stock + ' available)</span>';
+            if (isUnlimited || stock > 10) {
+                stockEl.innerHTML = '<span style="color: #4caf50;">✓ In Stock</span>';
             } else if (stock > 0) {
                 stockEl.innerHTML = '<span style="color: #ff9800;">⚠️ Only ' + stock + ' left in stock</span>';
             } else {
+                // stock === 0: explicitly out of stock
                 stockEl.innerHTML = '<span style="color: #f44336;">✗ Out of Stock</span>';
                 if (addToCartBtn) {
                     addToCartBtn.disabled = true;
@@ -477,8 +481,8 @@
         const quantityInput = document.getElementById('modalQuantity');
         if (quantityInput) quantityInput.value = 1;
         
-        // Enable add to cart button if in stock
-        if (addToCartBtn && stock > 0) {
+        // Enable add to cart button — allow if unlimited (null) or stock > 0
+        if (addToCartBtn && (isUnlimited || stock > 0)) {
             addToCartBtn.disabled = false;
             addToCartBtn.style.opacity = '1';
         }

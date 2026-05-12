@@ -73,9 +73,9 @@
                 </div>
                 {% endif %}
                 
-                <!-- Stock Badge -->
-                {% set stock = product.stock_quantity|default(0) %}
-                {% if stock == 0 %}
+                <!-- Stock Badge: only show Out of Stock when explicitly set to 0 -->
+                {% set stock = product.stock_quantity %}
+                {% if stock is not none and stock == 0 %}
                 <div class="stock-badge" style="
                     position: absolute;
                     top: 12px;
@@ -89,7 +89,7 @@
                 ">
                     {% if lang == 'am' %}ክምችት የለም{% else %}Out of Stock{% endif %}
                 </div>
-                {% elif stock < 5 and stock > 0 %}
+                {% elif stock is not none and stock < 5 and stock > 0 %}
                 <div class="stock-badge" style="
                     position: absolute;
                     top: 12px;

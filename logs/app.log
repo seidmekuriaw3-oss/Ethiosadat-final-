@@ -55303,3 +55303,14 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 12:59:03,482 - app - INFO - Admin logged in: admin@ethiosadat.com
 2026-05-12 12:59:03,503 - app - INFO - Admin dashboard accessed - Products: 13, Orders: 0, Stock alerts: 1 (0 out, 1 low)
 2026-05-12 12:59:03,598 - app - INFO - Bulk import: 1 products saved by admin 'admin'
+2026-05-12 13:00:12,963 - app - INFO - ==================================================
+2026-05-12 13:00:12,963 - app - INFO - Ethiosadat Application Started
+2026-05-12 13:00:12,963 - app - INFO - ==================================================
+2026-05-12 13:00:25,195 - app - INFO - Home page - Featured: 3, New: 4, Ads: 0
+2026-05-12 13:00:41,418 - app - INFO - Home page - Featured: 3, New: 4, Ads: 0
+2026-05-12 13:00:46,619 - app - INFO - Home page - Featured: 3, New: 4, Ads: 0
+2026-05-12 13:08:54,442 - app - INFO - ==================================================
+2026-05-12 13:08:54,443 - app - INFO - Ethiosadat Application Started
+2026-05-12 13:08:54,443 - app - INFO - ==================================================
+2026-05-12 13:08:56,482 - app - INFO - Home page - Featured: 3, New: 4, Ads: 0
+2026-05-12 13:13:23,032 - app - INFO - Home page - Featured: 3, New: 4, Ads: 0
