@@ -15013,3 +15013,8 @@ HINT:  No function matches the given name and argument types. You might need to 
 
 2026-05-12 09:45:08,560 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
 2026-05-12 09:45:13,137 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 10:06:59,818 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 10:07:06,942 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-12 10:07:24,474 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 10:07:24,595 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 10:07:24,716 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1

@@ -515,6 +515,18 @@
                     </a>
                 </div>
                 
+                <!-- Messages -->
+                <div class="nav-section">
+                    <div class="nav-section-title">MESSAGES</div>
+                    <a href="{{ url_for('admin_inbox') }}">
+                        <span class="nav-icon">📬</span>
+                        <span class="nav-text">Inbox</span>
+                        {% if unread_messages_count and unread_messages_count > 0 %}
+                        <span class="badge">{{ unread_messages_count }}</span>
+                        {% endif %}
+                    </a>
+                </div>
+
                 <!-- Notifications -->
                 <div class="nav-section">
                     <div class="nav-section-title">NOTIFICATIONS</div>

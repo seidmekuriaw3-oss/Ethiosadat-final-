@@ -196,6 +196,7 @@ def inject_globals():
 
     pending_orders_count = 0
     low_stock_count = 0
+    unread_messages_count = 0
     if session.get('admin') or session.get('is_admin'):
         try:
             conn = get_db()
@@ -210,6 +211,10 @@ def inject_globals():
             """)
             ls_row = cur.fetchone()
             low_stock_count = ls_row[0] if ls_row else 0
+
+            cur.execute("SELECT COUNT(*) FROM contact_messages WHERE is_read = 0")
+            um_row = cur.fetchone()
+            unread_messages_count = um_row[0] if um_row else 0
 
         except Exception:
             pass
@@ -227,6 +232,7 @@ def inject_globals():
         'app_name': 'Ethiosadat Furniture',
         'pending_orders_count': pending_orders_count,
         'low_stock_count': low_stock_count,
+        'unread_messages_count': unread_messages_count,
     }
 
 
@@ -4151,7 +4157,113 @@ def admin_delete_user(uid):
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
-# ==================== 23. ADMIN REPORTS ====================
+# ==================== 23. ADMIN INBOX ====================
+
+@app.route('/admin/inbox')
+@admin_required
+@limiter.exempt
+def admin_inbox():
+    """Admin inbox — list all contact messages."""
+    lang = get_lang()
+    t = TEXTS.get(lang, TEXTS['am'])
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+
+        filter_status = request.args.get('filter', 'all')
+        search = request.args.get('search', '').strip()
+
+        query = "SELECT * FROM contact_messages WHERE 1=1"
+        params = []
+
+        if filter_status == 'unread':
+            query += " AND is_read = 0"
+        elif filter_status == 'read':
+            query += " AND is_read = 1"
+
+        if search:
+            query += " AND (name ILIKE %s OR email ILIKE %s OR phone ILIKE %s OR message ILIKE %s)"
+            s = f'%{search}%'
+            params.extend([s, s, s, s])
+
+        query += " ORDER BY created_at DESC"
+        cursor.execute(query, params)
+        messages = [dict(r) for r in cursor.fetchall()]
+
+        cursor.execute("SELECT COUNT(*) FROM contact_messages WHERE is_read = 0")
+        unread_count = cursor.fetchone()[0] or 0
+
+        cursor.execute("SELECT COUNT(*) FROM contact_messages")
+        total_count = cursor.fetchone()[0] or 0
+
+        app.logger.info(f"Admin inbox viewed — {len(messages)} messages")
+        return render_template('admin/inbox/index.html',
+                               messages=messages,
+                               filter_status=filter_status,
+                               search=search,
+                               unread_count=unread_count,
+                               total_count=total_count,
+                               lang=lang, t=t)
+    except Exception as e:
+        app.logger.error(f"Admin inbox error: {str(e)}")
+        flash('Error loading inbox.', 'error')
+        return redirect(url_for('admin_dashboard'))
+
+
+@app.route('/admin/inbox/<int:mid>/mark-read', methods=['POST'])
+@admin_required
+def admin_inbox_mark_read(mid):
+    """Toggle read/unread status of a contact message."""
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT is_read FROM contact_messages WHERE id = %s", (mid,))
+        row = cursor.fetchone()
+        if not row:
+            return jsonify({'success': False, 'error': 'Message not found'}), 404
+        new_status = 0 if row['is_read'] else 1
+        cursor.execute("UPDATE contact_messages SET is_read = %s WHERE id = %s", (new_status, mid))
+        conn.commit()
+        return jsonify({'success': True, 'is_read': new_status})
+    except Exception as e:
+        app.logger.error(f"Inbox mark-read error: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/admin/inbox/mark-all-read', methods=['POST'])
+@admin_required
+def admin_inbox_mark_all_read():
+    """Mark all unread contact messages as read."""
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("UPDATE contact_messages SET is_read = 1 WHERE is_read = 0")
+        conn.commit()
+        count = cursor.rowcount
+        return jsonify({'success': True, 'updated': count})
+    except Exception as e:
+        app.logger.error(f"Inbox mark-all-read error: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/admin/inbox/<int:mid>/delete', methods=['POST'])
+@admin_required
+def admin_inbox_delete(mid):
+    """Delete a contact message."""
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM contact_messages WHERE id = %s", (mid,))
+        conn.commit()
+        if cursor.rowcount == 0:
+            return jsonify({'success': False, 'error': 'Message not found'}), 404
+        return jsonify({'success': True})
+    except Exception as e:
+        app.logger.error(f"Inbox delete error: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+# ==================== 24. ADMIN REPORTS ====================
 
 @app.route('/admin/reports')
 @admin_required
