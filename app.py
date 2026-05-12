@@ -3502,7 +3502,7 @@ def admin_ads():
         active_ads = sum(1 for ad in ads_list if ad.get('is_active', 0) == 1)
         ads_with_media = sum(1 for ad in ads_list if ad.get('image') and ad['image'] != '')
         
-        app.logger.info(f"Admin ads list viewed - {len(ads_list)} ads")
+        app.logger.info(f"Admin ads list viewed - {len(ads_list)} total ads ({active_ads} active, {len(ads_list) - active_ads} inactive)")
         
         return render_template('admin/ads/index.html',
                                ads=ads_list,

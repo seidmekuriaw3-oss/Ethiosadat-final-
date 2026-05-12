@@ -54995,3 +54995,35 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 11:09:34,909 - app - INFO - Ethiosadat Application Started
 2026-05-12 11:09:34,909 - app - INFO - ==================================================
 2026-05-12 11:09:35,757 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:10:29,725 - app - INFO - Admin reports viewed
+2026-05-12 11:10:29,731 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:10:54,558 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:10:59,733 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:11:01,458 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:11:02,508 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:11:03,040 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:11:17,636 - app - INFO - Admin ads list viewed - 0 ads
+2026-05-12 11:11:19,746 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:11:20,454 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:11:21,119 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:11:57,946 - app - INFO - Admin reports viewed
+2026-05-12 11:11:58,427 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:12:00,978 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:12:01,632 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:12:01,633 - app - INFO - Admin reports viewed
+2026-05-12 11:12:04,011 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:12:06,198 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-12 11:12:06,571 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-12 11:12:08,464 - app - INFO - Admin product list viewed - 0 products
+2026-05-12 11:12:08,742 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-12 11:12:12,000 - app - INFO - Admin product list viewed - 0 products
+2026-05-12 11:12:13,471 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:12:15,794 - app - INFO - Admin product list viewed - 0 products
+2026-05-12 11:12:16,394 - app - INFO - Admin reports viewed
+2026-05-12 11:12:17,633 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-12 11:12:43,016 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:13:05,676 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-12 11:13:12,943 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:13:18,987 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:14:13,560 - app - INFO - New user registered: seidmekuriaw3@gmail.com
+2026-05-12 11:14:13,561 - app - INFO - Welcome email would be sent to seidmekuriaw3@gmail.com

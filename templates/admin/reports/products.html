@@ -260,7 +260,7 @@
                         {% endif %}
                     </td>
                     <td style="padding: 12px; text-align: center; font-size: 12px; color: var(--text-muted, #666);">
-                        {{ product.created_at[:10] if product.created_at else '-' }}
+                        {{ product.created_at.strftime('%Y-%m-%d') if product.created_at else '-' }}
                     </td>
                 </tr>
                 {% endfor %}
