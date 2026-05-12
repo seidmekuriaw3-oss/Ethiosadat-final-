@@ -1299,21 +1299,11 @@ def contact():
             conn = get_db()
             cursor = conn.cursor()
             cursor.execute("""
-                CREATE TABLE IF NOT EXISTS contacts (
-                    id SERIAL PRIMARY KEY,
-                    name TEXT NOT NULL,
-                    email TEXT,
-                    phone TEXT,
-                    message TEXT NOT NULL,
-                    created_at TIMESTAMP DEFAULT NOW()
-                )
-            """)
-            cursor.execute("""
-                INSERT INTO contacts (name, email, phone, message)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO contact_messages (name, email, phone, message)
+                VALUES (%s, %s, %s, %s)
             """, (name, email, phone, message))
             conn.commit()
-
+            app.logger.info(f"Contact message saved from {name} ({email})")
         except Exception as e:
             app.logger.error(f"Error saving contact: {str(e)}")
         
@@ -2089,28 +2079,32 @@ def forgot_password():
         
         try:
             conn = get_db()
-            conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
-            cursor.execute("SELECT id, full_name FROM users WHERE email = ? AND is_active = 1", (email,))
+            cursor.execute("SELECT id, full_name FROM users WHERE email = %s AND is_active = 1", (email,))
             user = cursor.fetchone()
-            
+
             if user:
-                # Generate reset token
+                # Invalidate any previous unused tokens for this email
+                cursor.execute(
+                    "UPDATE password_reset_tokens SET used = 1 WHERE email = %s AND used = 0",
+                    (email,)
+                )
+                # Generate reset token and store in DB
                 reset_token = uuid.uuid4().hex
-                expiry = datetime_.datetime.now().timestamp() + 3600  # 1 hour
-                
-                # Store token in session or database
-                session['reset_token'] = reset_token
-                session['reset_email'] = email
-                session['reset_expiry'] = expiry
-                
-                # Send reset email
-                send_password_reset_email(email, user[1], reset_token)
+                expires_at = datetime_.datetime.now() + datetime_.timedelta(hours=1)
+                cursor.execute("""
+                    INSERT INTO password_reset_tokens (email, token, expires_at)
+                    VALUES (%s, %s, %s)
+                """, (email, reset_token, expires_at))
+                conn.commit()
+
+                send_password_reset_email(email, user['full_name'], reset_token)
                 flash('Password reset link sent to your email!', 'success')
+                app.logger.info(f"Password reset token created for {email}")
             else:
                 # Don't reveal if email exists for security
                 flash('If an account exists with that email, you will receive a reset link.', 'info')
-                
+
         except Exception as e:
             app.logger.error(f"Forgot password error: {str(e)}")
             flash('Error processing request. Please try again.', 'error')
@@ -2134,43 +2128,59 @@ def reset_password(token):
     lang = get_lang()
     t = TEXTS.get(lang, TEXTS['am'])
     
-    # Verify token
-    stored_token = session.get('reset_token')
-    stored_email = session.get('reset_email')
-    stored_expiry = session.get('reset_expiry', 0)
-    
-    if not stored_token or stored_token != token or datetime_.datetime.now().timestamp() > stored_expiry:
+    # Verify token from database
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT email, expires_at, used
+            FROM password_reset_tokens
+            WHERE token = %s
+        """, (token,))
+        token_row = cursor.fetchone()
+    except Exception as e:
+        app.logger.error(f"Token lookup error: {str(e)}")
+        token_row = None
+
+    if (not token_row
+            or token_row['used']
+            or token_row['expires_at'] < datetime_.datetime.now()):
         flash('Invalid or expired reset link. Please request a new one.', 'error')
         return redirect(url_for('forgot_password'))
-    
+
+    stored_email = token_row['email']
+
     if request.method == 'POST':
         password = request.form.get('password', '')
         confirm_password = request.form.get('confirm_password', '')
-        
+
         if not password or len(password) < 6:
             flash('Password must be at least 6 characters', 'error')
             return render_template('auth/reset_password.html', token=token, lang=lang, t=t)
-        
+
         if password != confirm_password:
             flash('Passwords do not match', 'error')
             return render_template('auth/reset_password.html', token=token, lang=lang, t=t)
-        
+
         try:
             conn = get_db()
             cursor = conn.cursor()
             password_hash = generate_password_hash(password, method='pbkdf2:sha256')
-            cursor.execute("UPDATE users SET password_hash = ? WHERE email = ?", (password_hash, stored_email))
+            cursor.execute(
+                "UPDATE users SET password_hash = %s WHERE email = %s",
+                (password_hash, stored_email)
+            )
+            # Mark token as used so it cannot be reused
+            cursor.execute(
+                "UPDATE password_reset_tokens SET used = 1 WHERE token = %s",
+                (token,)
+            )
             conn.commit()
 
-            
-            # Clear reset session data
-            session.pop('reset_token', None)
-            session.pop('reset_email', None)
-            session.pop('reset_expiry', None)
-            
+            app.logger.info(f"Password reset completed for {stored_email}")
             flash('Password reset successful! Please login with your new password.', 'success')
             return redirect(url_for('user_login'))
-            
+
         except Exception as e:
             app.logger.error(f"Reset password error: {str(e)}")
             flash('Error resetting password. Please try again.', 'error')
@@ -2605,7 +2615,7 @@ def checkout():
     total = subtotal_after_discount + shipping_cost
     
     # Get user info for pre-filling
-    cursor.execute("SELECT full_name, email, phone, address, city FROM users WHERE id = ?", (session['user_id'],))
+    cursor.execute("SELECT full_name, email, phone, address, city FROM users WHERE id = %s", (session['user_id'],))
     user = cursor.fetchone()
     
     if request.method == 'POST':
@@ -2613,13 +2623,17 @@ def checkout():
             shipping_address = request.form.get('shipping_address', '').strip()
             shipping_city = request.form.get('shipping_city', '').strip()
             shipping_phone = request.form.get('shipping_phone', '').strip()
+            customer_email = request.form.get('customer_email', '').strip()
             notes = request.form.get('notes', '').strip()
             payment_method = request.form.get('payment_method', 'cash')
-            
+
             if not shipping_address or not shipping_phone:
                 flash('Please fill in shipping address and phone number', 'error')
                 return redirect(url_for('checkout'))
-            
+
+            # Resolve customer name from session user
+            customer_name = session.get('user_name') or (dict(user).get('full_name') if user else None)
+
             # Create order
             order_id = create_order(
                 user_id=session['user_id'],
@@ -2632,14 +2646,16 @@ def checkout():
                 shipping_city=shipping_city,
                 shipping_phone=shipping_phone,
                 notes=notes,
-                payment_method=payment_method
+                payment_method=payment_method,
+                customer_name=customer_name,
+                customer_email=customer_email or None,
             )
-            
+
             if order_id:
                 # Clear cart
                 conn = get_db()
                 cursor = conn.cursor()
-                cursor.execute("DELETE FROM cart_items WHERE user_id = ?", (session['user_id'],))
+                cursor.execute("DELETE FROM cart_items WHERE user_id = %s", (session['user_id'],))
                 conn.commit()
 
                 
@@ -2670,26 +2686,30 @@ def checkout():
                            t=t)
 
 
-def create_order(user_id, items, subtotal, discount, shipping_fee, total, 
-                 shipping_address, shipping_city, shipping_phone, notes, payment_method):
+def create_order(user_id, items, subtotal, discount, shipping_fee, total,
+                 shipping_address, shipping_city, shipping_phone, notes, payment_method,
+                 customer_name=None, customer_email=None):
     """Create a new order in the database."""
     try:
         conn = get_db()
         cursor = conn.cursor()
-        
+
         # Generate order number
         order_number = generate_order_number()
-        
+
         cursor.execute("""
             INSERT INTO orders (
-                order_number, user_id, status, payment_status, payment_method,
+                order_number, user_id, customer_name, customer_email,
+                status, payment_status, payment_method,
                 subtotal, discount, shipping_fee, total,
                 shipping_address, shipping_city, shipping_phone, notes,
                 created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                      CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
             RETURNING id
         """, (
-            order_number, user_id, 'pending', 'pending', payment_method,
+            order_number, user_id, customer_name, customer_email,
+            'pending', 'pending', payment_method,
             subtotal, discount, shipping_fee, total,
             shipping_address, shipping_city, shipping_phone, notes
         ))
@@ -2701,15 +2721,15 @@ def create_order(user_id, items, subtotal, discount, shipping_fee, total,
         for item in items:
             cursor.execute("""
                 INSERT INTO order_items (order_id, product_id, quantity, price_at_time)
-                VALUES (?, ?, ?, ?)
+                VALUES (%s, %s, %s, %s)
             """, (order_id, item['product_id'], item['quantity'], item['price']))
-            
+
             # Update product stock
             cursor.execute("""
-                UPDATE products SET 
-                    stock_quantity = stock_quantity - ?,
-                    sales_count = sales_count + ?
-                WHERE id = ?
+                UPDATE products SET
+                    stock_quantity = stock_quantity - %s,
+                    sales_count = sales_count + %s
+                WHERE id = %s
             """, (item['quantity'], item['quantity'], item['product_id']))
         
         conn.commit()
@@ -5251,114 +5271,110 @@ def api_branches():
 @app.route('/api/submit-order', methods=['POST'])
 @limiter.limit("50000 per minute")
 def api_submit_order():
-    """API endpoint to submit order via AJAX."""
+    """API endpoint to submit order via AJAX (used by quick-checkout modal)."""
     try:
         data = request.get_json()
-        
+
         if not session.get('user_id'):
             return jsonify({'success': False, 'error': 'Please login to place order'}), 401
-        
-        shipping_address = data.get('shipping_address', '').strip()
-        shipping_phone = data.get('shipping_phone', '').strip()
-        notes = data.get('notes', '').strip()
-        
-        if not shipping_address or not shipping_phone:
-            return jsonify({'success': False, 'error': 'Shipping address and phone are required'}), 400
-        
+
+        # Modal sends customer_name / customer_phone / customer_address / customer_email / order_notes
+        customer_name  = (data.get('customer_name') or '').strip()
+        customer_phone = (data.get('customer_phone') or '').strip()
+        shipping_address = (data.get('customer_address') or '').strip()
+        customer_email = (data.get('customer_email') or '').strip() or None
+        notes          = (data.get('order_notes') or '').strip()
+
+        if not customer_name or not customer_phone:
+            return jsonify({'success': False, 'error': 'Name and phone number are required'}), 400
+
+        # Use customer_phone as shipping_phone; fall back to address from modal
+        shipping_phone = customer_phone
+        if not shipping_address:
+            shipping_address = 'Not provided'
+
         # Get cart items
         conn = get_db()
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT ci.*, p.price, p.name, p.name_am
+            SELECT ci.product_id, ci.quantity, p.price, p.name, p.name_am
             FROM cart_items ci
             JOIN products p ON ci.product_id = p.id
-            WHERE ci.user_id = ?
+            WHERE ci.user_id = %s
         """, (session['user_id'],))
-        
-        cart_items = cursor.fetchall()
-        
-        if not cart_items:
 
+        cart_items = cursor.fetchall()
+
+        if not cart_items:
             return jsonify({'success': False, 'error': 'Cart is empty'}), 400
-        
-        # Calculate totals
+
+        # Calculate totals (no automatic discount for modal orders)
+        android_user = is_android_app()
         subtotal = 0
         items_list = []
         for item in cart_items:
-            discounted_price = item[5] * 0.9  # 10% discount
-            item_subtotal = discounted_price * item[4]
-            subtotal += item_subtotal
+            price = item['price'] if item['price'] else 0
+            qty   = item['quantity'] if item['quantity'] else 1
+            unit_price = price * 0.9 if android_user else price
+            subtotal += unit_price * qty
             items_list.append({
-                'product_id': item[1],
-                'quantity': item[4],
-                'price': discounted_price
+                'product_id': item['product_id'],
+                'quantity':   qty,
+                'price':      unit_price,
+                'name':       item['name'],
+                'name_am':    item['name_am'] or item['name'],
             })
-        
-        discount = subtotal * 0.1
-        subtotal_after_discount = subtotal - discount
-        
-        threshold = int(os.environ.get('FREE_SHIPPING_THRESHOLD', '5000'))
-        shipping_cost = 0 if subtotal_after_discount >= threshold else int(os.environ.get('SHIPPING_COST', '200'))
-        total = subtotal_after_discount + shipping_cost
-        
-        # Generate order number
-        order_number = generate_order_number()
-        
-        # Create order
-        cursor.execute("""
-            INSERT INTO orders (
-                order_number, user_id, status, payment_status,
-                subtotal, discount, shipping_fee, total,
-                shipping_address, shipping_phone, notes,
-                created_at, updated_at
-            ) VALUES (?, ?, 'pending', 'pending', ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-            RETURNING id
-        """, (order_number, session['user_id'], subtotal, discount, shipping_cost, total,
-              shipping_address, shipping_phone, notes))
 
-        row = cursor.fetchone()
-        order_id = row['id'] if row else None
-        
-        # Create order items and update stock
-        for item in items_list:
-            cursor.execute("""
-                INSERT INTO order_items (order_id, product_id, quantity, price_at_time)
-                VALUES (?, ?, ?, ?)
-            """, (order_id, item['product_id'], item['quantity'], item['price']))
-            
-            cursor.execute("""
-                UPDATE products SET 
-                    stock_quantity = stock_quantity - ?,
-                    sales_count = sales_count + ?
-                WHERE id = ?
-            """, (item['quantity'], item['quantity'], item['product_id']))
-        
+        discount = subtotal * 0.1 if android_user else 0
+        subtotal_after_discount = subtotal - discount
+
+        threshold     = int(os.environ.get('FREE_SHIPPING_THRESHOLD', '5000'))
+        shipping_cost = 0 if subtotal_after_discount >= threshold else int(os.environ.get('SHIPPING_COST', '200'))
+        total         = subtotal_after_discount + shipping_cost
+
+        # Persist order
+        order_id = create_order(
+            user_id=session['user_id'],
+            items=items_list,
+            subtotal=subtotal,
+            discount=discount,
+            shipping_fee=shipping_cost,
+            total=total,
+            shipping_address=shipping_address,
+            shipping_city=None,
+            shipping_phone=shipping_phone,
+            notes=notes,
+            payment_method='cash',
+            customer_name=customer_name,
+            customer_email=customer_email,
+        )
+
+        if not order_id:
+            return jsonify({'success': False, 'error': 'Failed to create order'}), 500
+
         # Clear cart
-        cursor.execute("DELETE FROM cart_items WHERE user_id = ?", (session['user_id'],))
-        
+        cursor.execute("DELETE FROM cart_items WHERE user_id = %s", (session['user_id'],))
         conn.commit()
 
-        
-        # Send WhatsApp notification
+        # Build WhatsApp notification URL
         whatsapp_url = send_order_whatsapp(
-            session.get('user_name', 'Customer'),
+            customer_name,
             shipping_phone,
             items_list,
             total,
-            order_number
+            order_id
         )
-        
-        app.logger.info(f"Order placed via API: {order_number} by user {session['user_id']}")
-        
+
+        app.logger.info(f"Quick order placed via modal by user {session['user_id']} — order #{order_id}")
+
         return jsonify({
             'success': True,
             'message': 'Order placed successfully!',
             'order_id': order_id,
-            'order_number': order_number,
             'total': total,
-            'whatsapp_url': whatsapp_url
+            'whatsapp_url': whatsapp_url,
         })
-        
+
     except Exception as e:
         app.logger.error(f"API error submitting order: {str(e)}")
         return jsonify({'success': False, 'error': str(e)}), 500
