@@ -55244,3 +55244,30 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 12:34:47,739 - app - INFO - Admin product list viewed - 3 products
 2026-05-12 12:34:47,786 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
 2026-05-12 12:34:48,204 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:40:25,235 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-12 12:40:25,235 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/static/images/logo.svg
+2026-05-12 12:40:34,097 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:41:36,834 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:42:33,621 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 12:42:33,643 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 1 (0 out, 1 low)
+2026-05-12 12:42:33,716 - app - INFO - Bulk import: 1 products inserted by admin admin
+2026-05-12 12:42:33,803 - app - INFO - Bulk import: 3 products inserted by admin admin
+2026-05-12 12:42:33,844 - app - INFO - Bulk import: 1 products inserted by admin admin
+2026-05-12 12:42:51,934 - app - INFO - ==================================================
+2026-05-12 12:42:51,934 - app - INFO - Ethiosadat Application Started
+2026-05-12 12:42:51,934 - app - INFO - ==================================================
+2026-05-12 12:42:52,739 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:43:06,643 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
+2026-05-12 12:43:08,945 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 12:43:08,967 - app - INFO - Admin dashboard accessed - Products: 8, Orders: 0, Stock alerts: 6 (5 out, 1 low)
+2026-05-12 12:43:09,128 - app - INFO - Import: downloaded image for 'Img Sofa Test' → uploads/products/import_b8aea7aafd8e46ed8373ee150dd1fff9_20260512124309.jpg
+2026-05-12 12:43:09,132 - app - INFO - Bulk import: 1 products saved by admin 'admin'
+2026-05-12 12:43:09,188 - app - INFO - Bulk import: 3 products saved by admin 'admin'
+2026-05-12 12:43:09,231 - app - WARNING - Image download failed for URL 'https://nonexistent-xyz-9999.invalid/img.jpg': HTTPSConnectionPool(host='nonexistent-xyz-9999.invalid', port=443): Max retries exceeded with url: /img.jpg (Caused by NameResolutionError("HTTPSConnection(host='nonexistent-xyz-9999.invalid', port=443): Failed to resolve 'nonexistent-xyz-9999.invalid' ([Errno -2] Name or service not known)"))
+2026-05-12 12:43:09,231 - app - WARNING - Import: image download failed for 'BadImgProd', URL: https://nonexistent-xyz-9999.invalid/img.jpg
+2026-05-12 12:43:09,235 - app - INFO - Bulk import: 1 products saved by admin 'admin'
+2026-05-12 12:43:11,701 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 12:43:20,100 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 12:43:34,384 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:43:40,354 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
+2026-05-12 12:43:40,649 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico

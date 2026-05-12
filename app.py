@@ -3534,6 +3534,61 @@ def _validate_csrf(submitted):
     return submitted == expected
 
 
+def _download_image_for_import(url, upload_dir):
+    """
+    Download an image from a public URL and save it to upload_dir.
+    Returns the relative path  'uploads/products/<filename>'  on success,
+    or an empty string on any failure (bad URL, timeout, wrong content-type,
+    file too large, etc.).  Never raises.
+    """
+    import requests as _req
+    _ALLOWED_IMAGE_TYPES = {'image/jpeg', 'image/png', 'image/webp', 'image/gif'}
+    _MAX_BYTES = 5 * 1024 * 1024  # 5 MB
+
+    try:
+        url = url.strip()
+        if not url.lower().startswith(('http://', 'https://')):
+            return ''
+
+        resp = _req.get(url, timeout=10, stream=True, allow_redirects=True,
+                        headers={'User-Agent': 'Ethiosadat-Import/1.0'})
+        if resp.status_code != 200:
+            return ''
+
+        content_type = resp.headers.get('Content-Type', '').split(';')[0].strip().lower()
+        if content_type not in _ALLOWED_IMAGE_TYPES:
+            return ''
+
+        # Determine extension from content-type
+        _EXT_MAP = {
+            'image/jpeg': 'jpg', 'image/png': 'png',
+            'image/webp': 'webp', 'image/gif': 'gif'
+        }
+        ext = _EXT_MAP.get(content_type, 'jpg')
+
+        fname = f"import_{uuid.uuid4().hex}_{datetime_.datetime.now().strftime('%Y%m%d%H%M%S')}.{ext}"
+        full_path = os.path.join(upload_dir, fname)
+
+        total = 0
+        chunks = []
+        for chunk in resp.iter_content(chunk_size=65536):
+            if chunk:
+                total += len(chunk)
+                if total > _MAX_BYTES:
+                    return ''
+                chunks.append(chunk)
+
+        with open(full_path, 'wb') as f:
+            for chunk in chunks:
+                f.write(chunk)
+
+        return f'uploads/products/{fname}'
+
+    except Exception as _e:
+        app.logger.warning(f"Image download failed for URL '{url}': {_e}")
+        return ''
+
+
 @app.route('/admin/products/import/sample')
 @admin_required
 def admin_import_products_sample():
@@ -3547,21 +3602,22 @@ def admin_import_products_sample():
         'price', 'compare_price', 'stock',
         'category',
         'description_en', 'description_am',
-        'featured', 'is_new', 'sku'
+        'featured', 'is_new', 'sku', 'image_url'
     ])
     writer.writerow([
         'Luxury Sofa', 'ቅርጫ ሶፋ', 'صوفا فاخرة',
         '15000', '20000', '10',
         'Sofa',
         'Premium quality sofa', 'ከፍተኛ ጥራት ያለው ሶፋ',
-        'yes', 'yes', 'SKU-001'
+        'yes', 'yes', 'SKU-001',
+        'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400'
     ])
     writer.writerow([
         'King Bed', 'ንጉሳዊ አልጋ', 'سرير كبير',
         '25000', '', '5',
         'Bed',
         'Solid wood king bed', 'ጠንካራ እንጨት አልጋ',
-        'no', 'yes', ''
+        'no', 'yes', '', ''
     ])
     response = make_response(output.getvalue())
     response.headers['Content-Type'] = 'text/csv; charset=utf-8'
@@ -3582,9 +3638,10 @@ def admin_import_products():
     cursor.execute("SELECT id, name, name_am FROM categories WHERE is_active = 1 ORDER BY sort_order")
     categories_list = [dict(c) for c in cursor.fetchall()]
 
-    # Build lookup: lowercase english name OR amharic name → id
+    # Build lookup: case-insensitive English label (name_am), Amharic name, or numeric ID → category id
     cat_lookup = {}
     for c in categories_list:
+        cat_lookup[str(c['id'])] = c['id']           # match by numeric id string
         if c.get('name_am'):
             cat_lookup[c['name_am'].strip().lower()] = c['id']
         if c.get('name'):
@@ -3605,7 +3662,7 @@ def admin_import_products():
         flash('Invalid or expired security token. Please try again.', 'error')
         return redirect(url_for('admin_import_products'))
 
-    # Invalidate token after use
+    # Invalidate token after use to prevent replay
     session.pop('import_csrf', None)
 
     csv_file = request.files.get('csv_file')
@@ -3613,16 +3670,15 @@ def admin_import_products():
         flash('Please select a CSV file to upload.', 'error')
         return redirect(url_for('admin_import_products'))
 
-    filename_lower = csv_file.filename.lower()
-    if not filename_lower.endswith('.csv'):
+    if not csv_file.filename.lower().endswith('.csv'):
         flash('Invalid file type. Please upload a .csv file.', 'error')
         return redirect(url_for('admin_import_products'))
 
-    # Read and decode
+    # Read and decode (handle BOM and non-UTF-8 files)
     try:
         raw = csv_file.read()
         try:
-            content = raw.decode('utf-8-sig')   # strips BOM if present
+            content = raw.decode('utf-8-sig')
         except UnicodeDecodeError:
             content = raw.decode('latin-1')
     except Exception:
@@ -3638,33 +3694,31 @@ def admin_import_products():
         flash('The CSV file appears to be empty.', 'error')
         return redirect(url_for('admin_import_products'))
 
-    # Normalise header names (strip whitespace, lowercase for checking)
-    headers_norm = [h.strip().lower() for h in reader.fieldnames]
+    # Normalise header names for checking required columns
+    headers_norm = {h.strip().lower() for h in reader.fieldnames}
 
     REQUIRED = {'name_en', 'price', 'category'}
-    missing_cols = REQUIRED - set(headers_norm)
+    missing_cols = REQUIRED - headers_norm
     if missing_cols:
         flash(f'Missing required columns: {", ".join(sorted(missing_cols))}. '
               f'Download the sample CSV for the correct format.', 'error')
         return redirect(url_for('admin_import_products'))
 
-    # Re-map reader fieldnames to normalised names so lookups are consistent
     reader.fieldnames = [h.strip() for h in reader.fieldnames]
 
-    # ---- Phase 1: validate all rows before touching the DB ----
+    # ---- Phase 1: validate all rows (no DB, no downloads) ----
     validated_rows = []
-    row_errors = []
+    row_errors = []   # list of dicts: {row, field, message}
+
+    def _bool_field(val):
+        return 1 if val.strip().lower() in ('yes', '1', 'true') else 0
 
     for row_num, raw_row in enumerate(reader, start=2):
-        # Normalise keys
         row = {k.strip().lower(): (v or '').strip() for k, v in raw_row.items() if k}
 
         name_en = row.get('name_en', '')
-        name_am = row.get('name_am', '')
-        name_ar = row.get('name_ar', '')
-
         if not name_en:
-            row_errors.append(f'Row {row_num}: "name_en" is required.')
+            row_errors.append({'row': row_num, 'field': 'name_en', 'message': '"name_en" is required.'})
             continue
 
         price_raw = row.get('price', '')
@@ -3673,7 +3727,8 @@ def admin_import_products():
             if price <= 0:
                 raise ValueError
         except (ValueError, TypeError):
-            row_errors.append(f'Row {row_num}: "price" must be a positive number (got "{price_raw}").')
+            row_errors.append({'row': row_num, 'field': 'price',
+                               'message': f'Must be a positive number (got "{price_raw}").'})
             continue
 
         compare_price_raw = row.get('compare_price', '')
@@ -3682,7 +3737,8 @@ def admin_import_products():
             try:
                 compare_price = float(compare_price_raw)
             except (ValueError, TypeError):
-                row_errors.append(f'Row {row_num}: "compare_price" must be a number (got "{compare_price_raw}").')
+                row_errors.append({'row': row_num, 'field': 'compare_price',
+                                   'message': f'Must be a number (got "{compare_price_raw}").'})
                 continue
 
         stock_raw = row.get('stock', '0')
@@ -3694,21 +3750,18 @@ def admin_import_products():
         category_raw = row.get('category', '').strip()
         category_id = cat_lookup.get(category_raw.lower())
         if category_id is None:
-            valid_cats = ', '.join(c.get('name_am', '') or c.get('name', '') for c in categories_list)
-            row_errors.append(
-                f'Row {row_num}: Unknown category "{category_raw}". '
-                f'Valid values: {valid_cats}.'
+            valid_cats = ', '.join(
+                c.get('name_am', '') or c.get('name', '') for c in categories_list
             )
+            row_errors.append({'row': row_num, 'field': 'category',
+                               'message': f'Unknown category "{category_raw}". Valid: {valid_cats}.'})
             continue
-
-        def _bool_field(val):
-            return 1 if val.lower() in ('yes', '1', 'true') else 0
 
         validated_rows.append({
             'name': name_en,
             'name_en': name_en,
-            'name_am': name_am,
-            'name_ar': name_ar,
+            'name_am': row.get('name_am', ''),
+            'name_ar': row.get('name_ar', ''),
             'description': row.get('description_en', ''),
             'description_en': row.get('description_en', ''),
             'description_am': row.get('description_am', ''),
@@ -3721,6 +3774,7 @@ def admin_import_products():
             'stock_quantity': stock,
             'low_stock_threshold': 5,
             'thumbnail': '',
+            'image_url': row.get('image_url', '').strip(),
             'is_featured': _bool_field(row.get('featured', '')),
             'is_new': _bool_field(row.get('is_new', '')),
             'weight': None,
@@ -3732,23 +3786,37 @@ def admin_import_products():
             'meta_description': '',
         })
 
-    if row_errors and not validated_rows:
-        # All rows failed
-        flash(f'Import aborted — all {len(row_errors)} row(s) had errors. No products were saved.', 'error')
-        csrf_token = _get_csrf_token()
-        return render_template(
-            'admin/products/import.html',
-            categories=categories_list,
-            csrf_token=csrf_token,
-            row_errors=row_errors,
-            lang=lang, t=t
-        )
-
     if not validated_rows:
-        flash('The CSV file contained no data rows.', 'error')
-        return redirect(url_for('admin_import_products'))
+        abort_msg = (f'Import aborted — all {len(row_errors)} row(s) had errors. No products were saved.'
+                     if row_errors else 'The CSV file contained no data rows.')
+        flash(abort_msg, 'error')
+        csrf_token = _get_csrf_token()
+        return render_template('admin/products/import.html',
+                               categories=categories_list, csrf_token=csrf_token,
+                               row_errors=row_errors, lang=lang, t=t)
 
-    # ---- Phase 2: atomic insert ----
+    # ---- Phase 1.5: attempt image downloads; track files for rollback cleanup ----
+    upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], 'products')
+    os.makedirs(upload_dir, exist_ok=True)
+    downloaded_files = []   # absolute paths; deleted if DB insert fails
+    image_warnings = []     # non-fatal: row saved but image fell back to placeholder
+
+    for pdata in validated_rows:
+        url = pdata.pop('image_url', '')
+        if url:
+            local_path = _download_image_for_import(url, upload_dir)
+            if local_path:
+                pdata['thumbnail'] = local_path
+                downloaded_files.append(os.path.join('static', local_path))
+                app.logger.info(f"Import: downloaded image for '{pdata['name_en']}' → {local_path}")
+            else:
+                image_warnings.append(
+                    f'Row for "{pdata["name_en"]}": image_url could not be downloaded — '
+                    f'placeholder used instead.'
+                )
+                app.logger.warning(f"Import: image download failed for '{pdata['name_en']}', URL: {url}")
+
+    # ---- Phase 2: atomic DB insert (rollback + clean up images on failure) ----
     try:
         insert_cursor = conn.cursor()
         inserted_ids = []
@@ -3777,8 +3845,10 @@ def admin_import_products():
                 ) RETURNING id""",
                 (
                     pdata['name'], pdata['name_am'], pdata['name_ar'], pdata['name_en'],
-                    pdata['description'], pdata['description_am'], pdata['description_ar'], pdata['description_en'],
-                    pdata['price'], pdata['compare_price'], pdata['cost'], pdata['sku'], pdata['barcode'],
+                    pdata['description'], pdata['description_am'],
+                    pdata['description_ar'], pdata['description_en'],
+                    pdata['price'], pdata['compare_price'], pdata['cost'],
+                    pdata['sku'], pdata['barcode'],
                     pdata['stock_quantity'], pdata['low_stock_threshold'],
                     None, pdata['thumbnail'],
                     pdata['is_featured'], pdata['is_new'],
@@ -3787,32 +3857,38 @@ def admin_import_products():
                     pdata['meta_title'], pdata['meta_description'],
                 )
             )
-            row = insert_cursor.fetchone()
-            if row:
-                inserted_ids.append(row[0])
+            db_row = insert_cursor.fetchone()
+            if db_row:
+                inserted_ids.append(db_row[0])
 
         conn.commit()
-        app.logger.info(f"Bulk import: {len(inserted_ids)} products inserted by admin {session.get('admin_username', 'unknown')}")
+        app.logger.info(
+            f"Bulk import: {len(inserted_ids)} products saved by "
+            f"admin '{session.get('admin_username', 'unknown')}'"
+        )
 
-        success_msg = f'Successfully imported {len(inserted_ids)} product(s).'
-        if row_errors:
-            success_msg += f' {len(row_errors)} row(s) were skipped due to errors.'
-
-        flash(success_msg, 'success')
         csrf_token = _get_csrf_token()
         return render_template(
             'admin/products/import.html',
             categories=categories_list,
             csrf_token=csrf_token,
             row_errors=row_errors,
+            image_warnings=image_warnings,
             import_success=len(inserted_ids),
             lang=lang, t=t
         )
 
     except Exception as e:
         conn.rollback()
-        app.logger.error(f"Bulk import DB error: {str(e)}")
-        flash(f'Database error during import — all changes rolled back. ({str(e)})', 'error')
+        # Remove any images that were downloaded for this failed batch
+        for fpath in downloaded_files:
+            try:
+                if os.path.exists(fpath):
+                    os.remove(fpath)
+            except OSError:
+                pass
+        app.logger.error(f"Bulk import DB error (rolled back, {len(downloaded_files)} image(s) removed): {e}")
+        flash(f'Database error — all changes rolled back, no products were saved. ({e})', 'error')
         csrf_token = _get_csrf_token()
         return render_template(
             'admin/products/import.html',
