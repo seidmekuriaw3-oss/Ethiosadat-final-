@@ -15073,3 +15073,6 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 10:43:17,083 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
 2026-05-12 10:43:17,990 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
 2026-05-12 10:43:22,798 - app - ERROR - Error loading products report: 'datetime.datetime' object is not subscriptable
+2026-05-12 11:05:14,120 - app - WARNING - 404 Error: http://16c4fed3-d98e-4b1c-9334-6737e8aaf5b2-00-3mz42s5xzr44a.janeway.replit.dev/favicon.ico
+2026-05-12 11:06:10,826 - app - WARNING - 404 Error: http://16c4fed3-d98e-4b1c-9334-6737e8aaf5b2-00-3mz42s5xzr44a.janeway.replit.dev/favicon.ico
+2026-05-12 11:06:35,515 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1

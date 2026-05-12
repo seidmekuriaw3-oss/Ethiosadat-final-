@@ -54941,3 +54941,57 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 10:43:55,878 - app - INFO - Admin inbox viewed — 2 messages
 2026-05-12 10:44:01,949 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
 2026-05-12 10:44:06,866 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 0
+2026-05-12 11:04:33,875 - app - INFO - ==================================================
+2026-05-12 11:04:33,875 - app - INFO - Ethiosadat Application Started
+2026-05-12 11:04:33,875 - app - INFO - ==================================================
+2026-05-12 11:04:35,545 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:04:35,653 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:04:50,162 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:05:02,139 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:05:14,120 - app - WARNING - 404 Error: http://16c4fed3-d98e-4b1c-9334-6737e8aaf5b2-00-3mz42s5xzr44a.janeway.replit.dev/favicon.ico
+2026-05-12 11:05:28,385 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 11:05:28,696 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:05:29,646 - app - INFO - Admin reports viewed
+2026-05-12 11:05:29,659 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:05:49,544 - app - INFO - ==================================================
+2026-05-12 11:05:49,544 - app - INFO - Ethiosadat Application Started
+2026-05-12 11:05:49,544 - app - INFO - ==================================================
+2026-05-12 11:05:50,459 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:05:51,598 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:06:10,826 - app - WARNING - 404 Error: http://16c4fed3-d98e-4b1c-9334-6737e8aaf5b2-00-3mz42s5xzr44a.janeway.replit.dev/favicon.ico
+2026-05-12 11:06:29,684 - app - INFO - Admin reports viewed
+2026-05-12 11:06:29,728 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:06:35,515 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 11:06:44,279 - app - INFO - ==================================================
+2026-05-12 11:06:44,280 - app - INFO - Ethiosadat Application Started
+2026-05-12 11:06:44,280 - app - INFO - ==================================================
+2026-05-12 11:06:45,063 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:07:30,824 - app - INFO - ==================================================
+2026-05-12 11:07:30,824 - app - INFO - Ethiosadat Application Started
+2026-05-12 11:07:30,824 - app - INFO - ==================================================
+2026-05-12 11:07:31,642 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:07:32,836 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:07:54,927 - app - INFO - ==================================================
+2026-05-12 11:07:54,928 - app - INFO - Ethiosadat Application Started
+2026-05-12 11:07:54,928 - app - INFO - ==================================================
+2026-05-12 11:07:55,648 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:08:29,730 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:08:29,737 - app - INFO - Admin reports viewed
+2026-05-12 11:08:42,517 - app - INFO - ==================================================
+2026-05-12 11:08:42,518 - app - INFO - Ethiosadat Application Started
+2026-05-12 11:08:42,518 - app - INFO - ==================================================
+2026-05-12 11:08:43,285 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:08:44,655 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:09:14,507 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 11:09:14,538 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:09:14,676 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:09:14,713 - app - INFO - Admin reports viewed
+2026-05-12 11:09:20,702 - app - INFO - Admin product list viewed - 0 products
+2026-05-12 11:09:25,880 - app - INFO - Admin logged out
+2026-05-12 11:09:25,907 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:09:29,731 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:09:29,733 - app - INFO - Admin reports viewed
+2026-05-12 11:09:34,908 - app - INFO - ==================================================
+2026-05-12 11:09:34,909 - app - INFO - Ethiosadat Application Started
+2026-05-12 11:09:34,909 - app - INFO - ==================================================
+2026-05-12 11:09:35,757 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
