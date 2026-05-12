@@ -55331,3 +55331,7 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 13:37:22,210 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
 2026-05-12 13:37:27,952 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
 2026-05-12 13:37:37,396 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 13:42:01,980 - app - INFO - ==================================================
+2026-05-12 13:42:01,980 - app - INFO - Ethiosadat Application Started
+2026-05-12 13:42:01,980 - app - INFO - ==================================================
+2026-05-12 13:42:02,845 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0

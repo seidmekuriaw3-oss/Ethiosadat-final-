@@ -252,15 +252,20 @@ class CartManager {
         })
         .then(res => res.json())
         .then(data => {
+            console.log('[Cart] /api/cart/add response:', JSON.stringify(data));
             if (data.success) {
+                if (typeof data.cart_count === 'number') {
+                    this.count = data.cart_count;
+                    this.updateCartBadges();
+                }
                 this.refresh();
                 return { success: true, message: data.message || 'Product added to cart!' };
             } else {
-                throw new Error(data.error || 'Failed to add to cart');
+                throw new Error(data.error || data.message || 'Failed to add to cart');
             }
         })
         .catch(error => {
-            console.error('Error adding to cart:', error);
+            console.error('[Cart] Error adding to cart:', error);
             return { success: false, message: error.message };
         })
         .finally(() => {

@@ -2861,15 +2861,16 @@ def get_cart_count():
     
     if session.get('user_id'):
         try:
+            conn = get_db()
             cursor = conn.cursor()
             cursor.execute("SELECT SUM(quantity) as total FROM cart_items WHERE user_id = ?", (session['user_id'],))
             result = cursor.fetchone()
-            count = result[0] or 0
+            count = int(result[0] or 0)
         except Exception as e:
             app.logger.error(f"Error getting cart count: {str(e)}")
     else:
         cart = session.get('cart', {})
-        count = sum(cart.values())
+        count = sum(int(v) for v in cart.values())
     
     return count
 
@@ -5369,11 +5370,13 @@ def api_get_cart():
         shipping_cost = 0 if subtotal_after_discount >= threshold else int(os.environ.get('SHIPPING_COST', '200'))
         total = subtotal_after_discount + shipping_cost
         count = len(cart_items)
+        item_count = sum(item['quantity'] for item in cart_items)
 
         return jsonify({
             'success': True,
             'items': cart_items,
             'count': count,
+            'item_count': item_count,
             'subtotal': round(subtotal, 2),
             'discount': round(discount, 2),
             'discount_message': discount_message,
@@ -5439,9 +5442,8 @@ def api_cart_add():
             cart[cart_key] = current_quantity + quantity
             session['cart'] = cart
             session.modified = True
-        
+            session.permanent = True
 
-        
         # Get updated cart count
         cart_count = get_cart_count()
         
