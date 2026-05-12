@@ -15034,3 +15034,5 @@ LINE 1: SELECT p.*, c.name as category_name,
 LINE 1: SELECT p.*, c.name as category_name,
                     ^
 
+2026-05-12 10:17:57,226 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/favicon.ico
+2026-05-12 10:17:58,405 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1

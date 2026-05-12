@@ -4263,6 +4263,29 @@ def admin_inbox_delete(mid):
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
+@app.route('/admin/inbox/<int:mid>/note', methods=['POST'])
+@admin_required
+def admin_inbox_save_note(mid):
+    """Save or update the internal admin note on a contact message."""
+    try:
+        data = request.get_json(silent=True) or {}
+        note = data.get('note', '').strip()
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id FROM contact_messages WHERE id = %s", (mid,))
+        if not cursor.fetchone():
+            return jsonify({'success': False, 'error': 'Message not found'}), 404
+        cursor.execute(
+            "UPDATE contact_messages SET admin_notes = %s WHERE id = %s",
+            (note if note else None, mid)
+        )
+        conn.commit()
+        return jsonify({'success': True, 'note': note})
+    except Exception as e:
+        app.logger.error(f"Inbox save-note error: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 # ==================== 24. ADMIN REPORTS ====================
 
 @app.route('/admin/reports')

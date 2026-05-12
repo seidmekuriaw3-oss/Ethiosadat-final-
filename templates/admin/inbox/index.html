@@ -190,6 +190,138 @@
     }
     .inbox-stat strong { font-size: 20px; color: #1a73e8; }
     .inbox-stat.unread-stat strong { color: #e53935; }
+    /* ── Notes section ── */
+    .msg-notes-wrap {
+        margin-top: 10px;
+        border-top: 1px dashed #e0e7f3;
+        padding-top: 8px;
+    }
+    .msg-note-display {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        cursor: pointer;
+    }
+    .msg-note-display:hover .note-text { color: #1a73e8; }
+    .note-icon {
+        font-size: 14px;
+        margin-top: 1px;
+        flex-shrink: 0;
+        opacity: 0.75;
+    }
+    .note-text {
+        font-size: 13px;
+        color: #7a6500;
+        font-style: italic;
+        line-height: 1.5;
+        flex: 1;
+        transition: color 0.15s;
+        word-break: break-word;
+        white-space: pre-wrap;
+    }
+    .note-text.empty {
+        color: #aaa;
+        font-style: normal;
+    }
+    .note-edit-link {
+        font-size: 11px;
+        color: #aaa;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0 2px;
+        flex-shrink: 0;
+        transition: color 0.15s;
+        line-height: 1.8;
+    }
+    .note-edit-link:hover { color: #1a73e8; }
+    .msg-note-editor {
+        display: none;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .msg-note-editor.open { display: flex; }
+    .note-textarea {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 72px;
+        padding: 9px 12px;
+        border: 1px solid #c8d8f8;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #333;
+        line-height: 1.5;
+        resize: vertical;
+        background: #fffde7;
+        font-family: inherit;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        outline: none;
+    }
+    .note-textarea:focus {
+        border-color: #f5c300;
+        box-shadow: 0 0 0 3px rgba(245,195,0,0.15);
+    }
+    .note-editor-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .note-save-btn {
+        background: #f5c300;
+        color: #2a1f00;
+        border: none;
+        border-radius: 7px;
+        padding: 6px 16px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s, transform 0.1s;
+    }
+    .note-save-btn:hover { background: #e0b000; transform: translateY(-1px); }
+    .note-save-btn:active { transform: translateY(0); }
+    .note-save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .note-cancel-btn {
+        background: none;
+        border: 1px solid #ddd;
+        border-radius: 7px;
+        padding: 6px 12px;
+        font-size: 12px;
+        color: #777;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .note-cancel-btn:hover { background: #f5f5f5; }
+    .note-clear-btn {
+        background: none;
+        border: none;
+        font-size: 11px;
+        color: #ccc;
+        cursor: pointer;
+        margin-left: auto;
+        padding: 0;
+        transition: color 0.15s;
+    }
+    .note-clear-btn:hover { color: #e53935; }
+    .note-hint {
+        font-size: 11px;
+        color: #bbb;
+        margin-top: -4px;
+    }
+    .note-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        background: #fff8dc;
+        border: 1px solid #f5c300;
+        border-radius: 10px;
+        padding: 1px 7px;
+        font-size: 11px;
+        color: #7a5c00;
+        font-weight: 500;
+        margin-left: 6px;
+        vertical-align: middle;
+    }
     /* ── Reply button ── */
     .reply-btn {
         background: linear-gradient(135deg, #1a73e8, #0d47a1);
@@ -389,7 +521,8 @@
              data-name="{{ msg.name | e }}"
              data-email="{{ msg.email | e }}"
              data-phone="{{ msg.phone | e }}"
-             data-message="{{ msg.message | e }}">
+             data-message="{{ msg.message | e }}"
+             data-notes="{{ msg.admin_notes | e if msg.admin_notes else '' }}">
             <div class="{% if not msg.is_read %}unread-dot{% else %}read-dot{% endif %}" id="dot-{{ msg.id }}"></div>
             <div class="msg-avatar">{{ msg.name[0].upper() if msg.name else '?' }}</div>
             <div class="msg-body">
@@ -416,6 +549,39 @@
                     Show more
                 </button>
                 {% endif %}
+
+                <!-- Notes -->
+                <div class="msg-notes-wrap" id="notesWrap-{{ msg.id }}">
+                    <div class="msg-note-display" id="noteDisplay-{{ msg.id }}"
+                         onclick="editNote({{ msg.id }})" title="Click to add/edit note">
+                        <span class="note-icon">📝</span>
+                        <span class="note-text {% if not msg.admin_notes %}empty{% endif %}"
+                              id="noteText-{{ msg.id }}">
+                            {{- msg.admin_notes if msg.admin_notes else 'Add a private note…' -}}
+                        </span>
+                        <button class="note-edit-link" onclick="editNote({{ msg.id }}); event.stopPropagation();">
+                            {% if msg.admin_notes %}Edit{% else %}+{% endif %}
+                        </button>
+                    </div>
+                    <div class="msg-note-editor" id="noteEditor-{{ msg.id }}">
+                        <textarea class="note-textarea"
+                                  id="noteTA-{{ msg.id }}"
+                                  placeholder="Write an internal note (only visible to admins)…"
+                                  onkeydown="if((event.ctrlKey||event.metaKey)&&event.key==='Enter')saveNote({{ msg.id }})"
+                        >{{ msg.admin_notes if msg.admin_notes else '' }}</textarea>
+                        <div class="note-editor-actions">
+                            <button class="note-save-btn" id="noteSaveBtn-{{ msg.id }}"
+                                    onclick="saveNote({{ msg.id }})">💾 Save note</button>
+                            <button class="note-cancel-btn"
+                                    onclick="cancelNote({{ msg.id }})">Cancel</button>
+                            <span class="note-hint">Ctrl+Enter to save</span>
+                            <button class="note-clear-btn" id="noteClearBtn-{{ msg.id }}"
+                                    onclick="clearNote({{ msg.id }})"
+                                    {% if not msg.admin_notes %}style="display:none"{% endif %}
+                                    title="Remove note">✕ Remove</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="msg-actions">
                 <button class="reply-btn"
@@ -728,6 +894,89 @@
         const dropdown = document.getElementById('replyDropdown');
         if (dropdown) dropdown.classList.remove('open');
         _activeReplyId = null;
+    }
+
+    /* ─── Notes ─────────────────────────────────────────────── */
+    function editNote(id) {
+        const display = document.getElementById('noteDisplay-' + id);
+        const editor  = document.getElementById('noteEditor-' + id);
+        const ta      = document.getElementById('noteTA-' + id);
+        if (!editor) return;
+        display.style.display = 'none';
+        editor.classList.add('open');
+        ta.focus();
+        ta.setSelectionRange(ta.value.length, ta.value.length);
+    }
+
+    function cancelNote(id) {
+        const row     = document.getElementById('msg-' + id);
+        const display = document.getElementById('noteDisplay-' + id);
+        const editor  = document.getElementById('noteEditor-' + id);
+        const ta      = document.getElementById('noteTA-' + id);
+        if (!editor) return;
+        ta.value = row.dataset.notes || '';
+        editor.classList.remove('open');
+        display.style.display = '';
+    }
+
+    function saveNote(id) {
+        const row     = document.getElementById('msg-' + id);
+        const ta      = document.getElementById('noteTA-' + id);
+        const saveBtn = document.getElementById('noteSaveBtn-' + id);
+        const note    = ta.value.trim();
+
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving…';
+
+        fetch('/admin/inbox/' + id + '/note', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            body: JSON.stringify({ note })
+        })
+        .then(r => r.json())
+        .then(data => {
+            saveBtn.disabled = false;
+            saveBtn.textContent = '💾 Save note';
+            if (!data.success) { alert(data.error || 'Error saving note'); return; }
+
+            row.dataset.notes = note;
+            applyNoteToUI(id, note);
+        })
+        .catch(() => {
+            saveBtn.disabled = false;
+            saveBtn.textContent = '💾 Save note';
+            alert('Network error. Please try again.');
+        });
+    }
+
+    function clearNote(id) {
+        if (!confirm('Remove this note?')) return;
+        const ta = document.getElementById('noteTA-' + id);
+        ta.value = '';
+        saveNote(id);
+    }
+
+    function applyNoteToUI(id, note) {
+        const display  = document.getElementById('noteDisplay-' + id);
+        const editor   = document.getElementById('noteEditor-' + id);
+        const noteText = document.getElementById('noteText-' + id);
+        const editLink = display.querySelector('.note-edit-link');
+        const clearBtn = document.getElementById('noteClearBtn-' + id);
+
+        editor.classList.remove('open');
+        display.style.display = '';
+
+        if (note) {
+            noteText.textContent = note;
+            noteText.classList.remove('empty');
+            if (editLink) editLink.textContent = 'Edit';
+            if (clearBtn) clearBtn.style.display = '';
+        } else {
+            noteText.textContent = 'Add a private note…';
+            noteText.classList.add('empty');
+            if (editLink) editLink.textContent = '+';
+            if (clearBtn) clearBtn.style.display = 'none';
+        }
     }
 
     /* close on outside click */

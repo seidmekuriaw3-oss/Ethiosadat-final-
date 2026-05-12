@@ -54795,3 +54795,18 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 10:14:16,017 - app - INFO - Admin logged in: admin@ethiosadat.com
 2026-05-12 10:14:16,039 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
 2026-05-12 10:14:16,081 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:17:57,226 - app - WARNING - 404 Error: http://82bc152b-798c-4f9f-acef-4226d1359244-00-152hd1uhawjtf.kirk.replit.dev/favicon.ico
+2026-05-12 10:17:58,405 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 10:18:22,412 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 10:18:22,758 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 10:18:24,288 - app - INFO - Admin reports viewed
+2026-05-12 10:18:24,332 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 10:18:30,178 - app - INFO - Admin product list viewed - 0 products
+2026-05-12 10:18:30,637 - app - INFO - Admin product list viewed - 0 products
+2026-05-12 10:18:38,548 - app - INFO - ==================================================
+2026-05-12 10:18:38,548 - app - INFO - Ethiosadat Application Started
+2026-05-12 10:18:38,548 - app - INFO - ==================================================
+2026-05-12 10:18:39,419 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 10:18:54,353 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 10:18:54,375 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 10:18:54,415 - app - INFO - Admin inbox viewed — 2 messages
