@@ -54696,3 +54696,30 @@ HINT:  No function matches the given name and argument types. You might need to 
 2026-05-12 09:43:36,760 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
 2026-05-12 09:43:37,812 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
 2026-05-12 09:43:51,747 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 09:44:26,351 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 09:45:08,560 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 09:45:13,137 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 09:45:26,522 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 09:45:26,833 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 09:45:28,070 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 09:45:28,100 - app - INFO - Admin reports viewed
+2026-05-12 09:45:34,115 - app - INFO - Admin product list viewed - 0 products
+2026-05-12 09:46:28,096 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 09:46:28,097 - app - INFO - Admin reports viewed
+2026-05-12 09:46:45,496 - app - INFO - Admin reports viewed
+2026-05-12 09:47:28,399 - app - INFO - Admin reports viewed
+2026-05-12 09:47:28,402 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 09:48:28,107 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 09:48:28,107 - app - INFO - Admin reports viewed
+2026-05-12 09:49:28,123 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 09:49:28,124 - app - INFO - Admin reports viewed
+2026-05-12 09:50:28,801 - app - INFO - Admin reports viewed
+2026-05-12 09:50:28,804 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 09:51:29,193 - app - INFO - Admin reports viewed
+2026-05-12 09:51:29,359 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 09:52:28,089 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 09:52:28,123 - app - INFO - Admin reports viewed
+2026-05-12 09:53:28,110 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 09:53:28,111 - app - INFO - Admin reports viewed
+2026-05-12 09:54:28,096 - app - INFO - Admin reports viewed
+2026-05-12 09:54:28,122 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0

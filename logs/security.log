@@ -15011,3 +15011,5 @@ LINE 3:             AND (end_date IS NULL OR end_date > datetime('no...
 HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
 
 
+2026-05-12 09:45:08,560 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 09:45:13,137 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1

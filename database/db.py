@@ -218,6 +218,8 @@ def init_db():
             id SERIAL PRIMARY KEY,
             order_number TEXT UNIQUE NOT NULL,
             user_id INTEGER NOT NULL,
+            customer_name TEXT,
+            customer_email TEXT,
             status TEXT DEFAULT 'pending',
             payment_status TEXT DEFAULT 'pending',
             payment_method TEXT,
@@ -256,6 +258,7 @@ def init_db():
             description_am TEXT,
             description_ar TEXT,
             image TEXT NOT NULL,
+            media_url TEXT,
             link TEXT,
             sort_order INTEGER DEFAULT 0,
             is_active SMALLINT DEFAULT 1,
@@ -311,6 +314,33 @@ def init_db():
         )
     """)
 
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS contact_messages (
+            id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL,
+            email TEXT,
+            phone TEXT,
+            message TEXT NOT NULL,
+            is_read SMALLINT DEFAULT 0,
+            created_at TIMESTAMP DEFAULT NOW()
+        )
+    """)
+
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS password_reset_tokens (
+            id SERIAL PRIMARY KEY,
+            email TEXT NOT NULL,
+            token TEXT UNIQUE NOT NULL,
+            expires_at TIMESTAMP NOT NULL,
+            used SMALLINT DEFAULT 0,
+            created_at TIMESTAMP DEFAULT NOW()
+        )
+    """)
+
+    cur.execute("ALTER TABLE advertisements ADD COLUMN IF NOT EXISTS media_url TEXT")
+    cur.execute("ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_name TEXT")
+    cur.execute("ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_email TEXT")
+
     cur.execute("CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id)")
     cur.execute("CREATE INDEX IF NOT EXISTS idx_products_featured ON products(is_featured)")
     cur.execute("CREATE INDEX IF NOT EXISTS idx_products_active ON products(is_active)")
@@ -319,6 +349,9 @@ def init_db():
     cur.execute("CREATE INDEX IF NOT EXISTS idx_orders_number ON orders(order_number)")
     cur.execute("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)")
     cur.execute("CREATE INDEX IF NOT EXISTS idx_cart_user ON cart_items(user_id)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_contact_messages_created ON contact_messages(created_at)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_password_reset_token ON password_reset_tokens(token)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_password_reset_email ON password_reset_tokens(email)")
 
     cur.execute("SELECT COUNT(*) FROM categories")
     if cur.fetchone()[0] == 0:
@@ -352,18 +385,38 @@ def init_db():
             ('site_name', 'Ethiosadat Furniture'),
             ('site_name_am', 'ኢትዮሳዳት ቤት ዕቃ'),
             ('site_name_ar', 'إثيوصادات للأثاث'),
+            ('site_description', 'Quality Furniture at Affordable Prices'),
             ('site_email', 'info@ethiosadat.com'),
             ('site_phone', '+251906020606'),
+            ('admin_email', 'admin@ethiosadat.com'),
+            ('phone_number', '+251906020606'),
+            ('store_address', 'Addis Ababa, Ethiopia'),
             ('whatsapp_number', '251906020606'),
             ('free_shipping_threshold', '5000'),
             ('shipping_cost', '200'),
             ('currency', 'ETB'),
             ('default_language', 'am'),
+            ('meta_keywords', 'furniture, ethiosadat, addis ababa, sofa, bed'),
+            ('google_analytics', ''),
         ]
         cur.executemany(
             "INSERT INTO settings (key, value) VALUES (%s, %s)",
             default_settings
         )
+    else:
+        extra_settings = [
+            ('site_description', 'Quality Furniture at Affordable Prices'),
+            ('admin_email', 'admin@ethiosadat.com'),
+            ('phone_number', '+251906020606'),
+            ('store_address', 'Addis Ababa, Ethiopia'),
+            ('meta_keywords', 'furniture, ethiosadat, addis ababa, sofa, bed'),
+            ('google_analytics', ''),
+        ]
+        for key, value in extra_settings:
+            cur.execute(
+                "INSERT INTO settings (key, value) VALUES (%s, %s) ON CONFLICT (key) DO NOTHING",
+                (key, value)
+            )
 
     cur.execute("SELECT COUNT(*) FROM branches")
     if cur.fetchone()[0] == 0:
