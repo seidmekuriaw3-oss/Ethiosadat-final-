@@ -2338,8 +2338,7 @@ def add_to_cart():
             flash('Product not found!', 'danger')
             return redirect(request.referrer or url_for('index'))
         
-        if product[4] < quantity:
-
+        if product[4] is not None and product[4] > 0 and product[4] < quantity:
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
             flash(f'Sorry, only {product[4]} items available in stock!', 'warning')
@@ -5036,8 +5035,7 @@ def api_cart_add():
 
             return jsonify({'success': False, 'error': 'Product not found'}), 404
         
-        if product[4] < quantity:
-
+        if product[4] is not None and product[4] > 0 and product[4] < quantity:
             return jsonify({'success': False, 'error': f'Only {product[4]} items available'}), 400
         
         if session.get('user_id'):
