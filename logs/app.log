@@ -55229,3 +55229,18 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 12:23:55,603 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
 2026-05-12 12:24:02,685 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
 2026-05-12 12:24:36,405 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 12:32:53,464 - app - INFO - ==================================================
+2026-05-12 12:32:53,464 - app - INFO - Ethiosadat Application Started
+2026-05-12 12:32:53,465 - app - INFO - ==================================================
+2026-05-12 12:32:54,223 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 12:34:02,936 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 12:34:02,957 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 0, Stock alerts: 0 (0 out, 0 low)
+2026-05-12 12:34:03,074 - app - INFO - Bulk import: 2 products inserted by admin admin
+2026-05-12 12:34:30,215 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 12:34:30,241 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 1 (0 out, 1 low)
+2026-05-12 12:34:31,001 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-12 12:34:47,685 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 12:34:47,714 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 1 (0 out, 1 low)
+2026-05-12 12:34:47,739 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 12:34:47,786 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0
+2026-05-12 12:34:48,204 - app - INFO - Home page - Featured: 2, New: 3, Ads: 0

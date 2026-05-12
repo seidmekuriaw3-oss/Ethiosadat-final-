@@ -183,7 +183,10 @@
             <h1 style="margin-bottom: 4px;">📦 Products Management</h1>
             <p style="color: var(--text-muted, #666); margin: 0;">Manage your store products inventory</p>
         </div>
-        <a href="{{ url_for('admin_product_create') }}" class="btn btn-primary">➕ Add New Product</a>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a href="{{ url_for('admin_import_products') }}" class="btn btn-outline">📥 Import CSV</a>
+            <a href="{{ url_for('admin_product_create') }}" class="btn btn-primary">➕ Add New Product</a>
+        </div>
     </div>
 
     <!-- Filter Bar -->

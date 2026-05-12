@@ -3514,6 +3514,315 @@ def admin_export_products():
         app.logger.error(f"Export error: {str(e)}")
         flash('Error exporting products', 'error')
         return redirect(url_for('admin_products'))
+
+
+# ==================== 19b. ADMIN PRODUCT IMPORT ====================
+
+def _get_csrf_token():
+    """Generate (or retrieve) a session-bound CSRF token."""
+    import secrets as _sec
+    if 'import_csrf' not in session:
+        session['import_csrf'] = _sec.token_hex(32)
+    return session['import_csrf']
+
+
+def _validate_csrf(submitted):
+    """Return True if submitted token matches the session token."""
+    expected = session.get('import_csrf')
+    if not expected or not submitted:
+        return False
+    return submitted == expected
+
+
+@app.route('/admin/products/import/sample')
+@admin_required
+def admin_import_products_sample():
+    """Return a downloadable sample CSV for bulk product import."""
+    import csv
+    from io import StringIO
+    output = StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        'name_en', 'name_am', 'name_ar',
+        'price', 'compare_price', 'stock',
+        'category',
+        'description_en', 'description_am',
+        'featured', 'is_new', 'sku'
+    ])
+    writer.writerow([
+        'Luxury Sofa', 'ቅርጫ ሶፋ', 'صوفا فاخرة',
+        '15000', '20000', '10',
+        'Sofa',
+        'Premium quality sofa', 'ከፍተኛ ጥራት ያለው ሶፋ',
+        'yes', 'yes', 'SKU-001'
+    ])
+    writer.writerow([
+        'King Bed', 'ንጉሳዊ አልጋ', 'سرير كبير',
+        '25000', '', '5',
+        'Bed',
+        'Solid wood king bed', 'ጠንካራ እንጨት አልጋ',
+        'no', 'yes', ''
+    ])
+    response = make_response(output.getvalue())
+    response.headers['Content-Type'] = 'text/csv; charset=utf-8'
+    response.headers['Content-Disposition'] = 'attachment; filename=products_import_sample.csv'
+    return response
+
+
+@app.route('/admin/products/import', methods=['GET', 'POST'])
+@admin_required
+@limiter.exempt
+def admin_import_products():
+    """Bulk import products from a CSV file (atomic: all-or-nothing)."""
+    lang = get_lang()
+    t = TEXTS.get(lang, TEXTS['am'])
+
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, name_am FROM categories WHERE is_active = 1 ORDER BY sort_order")
+    categories_list = [dict(c) for c in cursor.fetchall()]
+
+    # Build lookup: lowercase english name OR amharic name → id
+    cat_lookup = {}
+    for c in categories_list:
+        if c.get('name_am'):
+            cat_lookup[c['name_am'].strip().lower()] = c['id']
+        if c.get('name'):
+            cat_lookup[c['name'].strip().lower()] = c['id']
+
+    if request.method == 'GET':
+        csrf_token = _get_csrf_token()
+        return render_template(
+            'admin/products/import.html',
+            categories=categories_list,
+            csrf_token=csrf_token,
+            lang=lang, t=t
+        )
+
+    # ---- POST: process upload ----
+    submitted_token = request.form.get('csrf_token', '')
+    if not _validate_csrf(submitted_token):
+        flash('Invalid or expired security token. Please try again.', 'error')
+        return redirect(url_for('admin_import_products'))
+
+    # Invalidate token after use
+    session.pop('import_csrf', None)
+
+    csv_file = request.files.get('csv_file')
+    if not csv_file or csv_file.filename == '':
+        flash('Please select a CSV file to upload.', 'error')
+        return redirect(url_for('admin_import_products'))
+
+    filename_lower = csv_file.filename.lower()
+    if not filename_lower.endswith('.csv'):
+        flash('Invalid file type. Please upload a .csv file.', 'error')
+        return redirect(url_for('admin_import_products'))
+
+    # Read and decode
+    try:
+        raw = csv_file.read()
+        try:
+            content = raw.decode('utf-8-sig')   # strips BOM if present
+        except UnicodeDecodeError:
+            content = raw.decode('latin-1')
+    except Exception:
+        flash('Could not read the uploaded file. Ensure it is a valid CSV.', 'error')
+        return redirect(url_for('admin_import_products'))
+
+    import csv as _csv
+    from io import StringIO as _StringIO
+
+    reader = _csv.DictReader(_StringIO(content))
+
+    if reader.fieldnames is None:
+        flash('The CSV file appears to be empty.', 'error')
+        return redirect(url_for('admin_import_products'))
+
+    # Normalise header names (strip whitespace, lowercase for checking)
+    headers_norm = [h.strip().lower() for h in reader.fieldnames]
+
+    REQUIRED = {'name_en', 'price', 'category'}
+    missing_cols = REQUIRED - set(headers_norm)
+    if missing_cols:
+        flash(f'Missing required columns: {", ".join(sorted(missing_cols))}. '
+              f'Download the sample CSV for the correct format.', 'error')
+        return redirect(url_for('admin_import_products'))
+
+    # Re-map reader fieldnames to normalised names so lookups are consistent
+    reader.fieldnames = [h.strip() for h in reader.fieldnames]
+
+    # ---- Phase 1: validate all rows before touching the DB ----
+    validated_rows = []
+    row_errors = []
+
+    for row_num, raw_row in enumerate(reader, start=2):
+        # Normalise keys
+        row = {k.strip().lower(): (v or '').strip() for k, v in raw_row.items() if k}
+
+        name_en = row.get('name_en', '')
+        name_am = row.get('name_am', '')
+        name_ar = row.get('name_ar', '')
+
+        if not name_en:
+            row_errors.append(f'Row {row_num}: "name_en" is required.')
+            continue
+
+        price_raw = row.get('price', '')
+        try:
+            price = float(price_raw)
+            if price <= 0:
+                raise ValueError
+        except (ValueError, TypeError):
+            row_errors.append(f'Row {row_num}: "price" must be a positive number (got "{price_raw}").')
+            continue
+
+        compare_price_raw = row.get('compare_price', '')
+        compare_price = None
+        if compare_price_raw:
+            try:
+                compare_price = float(compare_price_raw)
+            except (ValueError, TypeError):
+                row_errors.append(f'Row {row_num}: "compare_price" must be a number (got "{compare_price_raw}").')
+                continue
+
+        stock_raw = row.get('stock', '0')
+        try:
+            stock = int(float(stock_raw)) if stock_raw else 0
+        except (ValueError, TypeError):
+            stock = 0
+
+        category_raw = row.get('category', '').strip()
+        category_id = cat_lookup.get(category_raw.lower())
+        if category_id is None:
+            valid_cats = ', '.join(c.get('name_am', '') or c.get('name', '') for c in categories_list)
+            row_errors.append(
+                f'Row {row_num}: Unknown category "{category_raw}". '
+                f'Valid values: {valid_cats}.'
+            )
+            continue
+
+        def _bool_field(val):
+            return 1 if val.lower() in ('yes', '1', 'true') else 0
+
+        validated_rows.append({
+            'name': name_en,
+            'name_en': name_en,
+            'name_am': name_am,
+            'name_ar': name_ar,
+            'description': row.get('description_en', ''),
+            'description_en': row.get('description_en', ''),
+            'description_am': row.get('description_am', ''),
+            'description_ar': row.get('description_ar', ''),
+            'price': price,
+            'compare_price': compare_price,
+            'cost': None,
+            'sku': row.get('sku') or None,
+            'barcode': None,
+            'stock_quantity': stock,
+            'low_stock_threshold': 5,
+            'thumbnail': '',
+            'is_featured': _bool_field(row.get('featured', '')),
+            'is_new': _bool_field(row.get('is_new', '')),
+            'weight': None,
+            'dimensions': None,
+            'material': None,
+            'color': None,
+            'category_id': category_id,
+            'meta_title': '',
+            'meta_description': '',
+        })
+
+    if row_errors and not validated_rows:
+        # All rows failed
+        flash(f'Import aborted — all {len(row_errors)} row(s) had errors. No products were saved.', 'error')
+        csrf_token = _get_csrf_token()
+        return render_template(
+            'admin/products/import.html',
+            categories=categories_list,
+            csrf_token=csrf_token,
+            row_errors=row_errors,
+            lang=lang, t=t
+        )
+
+    if not validated_rows:
+        flash('The CSV file contained no data rows.', 'error')
+        return redirect(url_for('admin_import_products'))
+
+    # ---- Phase 2: atomic insert ----
+    try:
+        insert_cursor = conn.cursor()
+        inserted_ids = []
+        for pdata in validated_rows:
+            insert_cursor.execute(
+                """INSERT INTO products (
+                    name, name_am, name_ar, name_en,
+                    description, description_am, description_ar, description_en,
+                    price, compare_price, cost, sku, barcode,
+                    stock_quantity, low_stock_threshold,
+                    images, thumbnail,
+                    is_active, is_featured, is_new,
+                    weight, dimensions, material, color,
+                    category_id, views, sales_count,
+                    meta_title, meta_description
+                ) VALUES (
+                    ?, ?, ?, ?,
+                    ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?,
+                    ?, ?,
+                    ?, ?,
+                    1, ?, ?,
+                    ?, ?, ?, ?,
+                    ?, 0, 0,
+                    ?, ?
+                ) RETURNING id""",
+                (
+                    pdata['name'], pdata['name_am'], pdata['name_ar'], pdata['name_en'],
+                    pdata['description'], pdata['description_am'], pdata['description_ar'], pdata['description_en'],
+                    pdata['price'], pdata['compare_price'], pdata['cost'], pdata['sku'], pdata['barcode'],
+                    pdata['stock_quantity'], pdata['low_stock_threshold'],
+                    None, pdata['thumbnail'],
+                    pdata['is_featured'], pdata['is_new'],
+                    pdata['weight'], pdata['dimensions'], pdata['material'], pdata['color'],
+                    pdata['category_id'],
+                    pdata['meta_title'], pdata['meta_description'],
+                )
+            )
+            row = insert_cursor.fetchone()
+            if row:
+                inserted_ids.append(row[0])
+
+        conn.commit()
+        app.logger.info(f"Bulk import: {len(inserted_ids)} products inserted by admin {session.get('admin_username', 'unknown')}")
+
+        success_msg = f'Successfully imported {len(inserted_ids)} product(s).'
+        if row_errors:
+            success_msg += f' {len(row_errors)} row(s) were skipped due to errors.'
+
+        flash(success_msg, 'success')
+        csrf_token = _get_csrf_token()
+        return render_template(
+            'admin/products/import.html',
+            categories=categories_list,
+            csrf_token=csrf_token,
+            row_errors=row_errors,
+            import_success=len(inserted_ids),
+            lang=lang, t=t
+        )
+
+    except Exception as e:
+        conn.rollback()
+        app.logger.error(f"Bulk import DB error: {str(e)}")
+        flash(f'Database error during import — all changes rolled back. ({str(e)})', 'error')
+        csrf_token = _get_csrf_token()
+        return render_template(
+            'admin/products/import.html',
+            categories=categories_list,
+            csrf_token=csrf_token,
+            row_errors=row_errors,
+            lang=lang, t=t
+        )
+
+
 # ==================== 20. ADMIN ADVERTISEMENT MANAGEMENT ====================
 
 @app.route('/admin/ads')
