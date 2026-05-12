@@ -55361,3 +55361,17 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 14:00:35,098 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
 2026-05-12 14:07:44,404 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
 2026-05-12 14:07:50,922 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:12:23,013 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:12:26,172 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:12:35,032 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:13:08,386 - app - INFO - ==================================================
+2026-05-12 14:13:08,387 - app - INFO - Ethiosadat Application Started
+2026-05-12 14:13:08,387 - app - INFO - ==================================================
+2026-05-12 14:13:50,243 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:13:51,916 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:16:04,214 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:21:14,646 - app - INFO - ==================================================
+2026-05-12 14:21:14,646 - app - INFO - Ethiosadat Application Started
+2026-05-12 14:21:14,647 - app - INFO - ==================================================
+2026-05-12 14:21:15,600 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:21:16,870 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
