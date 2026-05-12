@@ -55375,3 +55375,10 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 14:21:14,647 - app - INFO - ==================================================
 2026-05-12 14:21:15,600 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
 2026-05-12 14:21:16,870 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:27:29,987 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:30:21,989 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/product/1/test-add/1
+2026-05-12 14:30:22,378 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/favicon.ico
+2026-05-12 14:36:00,530 - app - INFO - ==================================================
+2026-05-12 14:36:00,531 - app - INFO - Ethiosadat Application Started
+2026-05-12 14:36:00,531 - app - INFO - ==================================================
+2026-05-12 14:36:02,169 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0

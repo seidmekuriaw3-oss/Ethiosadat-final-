@@ -41,6 +41,56 @@ from utils.translation_cache import translate_text, batch_translate, clear_trans
 
 app = Flask(__name__)
 
+# ==================== DIAGNOSTIC TEST ROUTE (registered first) ====================
+# Visit /test-add/1 in the browser address bar (from the ROOT, e.g. janeway.replit.dev/test-add/1)
+# This proves cart logic works independently of JS/AJAX/POST.
+@app.route('/test-add/<int:product_id>', methods=['GET'])
+def test_add_to_cart(product_id):
+    """Diagnostic GET route — no JSON body, no CSRF, no stock gate."""
+    print(f"DEBUG /test-add/{product_id}: HIT", flush=True)
+    from flask import session, jsonify
+    try:
+        from database.db import get_db
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name FROM products WHERE id = ? AND is_active = 1", (product_id,))
+        product = cursor.fetchone()
+        if not product:
+            return jsonify({'success': False, 'error': f'Product {product_id} not found'}), 404
+        if session.get('user_id'):
+            cursor.execute(
+                "SELECT id, quantity FROM cart_items WHERE user_id = ? AND product_id = ?",
+                (session['user_id'], product_id)
+            )
+            existing = cursor.fetchone()
+            if existing:
+                cursor.execute("UPDATE cart_items SET quantity = ? WHERE id = ?", (existing[1] + 1, existing[0]))
+            else:
+                cursor.execute(
+                    "INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?, ?, ?)",
+                    (session['user_id'], product_id, 1)
+                )
+            conn.commit()
+            source = 'database'
+        else:
+            cart = session.get('cart', {})
+            cart[str(product_id)] = cart.get(str(product_id), 0) + 1
+            session['cart'] = cart
+            session.modified = True
+            session.permanent = True
+            source = 'session'
+        return jsonify({
+            'success': True,
+            'product': product[1],
+            'source': source,
+            'cart': dict(session.get('cart', {})),
+            'note': 'Diagnostic only — remove before production.'
+        })
+    except Exception as e:
+        print(f"DEBUG /test-add/{product_id}: EXCEPTION {e}", flush=True)
+        return jsonify({'success': False, 'error': str(e)}), 500
+# ==================== END DIAGNOSTIC TEST ROUTE ====================
+
 # ---- Live Visitor Tracking (in-memory, 5-minute window) ----
 import threading
 _visitor_lock = threading.Lock()
@@ -7480,59 +7530,8 @@ def main():
     print("=" * 60)
     print("\nPress CTRL+C to stop the server\n")
     
+    print("FLASK IS STARTING WITH NEW CART LOGIC", flush=True)
     app.run(host=args.host, port=args.port, debug=args.debug)
-
-
-# ==================== TEST ROUTE (STEP 4 DIAGNOSTIC) ====================
-# Simple GET route — no CSRF, no stock checks, no JSON body needed.
-# Test by visiting: /test-add/1 in the browser tab directly.
-# If cart count goes up, the problem is in the POST/AJAX path, not cart logic.
-@app.route('/test-add/<int:product_id>', methods=['GET'])
-def test_add_to_cart(product_id):
-    """Diagnostic-only route: adds a product via GET, bypassing all validation."""
-    print(f"DEBUG /test-add/{product_id}: hit — adding directly to session cart", flush=True)
-    try:
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute("SELECT id, name FROM products WHERE id = ? AND is_active = 1", (product_id,))
-        product = cursor.fetchone()
-        if not product:
-            return jsonify({'success': False, 'error': f'Product {product_id} not found or inactive'}), 404
-
-        if session.get('user_id'):
-            cursor.execute(
-                "SELECT id, quantity FROM cart_items WHERE user_id = ? AND product_id = ?",
-                (session['user_id'], product_id)
-            )
-            existing = cursor.fetchone()
-            if existing:
-                cursor.execute("UPDATE cart_items SET quantity = ? WHERE id = ?", (existing[1] + 1, existing[0]))
-            else:
-                cursor.execute(
-                    "INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?, ?, ?)",
-                    (session['user_id'], product_id, 1)
-                )
-            conn.commit()
-            source = 'database'
-        else:
-            cart = session.get('cart', {})
-            cart[str(product_id)] = cart.get(str(product_id), 0) + 1
-            session['cart'] = cart
-            session.modified = True
-            session.permanent = True
-            source = 'session'
-
-        cart_count = get_cart_count()
-        print(f"DEBUG /test-add/{product_id}: success via {source}, cart_count={cart_count}", flush=True)
-        return jsonify({
-            'success': True,
-            'message': f'Test-add: {product[1]} added via {source}',
-            'cart_count': cart_count,
-            'note': 'Diagnostic route only. Remove before production.'
-        })
-    except Exception as e:
-        print(f"DEBUG /test-add/{product_id}: EXCEPTION {e}", flush=True)
-        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 # ==================== END OF APPLICATION FILE ====================
