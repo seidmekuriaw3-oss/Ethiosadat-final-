@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ lang }}"{% if session.get('lang') == 'ar' %} dir="rtl"{% endif %}>
 <head>
+    <!-- Unregister all service workers immediately -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for (var r of registrations) { r.unregister(); }
+            });
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Ethiosadat Furniture - Quality furniture at affordable prices in Addis Ababa, Ethiopia">
