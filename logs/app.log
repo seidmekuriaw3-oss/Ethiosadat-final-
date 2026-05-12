@@ -55027,3 +55027,48 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 11:13:18,987 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
 2026-05-12 11:14:13,560 - app - INFO - New user registered: seidmekuriaw3@gmail.com
 2026-05-12 11:14:13,561 - app - INFO - Welcome email would be sent to seidmekuriaw3@gmail.com
+2026-05-12 11:20:33,090 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:20:36,420 - app - INFO - Cart viewed - Items: 0, Total: 200.0 ETB
+2026-05-12 11:20:45,297 - app - INFO - Cart viewed - Items: 0, Total: 200.0 ETB
+2026-05-12 11:20:45,690 - app - INFO - Cart viewed - Items: 0, Total: 200.0 ETB
+2026-05-12 11:21:07,926 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:21:08,490 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:21:10,394 - app - INFO - Admin reports viewed
+2026-05-12 11:21:10,394 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:21:24,279 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:21:27,101 - app - INFO - Admin reports viewed
+2026-05-12 11:21:34,917 - app - INFO - Admin reports viewed
+2026-05-12 11:21:38,079 - app - INFO - Admin reports viewed
+2026-05-12 11:21:44,969 - app - INFO - Admin reports viewed
+2026-05-12 11:21:46,372 - app - INFO - Admin ads list viewed - 0 ads
+2026-05-12 11:22:04,130 - app - INFO - Admin product list viewed - 0 products
+2026-05-12 11:22:06,136 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:22:07,066 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:22:09,191 - app - INFO - Admin reports viewed
+2026-05-12 11:22:09,198 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:22:15,253 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:22:16,530 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:22:18,398 - app - INFO - Admin product list viewed - 0 products
+2026-05-12 11:22:19,110 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:22:19,913 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:22:20,234 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:22:20,270 - app - INFO - Admin reports viewed
+2026-05-12 11:22:22,875 - app - INFO - Admin reports viewed
+2026-05-12 11:22:23,395 - app - INFO - Admin reports viewed
+2026-05-12 11:22:29,302 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:22:30,068 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:22:40,316 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 11:22:42,292 - app - INFO - Admin product list viewed - 0 products
+2026-05-12 11:22:48,536 - app - INFO - Admin product list viewed - 0 products
+2026-05-12 11:23:43,806 - app - INFO - ==================================================
+2026-05-12 11:23:43,806 - app - INFO - Ethiosadat Application Started
+2026-05-12 11:23:43,806 - app - INFO - ==================================================
+2026-05-12 11:23:44,506 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 11:23:57,486 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-12 11:24:47,800 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 11:24:52,797 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 11:24:57,761 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:25:01,292 - app - INFO - Admin password changed for user id=1
+2026-05-12 11:25:19,837 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-12 11:25:21,579 - app - INFO - Admin logged out
+2026-05-12 11:25:21,846 - app - INFO - Home page - Featured: 2, New: 0, Ads: 0

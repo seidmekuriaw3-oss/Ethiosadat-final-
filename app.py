@@ -2641,7 +2641,7 @@ def checkout():
             customer_name = session.get('user_name') or (dict(user).get('full_name') if user else None)
 
             # Create order
-            order_id = create_order(
+            order_id, stock_alerts = create_order(
                 user_id=session['user_id'],
                 items=items_list,
                 subtotal=subtotal,
@@ -2656,6 +2656,9 @@ def checkout():
                 customer_name=customer_name,
                 customer_email=customer_email or None,
             )
+
+            if stock_alerts:
+                session['admin_stock_alerts'] = stock_alerts
 
             if order_id:
                 # Clear cart
@@ -2723,30 +2726,54 @@ def create_order(user_id, items, subtotal, discount, shipping_fee, total,
         row = cursor.fetchone()
         order_id = row['id'] if row else None
         
-        # Create order items
+        # Create order items and deduct stock
         for item in items:
             cursor.execute("""
                 INSERT INTO order_items (order_id, product_id, quantity, price_at_time)
                 VALUES (%s, %s, %s, %s)
             """, (order_id, item['product_id'], item['quantity'], item['price']))
 
-            # Update product stock
             cursor.execute("""
                 UPDATE products SET
                     stock_quantity = stock_quantity - %s,
                     sales_count = sales_count + %s
                 WHERE id = %s
             """, (item['quantity'], item['quantity'], item['product_id']))
-        
+
         conn.commit()
 
-        
+        # Check for low/out-of-stock items after deduction
+        low_stock_alerts = []
+        for item in items:
+            cursor.execute("""
+                SELECT id, name, name_am, stock_quantity, low_stock_threshold
+                FROM products WHERE id = %s
+            """, (item['product_id'],))
+            prow = cursor.fetchone()
+            if prow:
+                pdict = dict(prow)
+                qty = pdict['stock_quantity']
+                threshold = pdict['low_stock_threshold']
+                if qty <= 0:
+                    low_stock_alerts.append({**pdict, 'alert_level': 'critical'})
+                    app.logger.warning(
+                        f"[STOCK ALERT] OUT OF STOCK after order {order_number}: "
+                        f"'{pdict['name_am'] or pdict['name']}' (ID {pdict['id']}) — qty now {qty}"
+                    )
+                elif qty <= threshold:
+                    low_stock_alerts.append({**pdict, 'alert_level': 'warning'})
+                    app.logger.warning(
+                        f"[STOCK ALERT] LOW STOCK after order {order_number}: "
+                        f"'{pdict['name_am'] or pdict['name']}' (ID {pdict['id']}) — "
+                        f"qty {qty} <= threshold {threshold}"
+                    )
+
         app.logger.info(f"Order created: {order_number} by user {user_id}")
-        return order_id
-        
+        return order_id, low_stock_alerts
+
     except Exception as e:
         app.logger.error(f"Error creating order: {str(e)}")
-        return None
+        return None, []
 
 
 def generate_order_number():
@@ -2933,7 +2960,7 @@ def admin_dashboard():
         cursor.execute("SELECT SUM(total) FROM orders WHERE status != 'cancelled'")
         total_revenue = cursor.fetchone()[0] or 0
         
-        cursor.execute("SELECT COUNT(*) FROM orders WHERE DATE(created_at) = DATE('now')")
+        cursor.execute("SELECT COUNT(*) FROM orders WHERE DATE(created_at) = CURRENT_DATE")
         today_orders = cursor.fetchone()[0] or 0
         
         # Get recent products
@@ -2951,15 +2978,32 @@ def admin_dashboard():
         """)
         recent_orders = cursor.fetchall()
         
-        # Get low stock products
+        # Get out-of-stock products (critical)
         cursor.execute("""
-            SELECT p.*, c.name as category_name 
+            SELECT p.id, p.name, p.name_am, p.stock_quantity, p.low_stock_threshold,
+                   c.name as category_name
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.id
-            WHERE p.stock_quantity <= p.low_stock_threshold AND p.stock_quantity > 0
-            LIMIT 10
+            WHERE p.stock_quantity <= 0 AND p.is_active = 1
+            ORDER BY p.name_am ASC
+            LIMIT 15
+        """)
+        out_of_stock_products = cursor.fetchall()
+
+        # Get low stock products (warning — above 0 but at/below threshold)
+        cursor.execute("""
+            SELECT p.id, p.name, p.name_am, p.stock_quantity, p.low_stock_threshold,
+                   c.name as category_name
+            FROM products p
+            LEFT JOIN categories c ON p.category_id = c.id
+            WHERE p.stock_quantity > 0 AND p.stock_quantity <= p.low_stock_threshold
+            ORDER BY p.stock_quantity ASC
+            LIMIT 15
         """)
         low_stock_products = cursor.fetchall()
+
+        # Consume any order-triggered stock alerts from session
+        order_stock_alerts = session.pop('admin_stock_alerts', [])
 
         # Total page views from settings table
         cursor.execute("SELECT value FROM settings WHERE key = 'page_views'")
@@ -2987,14 +3031,21 @@ def admin_dashboard():
         recent_products_list = [dict(row) for row in recent_products] if recent_products else []
         recent_orders_list = [dict(row) for row in recent_orders] if recent_orders else []
         low_stock_list = [dict(row) for row in low_stock_products] if low_stock_products else []
-        
-        app.logger.info(f"Admin dashboard accessed - Products: {products_count}, Orders: {total_orders}")
-        
+        out_of_stock_list = [dict(row) for row in out_of_stock_products] if out_of_stock_products else []
+
+        total_stock_alerts = len(low_stock_list) + len(out_of_stock_list)
+        app.logger.info(
+            f"Admin dashboard accessed - Products: {products_count}, Orders: {total_orders}, "
+            f"Stock alerts: {total_stock_alerts} ({len(out_of_stock_list)} out, {len(low_stock_list)} low)"
+        )
+
         return render_template('admin/dashboard.html',
                                stats=stats,
                                recent_products=recent_products_list,
                                recent_orders=recent_orders_list,
                                low_stock_products=low_stock_list,
+                               out_of_stock_products=out_of_stock_list,
+                               order_stock_alerts=order_stock_alerts,
                                lang=lang,
                                t=t)
                                
@@ -5471,7 +5522,7 @@ def api_submit_order():
         total         = subtotal_after_discount + shipping_cost
 
         # Persist order
-        order_id = create_order(
+        order_id, stock_alerts = create_order(
             user_id=session['user_id'],
             items=items_list,
             subtotal=subtotal,
@@ -5489,6 +5540,9 @@ def api_submit_order():
 
         if not order_id:
             return jsonify({'success': False, 'error': 'Failed to create order'}), 500
+
+        if stock_alerts:
+            session['admin_stock_alerts'] = stock_alerts
 
         # Clear cart
         cursor.execute("DELETE FROM cart_items WHERE user_id = %s", (session['user_id'],))

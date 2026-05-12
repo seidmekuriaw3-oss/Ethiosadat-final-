@@ -299,21 +299,104 @@
         </div>
     </div>
 
-    <!-- Low Stock Alert -->
-    {% if low_stock_products %}
-    <div class="recent-card" style="margin-top: 20px;">
-        <h3 style="color: #f44336;">
-            <span>⚠️</span> Low Stock Alert
-        </h3>
-        {% for product in low_stock_products %}
-        <div class="recent-item">
-            <div class="recent-item-name">{{ product.name_am }}</div>
-            <div class="recent-item-price" style="color: #f44336;">Only {{ product.stock_quantity }} left</div>
+    <!-- Order-Triggered Stock Alerts (flash when admin visits after an order) -->
+    {% if order_stock_alerts %}
+    <div id="orderStockAlerts" style="margin-top: 20px; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(244,67,54,0.25);">
+        <div style="background: linear-gradient(90deg, #b71c1c, #f44336); color: white; padding: 14px 20px; display: flex; align-items: center; gap: 10px; justify-content: space-between;">
+            <span style="font-weight: 700; font-size: 15px;">🔔 Stock Alert — Triggered by Latest Order</span>
+            <button onclick="document.getElementById('orderStockAlerts').style.display='none'" style="background: rgba(255,255,255,0.25); border: none; color: white; border-radius: 50%; width: 26px; height: 26px; cursor: pointer; font-size: 14px; line-height: 1;">✕</button>
         </div>
-        {% endfor %}
-        <div class="view-all">
-            <a href="{{ url_for('admin_products') }}" class="btn btn-outline btn-small">Update Stock →</a>
+        <div style="background: #fff8f8; padding: 12px 20px;">
+            {% for alert in order_stock_alerts %}
+            <div style="display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #fce4e4;">
+                {% if alert.alert_level == 'critical' %}
+                <span style="background: #f44336; color: white; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap;">OUT OF STOCK</span>
+                {% else %}
+                <span style="background: #ff9800; color: white; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap;">LOW STOCK</span>
+                {% endif %}
+                <span style="font-weight: 600;">{{ alert.name_am or alert.name }}</span>
+                <span style="margin-left: auto; color: #c62828; font-weight: 700;">{{ alert.stock_quantity }} remaining</span>
+            </div>
+            {% endfor %}
+            <div style="padding-top: 10px; text-align: right;">
+                <a href="{{ url_for('admin_products') }}" class="btn btn-small" style="background: #f44336; color: white;">Update Stock →</a>
+            </div>
         </div>
+    </div>
+    {% endif %}
+
+    <!-- Real-time Stock Alert Panel -->
+    {% if out_of_stock_products or low_stock_products %}
+    <div style="margin-top: 20px; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.10);">
+        <!-- Panel header -->
+        <div style="background: linear-gradient(90deg, #e53935, #ff7043); color: white; padding: 16px 24px; display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 22px;">📦</span>
+            <div>
+                <div style="font-weight: 700; font-size: 16px;">Stock Alert Centre</div>
+                <div style="font-size: 12px; opacity: 0.9;">
+                    {% set total_alerts = (out_of_stock_products|length) + (low_stock_products|length) %}
+                    {{ total_alerts }} item{{ 's' if total_alerts != 1 else '' }} need{{ '' if total_alerts != 1 else 's' }} attention
+                    {% if out_of_stock_products %} — {{ out_of_stock_products|length }} critical{% endif %}
+                </div>
+            </div>
+            <div style="margin-left: auto;">
+                <a href="{{ url_for('admin_products') }}" style="background: rgba(255,255,255,0.25); color: white; padding: 6px 16px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: 600;">Update Stock →</a>
+            </div>
+        </div>
+
+        <!-- Out of Stock (Critical) -->
+        {% if out_of_stock_products %}
+        <div style="background: #fff5f5; padding: 16px 24px; border-bottom: 2px solid #ffcdd2;">
+            <div style="font-weight: 700; color: #c62828; font-size: 13px; letter-spacing: 0.5px; margin-bottom: 12px;">🚫 OUT OF STOCK — CRITICAL</div>
+            {% for product in out_of_stock_products %}
+            <div style="display: flex; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px solid #fce4e4;">
+                <div style="flex: 1; min-width: 0;">
+                    <div style="font-weight: 600; color: #333; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        {{ product.name_am or product.name }}
+                    </div>
+                    {% if product.category_name %}
+                    <div style="font-size: 11px; color: #999; margin-top: 2px;">{{ product.category_name }}</div>
+                    {% endif %}
+                </div>
+                <div style="flex: 0 0 160px;">
+                    <div style="background: #ffcdd2; border-radius: 6px; height: 6px; overflow: hidden;">
+                        <div style="background: #f44336; height: 100%; width: 0%;"></div>
+                    </div>
+                    <div style="font-size: 11px; color: #c62828; margin-top: 3px; text-align: right; font-weight: 700;">0 / {{ product.low_stock_threshold }} threshold</div>
+                </div>
+                <a href="{{ url_for('admin_product_edit', pid=product.id) }}" style="background: #f44336; color: white; padding: 5px 12px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 600; white-space: nowrap;">Restock</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Low Stock (Warning) -->
+        {% if low_stock_products %}
+        <div style="background: #fffde7; padding: 16px 24px;">
+            <div style="font-weight: 700; color: #e65100; font-size: 13px; letter-spacing: 0.5px; margin-bottom: 12px;">⚠️ LOW STOCK — WARNING</div>
+            {% for product in low_stock_products %}
+            {% set pct = [(product.stock_quantity / product.low_stock_threshold * 100)|int, 100]|min if product.low_stock_threshold > 0 else 100 %}
+            {% set bar_color = '#f44336' if pct < 30 else '#ff9800' if pct < 70 else '#ffc107' %}
+            <div style="display: flex; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px solid #fff9c4;">
+                <div style="flex: 1; min-width: 0;">
+                    <div style="font-weight: 600; color: #333; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        {{ product.name_am or product.name }}
+                    </div>
+                    {% if product.category_name %}
+                    <div style="font-size: 11px; color: #999; margin-top: 2px;">{{ product.category_name }}</div>
+                    {% endif %}
+                </div>
+                <div style="flex: 0 0 160px;">
+                    <div style="background: #f5f5f5; border-radius: 6px; height: 6px; overflow: hidden;">
+                        <div style="background: {{ bar_color }}; height: 100%; width: {{ pct }}%; transition: width 0.5s ease;"></div>
+                    </div>
+                    <div style="font-size: 11px; color: #795548; margin-top: 3px; text-align: right; font-weight: 600;">{{ product.stock_quantity }} / {{ product.low_stock_threshold }} threshold</div>
+                </div>
+                <a href="{{ url_for('admin_product_edit', pid=product.id) }}" style="background: #ff9800; color: white; padding: 5px 12px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 600; white-space: nowrap;">Restock</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
     {% endif %}
 
