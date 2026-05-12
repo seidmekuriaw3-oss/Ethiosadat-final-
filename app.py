@@ -86,7 +86,12 @@ app.jinja_env.globals["format_price"] = format_price
 app.jinja_env.globals["format_price_number"] = format_price_number
 
 app.config.from_object(Config)
-app.secret_key = os.environ.get('SECRET_KEY', 'ethiosadat_default_secret_key_2026')
+_secret_key = os.environ.get('SECRET_KEY')
+if not _secret_key:
+    import secrets as _secrets
+    _secret_key = _secrets.token_hex(32)
+    print("WARNING: SECRET_KEY not set in environment. Sessions will not persist across restarts. Set SECRET_KEY in environment variables.")
+app.secret_key = _secret_key
 
 # Rate Limiter
 limiter = Limiter(
@@ -151,29 +156,27 @@ def init_db_tables():
 
 
 def seed_categories_if_empty():
-    """Seed default categories on every startup if the table is empty."""
-    import sqlite3 as _sqlite3
-    from config import Config as _Config
-    db_path = _Config.DATABASE_PATH
-    conn = _sqlite3.connect(db_path)
-    conn.row_factory = _sqlite3.Row
-    cur = conn.cursor()
-    cur.execute("SELECT COUNT(*) FROM categories")
-    count = cur.fetchone()[0]
-    if count == 0:
-        defaults = [
-            ('Living Room', 'ሳሎን', 'غرفة المعيشة', '🛋️', 1),
-            ('Bedroom',     'መኝታ ክፍል', 'غرفة النوم', '🛏️', 2),
-            ('Office',      'ቢሮ', 'مكتب', '💼', 3),
-            ('Dining',      'መመገቢያ', 'غرفة الطعام', '🍽️', 4),
-        ]
-        cur.executemany(
-            "INSERT INTO categories (name, name_am, name_ar, icon, sort_order) VALUES (?, ?, ?, ?, ?)",
-            defaults
-        )
-        conn.commit()
-        print(f"✅ Seeded {len(defaults)} default categories")
-    conn.close()
+    """Seed default categories on startup if the table is empty (PostgreSQL)."""
+    try:
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute("SELECT COUNT(*) FROM categories")
+        count = cur.fetchone()[0]
+        if count == 0:
+            defaults = [
+                ('Living Room', 'ሳሎን', 'غرفة المعيشة', '🛋️', 1),
+                ('Bedroom', 'መኝታ ክፍል', 'غرفة النوم', '🛏️', 2),
+                ('Office', 'ቢሮ', 'مكتب', '💼', 3),
+                ('Dining', 'መመገቢያ', 'غرفة الطعام', '🍽️', 4),
+            ]
+            cur.executemany(
+                "INSERT INTO categories (name, name_am, name_ar, icon, sort_order) VALUES (?, ?, ?, ?, ?)",
+                defaults
+            )
+            conn.commit()
+            print(f"✅ Seeded {len(defaults)} default categories")
+    except Exception as _e:
+        print(f"seed_categories_if_empty error: {_e}")
 
 
 # Initialize database on startup
@@ -921,8 +924,8 @@ def index():
         cursor.execute("""
             SELECT * FROM advertisements 
             WHERE is_active = 1 
-            AND (end_date IS NULL OR end_date > datetime('now'))
-            AND (start_date IS NULL OR start_date <= datetime('now'))
+            AND (end_date IS NULL OR end_date > NOW())
+            AND (start_date IS NULL OR start_date <= NOW())
             ORDER BY sort_order ASC, id DESC
         """)
         ads = cursor.fetchall()
@@ -1030,9 +1033,10 @@ def product_detail(product_id):
         if product_dict.get('thumbnail') is None or str(product_dict.get('thumbnail')) == 'None':
             product_dict['thumbnail'] = ''
         
+        android_user = is_android_app()
         is_logged_in = session.get('user_id') is not None
         final_price = product_dict['price']
-        if is_logged_in:
+        if is_logged_in and android_user:
             final_price = product_dict['price'] * 0.9
         
         return render_template('customer/product_detail.html', 
@@ -1296,12 +1300,12 @@ def contact():
             cursor = conn.cursor()
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS contacts (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id SERIAL PRIMARY KEY,
                     name TEXT NOT NULL,
                     email TEXT,
                     phone TEXT,
                     message TEXT NOT NULL,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    created_at TIMESTAMP DEFAULT NOW()
                 )
             """)
             cursor.execute("""
@@ -1718,10 +1722,12 @@ def user_register():
             cursor.execute("""
                 INSERT INTO users (username, full_name, email, phone, password_hash, is_admin, is_active, created_at)
                 VALUES (?, ?, ?, ?, ?, 0, 1, CURRENT_TIMESTAMP)
+                RETURNING id
             """, (username, full_name, email, phone, password_hash))
             
+            row = cursor.fetchone()
             conn.commit()
-            user_id = cursor.lastrowid
+            user_id = row['id'] if row else None
             
             # Auto login
             session['user_id'] = user_id
@@ -2458,7 +2464,7 @@ def update_cart():
                 WHERE ci.user_id = ? AND ci.product_id = ?
             """, (session['user_id'], product_id))
             item_total_row = cursor.fetchone()
-            item_total = item_total_row[0] * 0.9 if item_total_row else 0
+            item_total = item_total_row['item_total'] if item_total_row else 0
         else:
             item_total = product[0] * quantity if product else 0
         
@@ -2565,13 +2571,18 @@ def checkout():
         flash('Your cart is empty', 'warning')
         return redirect(url_for('view_cart'))
     
-    # Calculate totals (use column names via sqlite3.Row)
+    # Calculate totals — 10% discount applies only to Android App users
+    android_user = is_android_app()
+    discount_message = ''
+    if android_user:
+        discount_message = 'Congratulations! You have received a 10% discount for being a registered user on our Android App.'
+
     subtotal = 0
     items_list = []
     for item in cart_items:
         price = item['price'] if item['price'] else 0
         quantity = item['quantity'] if item['quantity'] else 1
-        discounted_price = price * 0.9  # 10% discount
+        discounted_price = price * 0.9 if android_user else price
         item_subtotal = discounted_price * quantity
         subtotal += item_subtotal
         items_list.append({
@@ -2581,8 +2592,8 @@ def checkout():
             'quantity': quantity,
             'price': discounted_price
         })
-    
-    discount = subtotal * 0.1
+
+    discount = subtotal * 0.1 if android_user else 0
     subtotal_after_discount = subtotal - discount
     
     free_shipping_threshold = int(os.environ.get('FREE_SHIPPING_THRESHOLD', '5000'))
@@ -2652,6 +2663,8 @@ def checkout():
                            shipping_cost=shipping_cost,
                            total=round(total, 2),
                            free_shipping_threshold=free_shipping_threshold,
+                           android_discount=android_user,
+                           discount_message=discount_message,
                            user=dict(user) if user else None,
                            lang=lang,
                            t=t)
@@ -2674,13 +2687,15 @@ def create_order(user_id, items, subtotal, discount, shipping_fee, total,
                 shipping_address, shipping_city, shipping_phone, notes,
                 created_at, updated_at
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            RETURNING id
         """, (
             order_number, user_id, 'pending', 'pending', payment_method,
             subtotal, discount, shipping_fee, total,
             shipping_address, shipping_city, shipping_phone, notes
         ))
-        
-        order_id = cursor.lastrowid
+
+        row = cursor.fetchone()
+        order_id = row['id'] if row else None
         
         # Create order items
         for item in items:
@@ -2849,13 +2864,13 @@ def get_cart_total():
                 products = cursor.fetchall()
 
                 for p in products:
-                    quantity = cart.get(str(p[0]), 0)
-                    total += p[1] * quantity
+                    quantity = cart.get(str(p['id']), 0)
+                    total += p['price'] * quantity
             except Exception as e:
                 app.logger.error(f"Error getting cart total from session: {str(e)}")
     
-    # Apply 10% discount for logged in users
-    if session.get('user_id'):
+    # Apply 10% discount only for logged-in Android App users
+    if session.get('user_id') and is_android_app():
         total = total * 0.9
     
     return round(total, 2)
@@ -3407,8 +3422,10 @@ def admin_export_products():
         
         for p in products:
             writer.writerow([
-                p[0], p[1], p[2], p[3], p[4], p[5] or '', 
-                p[6], p[7] or '', 'Yes' if p[8] else 'No', p[9]
+                p['id'], p['name'] or '', p['name_am'] or '', p['name_ar'] or '',
+                p['price'], p['compare_price'] or '',
+                p['stock_quantity'], p['category_name'] or '',
+                'Yes' if p['is_featured'] else 'No', p['created_at']
             ])
         
         response = make_response(output.getvalue())
@@ -3532,11 +3549,13 @@ def admin_ad_create():
                     image, link, sort_order, is_active,
                     start_date, end_date, created_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                RETURNING id
             """, (title, title_am, title_ar, description, description_am, description_ar,
                   image_filename, link, sort_order, is_active, start_date, end_date))
-            
+
+            row = cursor.fetchone()
             conn.commit()
-            ad_id = cursor.lastrowid
+            ad_id = row['id'] if row else None
 
             
             app.logger.info(f"New advertisement created: {title or description[:50]} (ID: {ad_id})")
@@ -4160,13 +4179,13 @@ def admin_reports():
         
         # Get monthly sales (last 12 months)
         cursor.execute("""
-            SELECT strftime('%Y-%m', created_at) as month, 
-                   COUNT(*) as order_count, 
+            SELECT TO_CHAR(created_at, 'YYYY-MM') as month,
+                   COUNT(*) as order_count,
                    SUM(total) as revenue
-            FROM orders 
+            FROM orders
             WHERE status != 'cancelled'
-            AND created_at >= date('now', '-12 months')
-            GROUP BY strftime('%Y-%m', created_at)
+            AND created_at >= NOW() - INTERVAL '12 months'
+            GROUP BY TO_CHAR(created_at, 'YYYY-MM')
             ORDER BY month DESC
         """)
         monthly_sales = cursor.fetchall()
@@ -4623,9 +4642,11 @@ def admin_send_notification():
                     image, link, target_audience,
                     sent_at, created_by
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?)
+                RETURNING id
             """, (title, title_am, title_ar, body, body_am, body_ar, image_url, link, target, session.get('admin_username', 'admin')))
-            
-            notification_id = cursor.lastrowid
+
+            row = cursor.fetchone()
+            notification_id = row['id'] if row else None
             conn.commit()
 
             
@@ -4693,6 +4714,8 @@ def api_get_cart():
         cart_items = []
         subtotal = 0
         
+        android_user = is_android_app()
+
         if session.get('user_id'):
             conn = get_db()
             conn.row_factory = sqlite3.Row
@@ -4703,12 +4726,11 @@ def api_get_cart():
                 JOIN products p ON ci.product_id = p.id
                 WHERE ci.user_id = ?
             """, (session['user_id'],))
-            
+
             rows = cursor.fetchall()
 
-            
             for row in rows:
-                discounted_price = row['price'] * 0.9 if session.get('user_id') else row['price']
+                discounted_price = row['price'] * 0.9 if (session.get('user_id') and android_user) else row['price']
                 item_subtotal = discounted_price * row['quantity']
                 subtotal += item_subtotal
                 cart_items.append({
@@ -4754,20 +4776,27 @@ def api_get_cart():
                             'subtotal': round(item_subtotal, 2)
                         })
         
-        discount = subtotal * 0.1 if session.get('user_id') else 0
+        android_discount_active = bool(session.get('user_id') and android_user)
+        discount = subtotal * 0.1 if android_discount_active else 0
+        discount_message = (
+            'Congratulations! You have received a 10% discount for being a registered user on our Android App.'
+            if android_discount_active else ''
+        )
         subtotal_after_discount = subtotal - discount
-        
+
         threshold = int(os.environ.get('FREE_SHIPPING_THRESHOLD', '5000'))
         shipping_cost = 0 if subtotal_after_discount >= threshold else int(os.environ.get('SHIPPING_COST', '200'))
         total = subtotal_after_discount + shipping_cost
         count = len(cart_items)
-        
+
         return jsonify({
             'success': True,
             'items': cart_items,
             'count': count,
             'subtotal': round(subtotal, 2),
             'discount': round(discount, 2),
+            'discount_message': discount_message,
+            'android_discount': android_discount_active,
             'shipping_cost': shipping_cost,
             'total': round(total, 2)
         })
@@ -5006,22 +5035,22 @@ def api_products():
         products_list = []
         for p in products:
             products_list.append({
-                'id': p[0],
-                'name': p[1],
-                'name_am': p[2],
-                'name_ar': p[3],
-                'description': p[4],
-                'description_am': p[5],
-                'description_ar': p[6],
-                'price': p[7],
-                'compare_price': p[8],
-                'stock_quantity': p[9],
-                'thumbnail': p[10] if len(p) > 10 else '',
-                'category_id': p[11] if len(p) > 11 else None,
-                'category_name': p[12] if len(p) > 12 else None,
-                'is_featured': p[13] if len(p) > 13 else 0,
-                'is_new': p[14] if len(p) > 14 else 0,
-                'rating': p[15] if len(p) > 15 else 0
+                'id': p['id'],
+                'name': p['name'] or '',
+                'name_am': p['name_am'] or '',
+                'name_ar': p['name_ar'] or '',
+                'description': p['description'] or '',
+                'description_am': p['description_am'] or '',
+                'description_ar': p['description_ar'] or '',
+                'price': p['price'],
+                'compare_price': p['compare_price'],
+                'stock_quantity': p['stock_quantity'] or 0,
+                'thumbnail': p['thumbnail'] or '',
+                'category_id': p['category_id'],
+                'category_name': p['category_name'] if 'category_name' in p.keys() else None,
+                'is_featured': p['is_featured'] or 0,
+                'is_new': p['is_new'] or 0,
+                'rating': 0
             })
         
         return jsonify({
@@ -5283,10 +5312,12 @@ def api_submit_order():
                 shipping_address, shipping_phone, notes,
                 created_at, updated_at
             ) VALUES (?, ?, 'pending', 'pending', ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            RETURNING id
         """, (order_number, session['user_id'], subtotal, discount, shipping_cost, total,
               shipping_address, shipping_phone, notes))
-        
-        order_id = cursor.lastrowid
+
+        row = cursor.fetchone()
+        order_id = row['id'] if row else None
         
         # Create order items and update stock
         for item in items_list:
@@ -5864,12 +5895,10 @@ def wishlist():
         # Create wishlist table if not exists
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS wishlist (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 user_id INTEGER NOT NULL,
                 product_id INTEGER NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id),
-                FOREIGN KEY (product_id) REFERENCES products(id),
+                created_at TIMESTAMP DEFAULT NOW(),
                 UNIQUE(user_id, product_id)
             )
         """)
@@ -5916,19 +5945,18 @@ def api_wishlist_add():
         # Create table if not exists
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS wishlist (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 user_id INTEGER NOT NULL,
                 product_id INTEGER NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id),
-                FOREIGN KEY (product_id) REFERENCES products(id),
+                created_at TIMESTAMP DEFAULT NOW(),
                 UNIQUE(user_id, product_id)
             )
         """)
-        
+
         cursor.execute("""
-            INSERT OR IGNORE INTO wishlist (user_id, product_id)
+            INSERT INTO wishlist (user_id, product_id)
             VALUES (?, ?)
+            ON CONFLICT (user_id, product_id) DO NOTHING
         """, (session['user_id'], product_id))
         
         conn.commit()
@@ -5985,18 +6013,18 @@ def api_apply_coupon():
         # Create coupons table if not exists
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS coupons (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 code TEXT UNIQUE NOT NULL,
                 discount_type TEXT DEFAULT 'percentage',
-                discount_value REAL NOT NULL,
-                min_order REAL DEFAULT 0,
-                max_discount REAL,
+                discount_value DOUBLE PRECISION NOT NULL,
+                min_order DOUBLE PRECISION DEFAULT 0,
+                max_discount DOUBLE PRECISION,
                 valid_from TIMESTAMP,
                 valid_to TIMESTAMP,
                 usage_limit INTEGER,
                 used_count INTEGER DEFAULT 0,
                 is_active INTEGER DEFAULT 1,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                created_at TIMESTAMP DEFAULT NOW()
             )
         """)
         conn.commit()
@@ -6019,23 +6047,22 @@ def api_apply_coupon():
         # Get cart subtotal
         subtotal = get_cart_total()
         
-        if subtotal < coupon[4]:  # min_order
+        if subtotal < coupon['min_order']:
+            return jsonify({'success': False, 'error': f"Minimum order of {coupon['min_order']} ETB required"}), 400
 
-            return jsonify({'success': False, 'error': f'Minimum order of {coupon[4]} ETB required'}), 400
-        
         # Calculate discount
-        if coupon[2] == 'percentage':  # percentage discount
-            discount = subtotal * (coupon[3] / 100)
-            if coupon[5]:  # max_discount
-                discount = min(discount, coupon[5])
-        else:  # fixed amount
-            discount = coupon[3]
-        
+        if coupon['discount_type'] == 'percentage':
+            discount = subtotal * (coupon['discount_value'] / 100)
+            if coupon['max_discount']:
+                discount = min(discount, coupon['max_discount'])
+        else:
+            discount = coupon['discount_value']
+
         # Store coupon in session
         session['applied_coupon'] = {
             'code': code,
             'discount': discount,
-            'coupon_id': coupon[0]
+            'coupon_id': coupon['id']
         }
         session.modified = True
         
@@ -6112,15 +6139,13 @@ def product_reviews(product_id):
             # Create reviews table if not exists
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS reviews (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id SERIAL PRIMARY KEY,
                     product_id INTEGER NOT NULL,
                     user_id INTEGER NOT NULL,
                     rating INTEGER NOT NULL,
                     comment TEXT NOT NULL,
                     is_approved INTEGER DEFAULT 0,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (product_id) REFERENCES products(id),
-                    FOREIGN KEY (user_id) REFERENCES users(id)
+                    created_at TIMESTAMP DEFAULT NOW()
                 )
             """)
             conn.commit()
@@ -6171,16 +6196,17 @@ def subscribe_newsletter():
         
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS newsletter (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 email TEXT UNIQUE NOT NULL,
-                subscribed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                subscribed_at TIMESTAMP DEFAULT NOW(),
                 is_active INTEGER DEFAULT 1
             )
         """)
         conn.commit()
-        
+
         cursor.execute("""
-            INSERT OR IGNORE INTO newsletter (email) VALUES (?)
+            INSERT INTO newsletter (email) VALUES (?)
+            ON CONFLICT (email) DO NOTHING
         """, (email,))
         
         conn.commit()

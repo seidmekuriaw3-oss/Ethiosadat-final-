@@ -54634,3 +54634,58 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 20:11:02,424 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
 2026-05-11 20:12:40,843 - app - INFO - Admin logged in: admin@ethiosadat.com
 2026-05-11 20:12:51,623 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 02:53:11,996 - app - INFO - ==================================================
+2026-05-12 02:53:11,997 - app - INFO - Ethiosadat Application Started
+2026-05-12 02:53:11,997 - app - INFO - ==================================================
+2026-05-12 02:53:13,960 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-12 03:00:32,321 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-12 03:31:44,886 - app - INFO - ==================================================
+2026-05-12 03:31:44,886 - app - INFO - Ethiosadat Application Started
+2026-05-12 03:31:44,887 - app - INFO - ==================================================
+2026-05-12 03:31:47,248 - app - ERROR - Home page error: function datetime(unknown) does not exist
+LINE 3:             AND (end_date IS NULL OR end_date > datetime('no...
+                                                        ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+2026-05-12 03:31:47,464 - app - ERROR - Traceback (most recent call last):
+  File "/home/runner/workspace/app.py", line 924, in index
+    cursor.execute("""
+  File "/home/runner/workspace/database/db.py", line 32, in execute
+    self._c.execute(q)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedFunction: function datetime(unknown) does not exist
+LINE 3:             AND (end_date IS NULL OR end_date > datetime('no...
+                                                        ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+
+2026-05-12 03:31:48,429 - app - ERROR - Home page error: function datetime(unknown) does not exist
+LINE 3:             AND (end_date IS NULL OR end_date > datetime('no...
+                                                        ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+2026-05-12 03:31:48,430 - app - ERROR - Traceback (most recent call last):
+  File "/home/runner/workspace/app.py", line 924, in index
+    cursor.execute("""
+  File "/home/runner/workspace/database/db.py", line 32, in execute
+    self._c.execute(q)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedFunction: function datetime(unknown) does not exist
+LINE 3:             AND (end_date IS NULL OR end_date > datetime('no...
+                                                        ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+
+2026-05-12 03:33:01,361 - app - INFO - ==================================================
+2026-05-12 03:33:01,361 - app - INFO - Ethiosadat Application Started
+2026-05-12 03:33:01,361 - app - INFO - ==================================================
+2026-05-12 03:33:02,379 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 03:33:20,350 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 03:34:13,620 - app - INFO - Home page - Featured: 12, New: 10, Ads: 6
+2026-05-12 03:36:55,124 - app - INFO - ==================================================
+2026-05-12 03:36:55,124 - app - INFO - Ethiosadat Application Started
+2026-05-12 03:36:55,124 - app - INFO - ==================================================

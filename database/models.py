@@ -130,7 +130,8 @@ class Product:
                     weight, dimensions, material, color,
                     category_id, views, sales_count,
                     meta_title, meta_description
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                RETURNING id""",
                 (
                     data.get('name', data.get('name_en', '')),
                     data.get('name_am', ''),
@@ -163,8 +164,9 @@ class Product:
                     data.get('meta_description', '')
                 )
             )
+            row = cursor.fetchone()
             db.commit()
-            return cursor.lastrowid
+            return row['id'] if row else None
         except Exception as e:
             print(f"Error creating product: {e}")
             db.rollback()
@@ -356,7 +358,8 @@ class Ad:
                 """INSERT INTO advertisements (
                     title, title_am, title_ar, description, description_am, description_ar,
                     image, link, sort_order, is_active, start_date, end_date
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                RETURNING id""",
                 (
                     data.get('title', ''),
                     data.get('title_am', ''),
@@ -372,8 +375,9 @@ class Ad:
                     data.get('end_date')
                 )
             )
+            row = cursor.fetchone()
             db.commit()
-            return cursor.lastrowid
+            return row['id'] if row else None
         except Exception as e:
             print(f"Error creating ad: {e}")
             db.rollback()
@@ -429,7 +433,7 @@ class Ad:
         try:
             db = get_db()
             db.execute(
-                "UPDATE advertisements SET is_active = NOT is_active WHERE id = ?",
+                "UPDATE advertisements SET is_active = 1 - is_active WHERE id = ?",
                 (aid,)
             )
             db.commit()
@@ -478,7 +482,8 @@ class Order:
                     order_number, user_id, status, payment_status, payment_method,
                     subtotal, discount, shipping_fee, total,
                     shipping_address, shipping_city, shipping_phone, notes
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                RETURNING id""",
                 (
                     order_number,
                     order_data['user_id'],
@@ -496,7 +501,8 @@ class Order:
                 )
             )
             
-            order_id = cursor.lastrowid
+            row = cursor.fetchone()
+            order_id = row['id'] if row else None
             
             # Create order items
             for item in order_data['items']:
@@ -1004,7 +1010,8 @@ class Branch:
             cursor = db.execute(
                 """INSERT INTO branches (name, name_am, name_ar, address, address_am, address_ar,
                    phone, email, latitude, longitude, working_hours, image, sort_order, is_active)
-                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                   RETURNING id""",
                 (data.get('name'), data.get('name_am'), data.get('name_ar'),
                  data.get('address'), data.get('address_am'), data.get('address_ar'),
                  data.get('phone'), data.get('email'),
@@ -1012,8 +1019,9 @@ class Branch:
                  data.get('working_hours'), data.get('image'),
                  data.get('sort_order', 0), data.get('is_active', 1))
             )
+            row = cursor.fetchone()
             db.commit()
-            return cursor.lastrowid
+            return row['id'] if row else None
         except Exception as e:
             print(f"Error creating branch: {e}")
             db.rollback()
@@ -1082,14 +1090,16 @@ class Notification:
             cursor = db.execute(
                 """INSERT INTO notifications (title, title_am, title_ar, body, body_am, body_ar,
                    image, link, target_audience, created_by)
-                   VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                   VALUES (?,?,?,?,?,?,?,?,?,?)
+                   RETURNING id""",
                 (data.get('title'), data.get('title_am'), data.get('title_ar'),
                  data.get('body'), data.get('body_am'), data.get('body_ar'),
                  data.get('image'), data.get('link'),
                  data.get('target_audience', 'all'), data.get('created_by'))
             )
+            row = cursor.fetchone()
             db.commit()
-            return cursor.lastrowid
+            return row['id'] if row else None
         except Exception as e:
             print(f"Error creating notification: {e}")
             db.rollback()

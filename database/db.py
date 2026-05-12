@@ -1,99 +1,141 @@
 """
 Database Module for Ethiosadat Furniture
-
-This module handles all database connections, initialization,
-and management for the application.
+PostgreSQL backend using psycopg2 with a sqlite3-compatible adapter layer.
 """
 
-import sqlite3
 import os
+import psycopg2
+import psycopg2.extras
 from flask import g
-from config import Config
+
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 
-def get_database_path():
+class _PsycopgCursor:
+    """Wraps a psycopg2 DictCursor to provide a sqlite3-compatible cursor API.
+
+    Key compatibilities provided:
+    - Translates ``?`` placeholders to ``%s`` automatically.
+    - ``row[0]`` and ``row['column']`` both work (DictCursor behaviour).
+    - ``cursor.lastrowid`` is populated after INSERT … RETURNING id.
     """
-    Get the correct database path from Config.DATABASE_PATH.
 
-    Returns:
-        str: Database file path
+    def __init__(self, real_cursor):
+        self._c = real_cursor
+        self._lastrowid = None
+
+    def execute(self, query, params=None):
+        q = query.replace('?', '%s').strip()
+        if params is not None:
+            self._c.execute(q, params)
+        else:
+            self._c.execute(q)
+        return self
+
+    def executemany(self, query, params_list):
+        q = query.replace('?', '%s').strip()
+        self._c.executemany(q, params_list)
+        return self
+
+    def fetchall(self):
+        return self._c.fetchall()
+
+    def fetchone(self):
+        return self._c.fetchone()
+
+    def __iter__(self):
+        return iter(self._c)
+
+    @property
+    def lastrowid(self):
+        return self._lastrowid
+
+    @lastrowid.setter
+    def lastrowid(self, value):
+        self._lastrowid = value
+
+    @property
+    def rowcount(self):
+        return self._c.rowcount
+
+    @property
+    def description(self):
+        return self._c.description
+
+
+class _PsycopgConn:
+    """Wraps a psycopg2 connection to provide a sqlite3-compatible connection API.
+
+    - ``conn.execute(query, params)`` works like sqlite3's shortcut.
+    - ``conn.row_factory = sqlite3.Row`` is silently ignored (DictCursor
+      already provides dict-like row access).
+    - ``conn.cursor()`` returns a _PsycopgCursor.
     """
-    return Config.DATABASE_PATH
+
+    def __init__(self, raw_conn):
+        self._conn = raw_conn
+
+    def execute(self, query, params=None):
+        cur = _PsycopgCursor(self._conn.cursor())
+        return cur.execute(query, params)
+
+    def cursor(self):
+        return _PsycopgCursor(self._conn.cursor())
+
+    def commit(self):
+        self._conn.commit()
+
+    def rollback(self):
+        self._conn.rollback()
+
+    def close(self):
+        self._conn.close()
+
+    @property
+    def row_factory(self):
+        return None
+
+    @row_factory.setter
+    def row_factory(self, value):
+        pass
+
+
+def _raw_connect():
+    """Open a raw psycopg2 connection with DictCursor as the default factory."""
+    return psycopg2.connect(
+        DATABASE_URL,
+        cursor_factory=psycopg2.extras.DictCursor
+    )
 
 
 def get_db():
-    """
-    Get database connection from Flask's g object.
-    Creates a new connection if one doesn't exist.
-    Falls back to a direct connection if outside request context.
-
-    Returns:
-        sqlite3.Connection: Database connection with row_factory set to sqlite3.Row
-    """
+    """Return the per-request wrapped database connection (cached on ``g``)."""
     try:
-        if "db" not in g:
-            db_path = get_database_path()
-
-            db_dir = os.path.dirname(db_path)
-            if db_dir and not os.path.exists(db_dir):
-                os.makedirs(db_dir, exist_ok=True)
-
-            conn = sqlite3.connect(db_path, check_same_thread=False)
-            conn.row_factory = sqlite3.Row
-            conn.execute("PRAGMA foreign_keys = ON")
-            conn.execute("PRAGMA journal_mode = WAL")
-            g.db = conn
-
-        if g.db is None:
-            raise RuntimeError("g.db is None after assignment")
-
+        if 'db' not in g:
+            g.db = _PsycopgConn(_raw_connect())
         return g.db
-
     except RuntimeError:
-        # Outside request context — return a direct connection
-        db_path = get_database_path()
-        db_dir = os.path.dirname(db_path)
-        if db_dir and not os.path.exists(db_dir):
-            os.makedirs(db_dir, exist_ok=True)
-        conn = sqlite3.connect(db_path, check_same_thread=False)
-        conn.row_factory = sqlite3.Row
-        conn.execute("PRAGMA foreign_keys = ON")
-        conn.execute("PRAGMA journal_mode = WAL")
-        return conn
+        return _PsycopgConn(_raw_connect())
 
 
 def close_db(e=None):
-    """
-    Close database connection if it exists.
-    Called at the end of each request.
-    """
-    db = g.pop("db", None)
-    if db is not None:
-        db.close()
+    """Close the database connection at the end of the request."""
+    wrapped = g.pop('db', None)
+    if wrapped is not None:
+        try:
+            wrapped.close()
+        except Exception:
+            pass
 
 
 def init_db():
-    """
-    Initialize the database with all required tables.
-    Creates tables if they don't exist and inserts default data.
-    """
-    db_path = get_database_path()
+    """Create all tables and seed default data (PostgreSQL DDL)."""
+    conn = _raw_connect()
+    cur = conn.cursor()
 
-    # Ensure database directory exists
-    db_dir = os.path.dirname(db_path)
-    if db_dir and not os.path.exists(db_dir):
-        os.makedirs(db_dir, exist_ok=True)
-        print(f"📁 Created database directory: {db_dir}")
-
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-
-    # ==================== CREATE TABLES ====================
-
-    # Users table (must come first due to foreign keys)
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             username TEXT UNIQUE NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
@@ -101,19 +143,17 @@ def init_db():
             phone TEXT,
             address TEXT,
             city TEXT,
-            is_admin INTEGER DEFAULT 0,
-            is_active INTEGER DEFAULT 1,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            is_admin SMALLINT DEFAULT 0,
+            is_active SMALLINT DEFAULT 1,
+            created_at TIMESTAMP DEFAULT NOW(),
+            updated_at TIMESTAMP DEFAULT NOW(),
             last_login TIMESTAMP
         )
     """)
-    print("✅ Users table ready")
 
-    # Categories table
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS categories (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
             name_am TEXT,
             name_ar TEXT,
@@ -121,17 +161,14 @@ def init_db():
             icon TEXT,
             image TEXT,
             sort_order INTEGER DEFAULT 0,
-            is_active INTEGER DEFAULT 1,
-            parent_id INTEGER,
-            FOREIGN KEY (parent_id) REFERENCES categories (id)
+            is_active SMALLINT DEFAULT 1,
+            parent_id INTEGER
         )
     """)
-    print("✅ Categories table ready")
 
-    # Products table
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS products (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
             name_am TEXT,
             name_ar TEXT,
@@ -140,19 +177,19 @@ def init_db():
             description_am TEXT,
             description_ar TEXT,
             description_en TEXT,
-            price REAL NOT NULL,
-            compare_price REAL,
-            cost REAL,
+            price DOUBLE PRECISION NOT NULL,
+            compare_price DOUBLE PRECISION,
+            cost DOUBLE PRECISION,
             sku TEXT UNIQUE,
             barcode TEXT,
             stock_quantity INTEGER DEFAULT 0,
             low_stock_threshold INTEGER DEFAULT 5,
             images TEXT,
             thumbnail TEXT,
-            is_active INTEGER DEFAULT 1,
-            is_featured INTEGER DEFAULT 0,
-            is_new INTEGER DEFAULT 0,
-            weight REAL,
+            is_active SMALLINT DEFAULT 1,
+            is_featured SMALLINT DEFAULT 0,
+            is_new SMALLINT DEFAULT 0,
+            weight DOUBLE PRECISION,
             dimensions TEXT,
             material TEXT,
             color TEXT,
@@ -161,71 +198,57 @@ def init_db():
             category_id INTEGER NOT NULL,
             meta_title TEXT,
             meta_description TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (category_id) REFERENCES categories (id)
+            created_at TIMESTAMP DEFAULT NOW(),
+            updated_at TIMESTAMP DEFAULT NOW()
         )
     """)
-    print("✅ Products table ready")
 
-    # Cart Items table
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS cart_items (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             user_id INTEGER NOT NULL,
             product_id INTEGER NOT NULL,
             quantity INTEGER DEFAULT 1,
-            added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users (id),
-            FOREIGN KEY (product_id) REFERENCES products (id)
+            added_at TIMESTAMP DEFAULT NOW()
         )
     """)
-    print("✅ Cart items table ready")
 
-    # Orders table
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS orders (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             order_number TEXT UNIQUE NOT NULL,
             user_id INTEGER NOT NULL,
             status TEXT DEFAULT 'pending',
             payment_status TEXT DEFAULT 'pending',
             payment_method TEXT,
-            subtotal REAL NOT NULL,
-            discount REAL DEFAULT 0,
-            shipping_fee REAL DEFAULT 0,
-            total REAL NOT NULL,
+            subtotal DOUBLE PRECISION NOT NULL,
+            discount DOUBLE PRECISION DEFAULT 0,
+            shipping_fee DOUBLE PRECISION DEFAULT 0,
+            total DOUBLE PRECISION NOT NULL,
             shipping_address TEXT NOT NULL,
             shipping_city TEXT,
             shipping_phone TEXT,
             notes TEXT,
             tracking_number TEXT,
             estimated_delivery DATE,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users (id)
+            created_at TIMESTAMP DEFAULT NOW(),
+            updated_at TIMESTAMP DEFAULT NOW()
         )
     """)
-    print("✅ Orders table ready")
 
-    # Order Items table
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS order_items (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             order_id INTEGER NOT NULL,
             product_id INTEGER NOT NULL,
             quantity INTEGER NOT NULL,
-            price_at_time REAL NOT NULL,
-            FOREIGN KEY (order_id) REFERENCES orders (id),
-            FOREIGN KEY (product_id) REFERENCES products (id)
+            price_at_time DOUBLE PRECISION NOT NULL
         )
     """)
-    print("✅ Order items table ready")
 
-    # Advertisements table
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS advertisements (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             title TEXT,
             title_am TEXT,
             title_ar TEXT,
@@ -235,18 +258,16 @@ def init_db():
             image TEXT NOT NULL,
             link TEXT,
             sort_order INTEGER DEFAULT 0,
-            is_active INTEGER DEFAULT 1,
-            start_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            is_active SMALLINT DEFAULT 1,
+            start_date TIMESTAMP DEFAULT NOW(),
             end_date TIMESTAMP,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT NOW()
         )
     """)
-    print("✅ Advertisements table ready")
 
-    # Branches table
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS branches (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
             name_am TEXT,
             name_ar TEXT,
@@ -255,20 +276,18 @@ def init_db():
             address_ar TEXT,
             phone TEXT,
             email TEXT,
-            latitude REAL NOT NULL,
-            longitude REAL NOT NULL,
+            latitude DOUBLE PRECISION NOT NULL,
+            longitude DOUBLE PRECISION NOT NULL,
             working_hours TEXT,
             image TEXT,
             sort_order INTEGER DEFAULT 0,
-            is_active INTEGER DEFAULT 1
+            is_active SMALLINT DEFAULT 1
         )
     """)
-    print("✅ Branches table ready")
 
-    # Notifications table
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS notifications (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             title TEXT NOT NULL,
             title_am TEXT,
             title_ar TEXT,
@@ -279,235 +298,130 @@ def init_db():
             link TEXT,
             target_audience TEXT DEFAULT 'all',
             sent_count INTEGER DEFAULT 0,
-            sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            created_by INTEGER,
-            FOREIGN KEY (created_by) REFERENCES users (id)
+            sent_at TIMESTAMP DEFAULT NOW(),
+            created_by INTEGER
         )
     """)
-    print("✅ Notifications table ready")
 
-    # Settings table
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS settings (
             key TEXT PRIMARY KEY,
             value TEXT,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            updated_at TIMESTAMP DEFAULT NOW()
         )
     """)
-    print("✅ Settings table ready")
 
-    # ==================== INSERT DEFAULT DATA ====================
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_products_featured ON products(is_featured)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_products_active ON products(is_active)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_orders_user ON orders(user_id)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_orders_number ON orders(order_number)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_cart_user ON cart_items(user_id)")
 
-    # Insert default categories if table is empty
-    cursor.execute("SELECT COUNT(*) FROM categories")
-    if cursor.fetchone()[0] == 0:
-        default_categories = [
-            ("ሶፋ", "Sofa", "صوفا", "🛋️", 1),
-            ("አልጋ", "Bed", "سرير", "🛏️", 2),
-            ("መጅሊስ", "Mejlis", "مجلس", "🪑", 3),
-            ("መጋረጃ", "Curtain", "ستارة", "🚪", 4),
-            ("ቁምሳጥን", "Wardrobe", "خزانة", "🗄️", 5),
-            ("ሌላ", "Other", "آخر", "📦", 6),
+    cur.execute("SELECT COUNT(*) FROM categories")
+    if cur.fetchone()[0] == 0:
+        defaults = [
+            ('ሶፋ', 'Sofa', 'صوفا', '🛋️', 1),
+            ('አልጋ', 'Bed', 'سرير', '🛏️', 2),
+            ('መጅሊስ', 'Mejlis', 'مجلس', '🪑', 3),
+            ('መጋረጃ', 'Curtain', 'ستارة', '🚪', 4),
+            ('ቁምሳጥን', 'Wardrobe', 'خزانة', '🗄️', 5),
+            ('ሌላ', 'Other', 'آخر', '📦', 6),
         ]
-        cursor.executemany(
-            "INSERT INTO categories (name, name_am, name_ar, icon, sort_order) VALUES (?, ?, ?, ?, ?)",
-            default_categories,
+        cur.executemany(
+            "INSERT INTO categories (name, name_am, name_ar, icon, sort_order) VALUES (%s, %s, %s, %s, %s)",
+            defaults
         )
-        print(f"✅ Added {len(default_categories)} default categories")
+        print(f"✅ Seeded {len(defaults)} default categories")
 
-    # Insert default admin user if no users exist
-    cursor.execute("SELECT COUNT(*) FROM users")
-    if cursor.fetchone()[0] == 0:
+    cur.execute("SELECT COUNT(*) FROM users")
+    if cur.fetchone()[0] == 0:
         from werkzeug.security import generate_password_hash
-
-        admin_password_hash = generate_password_hash(
-            "admin123456", method="pbkdf2:sha256"
+        admin_hash = generate_password_hash('admin123456', method='pbkdf2:sha256')
+        cur.execute(
+            "INSERT INTO users (username, email, password_hash, full_name, is_admin, is_active) VALUES (%s, %s, %s, %s, %s, %s)",
+            ('admin', 'admin@ethiosadat.com', admin_hash, 'Administrator', 1, 1)
         )
-        cursor.execute(
-            "INSERT INTO users (username, email, password_hash, full_name, is_admin, is_active) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                "admin",
-                "admin@ethiosadat.com",
-                admin_password_hash,
-                "Administrator",
-                1,
-                1,
-            ),
-        )
-        print("✅ Default admin user created (username: admin, password: admin123456)")
+        print("✅ Default admin user created")
 
-    # Insert default settings if empty
-    cursor.execute("SELECT COUNT(*) FROM settings")
-    if cursor.fetchone()[0] == 0:
+    cur.execute("SELECT COUNT(*) FROM settings")
+    if cur.fetchone()[0] == 0:
         default_settings = [
-            ("site_name", "Ethiosadat Furniture"),
-            ("site_name_am", "ኢትዮሳዳት ቤት ዕቃ"),
-            ("site_name_ar", "إثيوصادات للأثاث"),
-            ("site_email", "info@ethiosadat.com"),
-            ("site_phone", "+251906020606"),
-            ("whatsapp_number", "251906020606"),
-            ("free_shipping_threshold", "5000"),
-            ("shipping_cost", "200"),
-            ("currency", "ETB"),
-            ("default_language", "am"),
+            ('site_name', 'Ethiosadat Furniture'),
+            ('site_name_am', 'ኢትዮሳዳት ቤት ዕቃ'),
+            ('site_name_ar', 'إثيوصادات للأثاث'),
+            ('site_email', 'info@ethiosadat.com'),
+            ('site_phone', '+251906020606'),
+            ('whatsapp_number', '251906020606'),
+            ('free_shipping_threshold', '5000'),
+            ('shipping_cost', '200'),
+            ('currency', 'ETB'),
+            ('default_language', 'am'),
         ]
-        cursor.executemany(
-            "INSERT INTO settings (key, value) VALUES (?, ?)", default_settings
+        cur.executemany(
+            "INSERT INTO settings (key, value) VALUES (%s, %s)",
+            default_settings
         )
-        print(f"✅ Added {len(default_settings)} default settings")
 
-    # Insert branches data
-    cursor.execute("SELECT COUNT(*) FROM branches")
-    if cursor.fetchone()[0] == 0:
+    cur.execute("SELECT COUNT(*) FROM branches")
+    if cur.fetchone()[0] == 0:
         branches = [
-            (
-                "መሀል መርካቶ ማርስ",
-                "ማርስ የገበያ ማእከል 2ኛ ፎቅ ሱቅ ቁጥር 230",
-                9.0100,
-                38.7450,
-                "+251906020606",
-                1,
-            ),
-            ("ቤተል", "ቢጫ ፎቅ ጎን", 9.0080, 38.7600, "+251906080606", 2),
-            ("ፉሪ ኖክ", "ኖክ ማደያ ፊት ለፊት", 8.9900, 38.7300, "+251906090606", 3),
-            ("ድሬዳዋ መስቀለኛ", "የሰይዶ ታክሲ ተራ ጋር", 9.5900, 41.8500, "+251906020606", 4),
-            ("ድሬዳዋ ሞል", "ቢራ ሞል 1ኛ ፎቅ", 9.5950, 41.8550, "+251906080606", 5),
-            ("አሶሳ", "የተባበሩት ማዲያ ፊትለፊት", 10.0700, 34.5300, "+251906090606", 6),
-            ("ቡታጅራ", "ቄጤማ መናኸሪያ ጎን", 8.1200, 38.3700, "+251906020606", 7),
-            ("ሽሬ", "ቶታል ማዲያ ፊትለፊት", 14.1000, 38.2800, "+251906080606", 8),
-            ("ሰመራ", "", 11.7900, 41.0100, "+251906090606", 9),
+            ('መሀል መርካቶ ማርስ', 'ማርስ የገበያ ማእከል 2ኛ ፎቅ ሱቅ ቁጥር 230', 9.0100, 38.7450, '+251906020606', 1),
+            ('ቤተል', 'ቢጫ ፎቅ ጎን', 9.0080, 38.7600, '+251906080606', 2),
+            ('ፉሪ ኖክ', 'ኖክ ማደያ ፊት ለፊት', 8.9900, 38.7300, '+251906090606', 3),
+            ('ድሬዳዋ መስቀለኛ', 'የሰይዶ ታክሲ ተራ ጋር', 9.5900, 41.8500, '+251906020606', 4),
+            ('ድሬዳዋ ሞል', 'ቢራ ሞል 1ኛ ፎቅ', 9.5950, 41.8550, '+251906080606', 5),
+            ('አሶሳ', 'የተባበሩት ማዲያ ፊትለፊት', 10.0700, 34.5300, '+251906090606', 6),
+            ('ቡታጅራ', 'ቄጤማ መናኸሪያ ጎን', 8.1200, 38.3700, '+251906020606', 7),
+            ('ሽሬ', 'ቶታል ማዲያ ፊትለፊት', 14.1000, 38.2800, '+251906080606', 8),
+            ('ሰመራ', '', 11.7900, 41.0100, '+251906090606', 9),
         ]
-        for branch in branches:
-            cursor.execute(
-                "INSERT INTO branches (name, address, latitude, longitude, phone, sort_order, is_active) VALUES (?, ?, ?, ?, ?, ?, 1)",
-                branch,
+        for b in branches:
+            cur.execute(
+                "INSERT INTO branches (name, address, latitude, longitude, phone, sort_order, is_active) VALUES (%s, %s, %s, %s, %s, %s, 1)",
+                b
             )
-        print(f"✅ Added {len(branches)} branches")
-
-    # ==================== CREATE INDEXES ====================
-
-    # Product indexes
-    cursor.execute(
-        "CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id)"
-    )
-    cursor.execute(
-        "CREATE INDEX IF NOT EXISTS idx_products_featured ON products(is_featured)"
-    )
-    cursor.execute(
-        "CREATE INDEX IF NOT EXISTS idx_products_created ON products(created_at)"
-    )
-    cursor.execute(
-        "CREATE INDEX IF NOT EXISTS idx_products_active ON products(is_active)"
-    )
-
-    # Order indexes
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_orders_user ON orders(user_id)")
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status)")
-    cursor.execute(
-        "CREATE INDEX IF NOT EXISTS idx_orders_created ON orders(created_at)"
-    )
-    cursor.execute(
-        "CREATE INDEX IF NOT EXISTS idx_orders_number ON orders(order_number)"
-    )
-
-    # User indexes
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)")
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)")
-
-    # Cart indexes
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_cart_user ON cart_items(user_id)")
-    cursor.execute(
-        "CREATE INDEX IF NOT EXISTS idx_cart_product ON cart_items(product_id)"
-    )
-
-    # Advertisement indexes
-    cursor.execute(
-        "CREATE INDEX IF NOT EXISTS idx_ads_active ON advertisements(is_active)"
-    )
-
-    print("✅ Indexes created")
+        print(f"✅ Seeded {len(branches)} branches")
 
     conn.commit()
+    cur.close()
     conn.close()
-
-    print("=" * 50)
-    print("✅ Database initialized successfully!")
-    print(f"📁 Database path: {os.path.abspath(db_path)}")
-    print("=" * 50)
+    print("✅ PostgreSQL database initialized successfully!")
 
 
 def init_db_app(app):
-    """
-    Initialize database within Flask app context.
-    This function should be called when creating the Flask app.
-
-    Args:
-        app: Flask application instance
-    """
+    """Initialize database within a Flask app context."""
     with app.app_context():
         init_db()
 
 
 def get_db_stats():
-    """
-    Get database statistics for admin dashboard.
-
-    Returns:
-        dict: Statistics including counts of products, ads, orders
-    """
+    """Return aggregate statistics for the admin dashboard."""
     try:
         db = get_db()
         cursor = db.cursor()
-
-        cursor.execute("SELECT COUNT(*) FROM products")
-        products_count = cursor.fetchone()[0] or 0
-
-        cursor.execute("SELECT COUNT(*) FROM advertisements")
-        ads_count = cursor.fetchone()[0] or 0
-
-        cursor.execute("SELECT COUNT(*) FROM orders")
-        orders_count = cursor.fetchone()[0] or 0
-
-        cursor.execute("SELECT COUNT(*) FROM categories")
-        categories_count = cursor.fetchone()[0] or 0
-
-        cursor.execute("SELECT COUNT(*) FROM users")
-        users_count = cursor.fetchone()[0] or 0
-
-        # Get pending orders count
+        stats = {}
+        for table, key in [
+            ('products', 'products'),
+            ('advertisements', 'ads'),
+            ('orders', 'orders'),
+            ('categories', 'categories'),
+            ('users', 'users'),
+        ]:
+            cursor.execute(f"SELECT COUNT(*) FROM {table}")
+            stats[key] = cursor.fetchone()[0] or 0
         cursor.execute("SELECT COUNT(*) FROM orders WHERE status = 'pending'")
-        pending_orders = cursor.fetchone()[0] or 0
-
-        return {
-            "products": products_count,
-            "ads": ads_count,
-            "orders": orders_count,
-            "categories": categories_count,
-            "users": users_count,
-            "pending_orders": pending_orders,
-        }
+        stats['pending_orders'] = cursor.fetchone()[0] or 0
+        return stats
     except Exception as e:
         print(f"Error getting DB stats: {e}")
-        return {
-            "products": 0,
-            "ads": 0,
-            "orders": 0,
-            "categories": 0,
-            "users": 0,
-            "pending_orders": 0,
-        }
+        return {'products': 0, 'ads': 0, 'orders': 0, 'categories': 0, 'users': 0, 'pending_orders': 0}
 
 
 def commit_or_rollback(db=None):
-    """
-    Commit the current transaction, or rollback on failure.
-
-    Args:
-        db: Optional database connection. If not provided, uses get_db().
-
-    Returns:
-        bool: True if commit succeeded, False if rolled back.
-    """
+    """Commit the current transaction or roll back on failure."""
     if db is None:
         db = get_db()
     try:
@@ -520,15 +434,9 @@ def commit_or_rollback(db=None):
 
 
 def test_connection():
-    """
-    Test database connection and return status.
-
-    Returns:
-        bool: True if connection successful, False otherwise
-    """
+    """Return True if the database is reachable."""
     try:
-        db_path = get_database_path()
-        conn = sqlite3.connect(db_path)
+        conn = _raw_connect()
         conn.close()
         return True
     except Exception as e:

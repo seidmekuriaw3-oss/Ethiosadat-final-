@@ -14973,3 +14973,41 @@ jinja2.exceptions.TemplateNotFound: customer/terms.html
 2026-05-11 18:16:46,373 - app - WARNING - 404 Error: http://localhost:5000/static/000001
 2026-05-11 19:12:37,698 - app - WARNING - 404 Error: http://f9f5897d-809f-419d-836a-ddcb182c2a47-00-rqmihst8ms6u.riker.replit.dev/favicon.ico
 2026-05-11 20:11:02,424 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-12 03:31:47,248 - app - ERROR - Home page error: function datetime(unknown) does not exist
+LINE 3:             AND (end_date IS NULL OR end_date > datetime('no...
+                                                        ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+2026-05-12 03:31:47,464 - app - ERROR - Traceback (most recent call last):
+  File "/home/runner/workspace/app.py", line 924, in index
+    cursor.execute("""
+  File "/home/runner/workspace/database/db.py", line 32, in execute
+    self._c.execute(q)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedFunction: function datetime(unknown) does not exist
+LINE 3:             AND (end_date IS NULL OR end_date > datetime('no...
+                                                        ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+
+2026-05-12 03:31:48,429 - app - ERROR - Home page error: function datetime(unknown) does not exist
+LINE 3:             AND (end_date IS NULL OR end_date > datetime('no...
+                                                        ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+2026-05-12 03:31:48,430 - app - ERROR - Traceback (most recent call last):
+  File "/home/runner/workspace/app.py", line 924, in index
+    cursor.execute("""
+  File "/home/runner/workspace/database/db.py", line 32, in execute
+    self._c.execute(q)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedFunction: function datetime(unknown) does not exist
+LINE 3:             AND (end_date IS NULL OR end_date > datetime('no...
+                                                        ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+

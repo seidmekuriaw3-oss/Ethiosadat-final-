@@ -14,8 +14,9 @@ class Config:
     # FLASK APP CONFIGURATION
     # ============================================================
     
-    # Security - Change this in production!
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'ethiosadat_default_secret_key_2026')
+    # Security — must be set via SECRET_KEY environment variable.
+    # A random key is generated at startup if not set (sessions won't persist across restarts).
+    SECRET_KEY = os.environ.get('SECRET_KEY', '')
     
     # Debug mode - Enable for development, disable for production
     DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
@@ -74,10 +75,12 @@ class Config:
     # DATABASE CONFIGURATION
     # ============================================================
     
-    # SQLite Database Path
+    # PostgreSQL connection string — set via DATABASE_URL environment variable.
+    DATABASE_URL = os.environ.get('DATABASE_URL', '')
+
+    # Kept for backwards-compatibility (no longer used for SQLite)
     DATABASE_PATH = os.environ.get('DATABASE_PATH', 'database/ethiosadat.db')
-    
-    # Ensure database directory exists
+
     @staticmethod
     def ensure_db_directory():
         db_dir = os.path.dirname(Config.DATABASE_PATH)
