@@ -102,10 +102,16 @@ class _PsycopgConn:
 
 def _raw_connect():
     """Open a raw psycopg2 connection with DictCursor as the default factory."""
-    return psycopg2.connect(
+    conn = psycopg2.connect(
         DATABASE_URL,
         cursor_factory=psycopg2.extras.DictCursor
     )
+    # Set session timezone to Ethiopia (UTC+3) so NOW() matches dates
+    # entered by admins in the Ethiopian timezone.
+    with conn.cursor() as cur:
+        cur.execute("SET timezone = 'Africa/Addis_Ababa'")
+    conn.commit()
+    return conn
 
 
 def get_db():

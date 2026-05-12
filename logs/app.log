@@ -55072,3 +55072,66 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 11:25:19,837 - app - INFO - Admin inbox viewed — 0 messages
 2026-05-12 11:25:21,579 - app - INFO - Admin logged out
 2026-05-12 11:25:21,846 - app - INFO - Home page - Featured: 2, New: 0, Ads: 0
+2026-05-12 11:25:42,808 - app - INFO - Home page - Featured: 2, New: 0, Ads: 0
+2026-05-12 11:25:50,048 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 11:25:50,352 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:25:50,950 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:25:50,986 - app - INFO - Admin reports viewed
+2026-05-12 11:25:55,385 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:25:59,893 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:26:43,489 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:26:44,317 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:26:48,540 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:26:56,777 - app - INFO - Admin ads list viewed - 0 total ads (0 active, 0 inactive)
+2026-05-12 11:31:05,571 - app - WARNING - 404 Error: http://16c4fed3-d98e-4b1c-9334-6737e8aaf5b2-00-3mz42s5xzr44a.janeway.replit.dev/favicon.ico
+2026-05-12 11:31:08,595 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 11:31:08,857 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:31:10,318 - app - INFO - Admin reports viewed
+2026-05-12 11:31:10,357 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:31:19,071 - app - INFO - Admin logged out
+2026-05-12 11:31:19,307 - app - INFO - Home page - Featured: 2, New: 0, Ads: 0
+2026-05-12 11:31:41,465 - app - WARNING - 404 Error: http://16c4fed3-d98e-4b1c-9334-6737e8aaf5b2-00-3mz42s5xzr44a.janeway.replit.dev/favicon.ico
+2026-05-12 11:31:44,449 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 11:31:44,687 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:31:47,382 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:31:47,383 - app - INFO - Admin reports viewed
+2026-05-12 11:35:01,083 - app - INFO - New advertisement created: New arrivals (ID: 1)
+2026-05-12 11:35:01,083 - app - WARNING - Slow request: POST /admin/ads/create - 15.39s
+2026-05-12 11:35:01,381 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:35:10,080 - app - INFO - Home page - Featured: 2, New: 0, Ads: 0
+2026-05-12 11:38:03,394 - app - INFO - Home page - Featured: 2, New: 0, Ads: 0
+2026-05-12 11:38:18,594 - app - INFO - Home page - Featured: 2, New: 0, Ads: 0
+2026-05-12 11:38:18,603 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-12 11:38:18,963 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:38:31,897 - app - INFO - User logged out: seid mekuriaw
+2026-05-12 11:38:32,155 - app - INFO - Home page - Featured: 2, New: 0, Ads: 0
+2026-05-12 11:38:49,297 - app - INFO - User logged in: seidmekuriaw3@gmail.com
+2026-05-12 11:38:50,576 - app - INFO - Home page - Featured: 2, New: 0, Ads: 0
+2026-05-12 11:40:04,818 - app - INFO - User logged out: seid mekuriaw
+2026-05-12 11:40:05,078 - app - INFO - Home page - Featured: 2, New: 0, Ads: 0
+2026-05-12 11:40:09,922 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:40:11,428 - app - INFO - Admin reports viewed
+2026-05-12 11:40:14,731 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:40:15,539 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:40:16,168 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:40:16,188 - app - INFO - Admin reports viewed
+2026-05-12 11:40:19,152 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:40:21,714 - app - INFO - Admin logged out
+2026-05-12 11:40:21,997 - app - INFO - Home page - Featured: 2, New: 0, Ads: 0
+2026-05-12 11:40:28,798 - app - INFO - ==================================================
+2026-05-12 11:40:28,798 - app - INFO - Ethiosadat Application Started
+2026-05-12 11:40:28,799 - app - INFO - ==================================================
+2026-05-12 11:40:29,749 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 11:40:34,808 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 11:40:38,564 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 11:40:39,081 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:40:40,044 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:40:40,049 - app - INFO - Admin reports viewed
+2026-05-12 11:40:42,134 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:40:43,875 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:40:45,963 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:40:47,903 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:40:51,889 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 11:41:08,643 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:41:13,007 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:41:13,435 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
