@@ -55135,3 +55135,71 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 11:41:08,643 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
 2026-05-12 11:41:13,007 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
 2026-05-12 11:41:13,435 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:41:17,532 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:41:17,864 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:41:24,963 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:41:25,942 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:41:27,776 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:41:29,775 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:41:30,212 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:41:31,849 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:41:33,253 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:41:34,355 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:41:34,996 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:41:36,340 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:41:41,400 - app - INFO - Admin reports viewed
+2026-05-12 11:41:54,769 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:41:58,032 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:42:01,313 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:42:01,649 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:42:20,564 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:42:21,090 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:42:23,451 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:42:24,977 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:42:25,387 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-12 11:42:25,577 - app - INFO - Admin reports viewed
+2026-05-12 11:42:26,225 - app - INFO - Admin reports viewed
+2026-05-12 11:42:37,006 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:42:43,276 - app - INFO - Admin reports viewed
+2026-05-12 11:42:49,896 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:42:50,670 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:42:54,226 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:42:56,184 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:42:56,487 - app - INFO - Admin reports viewed
+2026-05-12 11:42:57,681 - app - INFO - Admin reports viewed
+2026-05-12 11:43:05,675 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:43:06,089 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:43:10,111 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:43:11,934 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:43:12,626 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:43:13,928 - app - INFO - Admin reports viewed
+2026-05-12 11:43:14,847 - app - INFO - Admin reports viewed
+2026-05-12 11:43:15,203 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-12 11:43:15,784 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-12 11:43:16,671 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:43:22,520 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:43:30,211 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:43:56,540 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:44:38,152 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:44:39,417 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:44:43,260 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 11:44:55,979 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 11:44:59,289 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:45:00,290 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-12 11:46:55,795 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:46:56,087 - app - INFO - Admin ads list viewed - 1 total ads (1 active, 0 inactive)
+2026-05-12 11:46:57,255 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-12 11:47:08,317 - app - INFO - Admin product list viewed - 3 products
+2026-05-12 11:47:09,140 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-12 11:47:15,391 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-12 11:47:16,689 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 11:47:24,306 - app - INFO - Admin dashboard accessed - Products: 3, Orders: 0, Stock alerts: 3 (1 out, 2 low)
+2026-05-12 11:47:24,554 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 11:47:25,690 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 11:47:26,428 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 11:47:26,762 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 11:48:02,662 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 11:49:24,899 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-12 11:49:29,911 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-12 11:56:16,894 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
+2026-05-12 12:01:19,853 - app - INFO - Home page - Featured: 2, New: 0, Ads: 1
