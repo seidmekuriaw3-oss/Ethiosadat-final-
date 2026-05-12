@@ -15094,3 +15094,7 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 12:46:10,788 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
 2026-05-12 12:49:48,487 - app - WARNING - 404 Error: http://93ba8833-00df-4a9c-866f-4c36b82cc5fa-00-6poc0vevr8p5.worf.replit.dev/favicon.ico
 2026-05-12 12:50:08,265 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 13:49:04,224 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-12 13:49:04,225 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/static/images/logo.svg
+2026-05-12 13:49:15,434 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/favicon.ico
+2026-05-12 13:49:20,319 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1

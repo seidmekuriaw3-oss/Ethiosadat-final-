@@ -55335,3 +55335,27 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-12 13:42:01,980 - app - INFO - Ethiosadat Application Started
 2026-05-12 13:42:01,980 - app - INFO - ==================================================
 2026-05-12 13:42:02,845 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 13:43:06,415 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 13:43:27,092 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 13:49:01,248 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 13:49:04,224 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-12 13:49:04,225 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/static/images/logo.svg
+2026-05-12 13:49:10,045 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 13:49:15,434 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/favicon.ico
+2026-05-12 13:49:20,319 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 13:49:39,735 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 13:49:40,044 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0, Stock alerts: 0 (0 out, 0 low)
+2026-05-12 13:49:40,987 - app - INFO - Admin reports viewed
+2026-05-12 13:49:40,993 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0, Stock alerts: 0 (0 out, 0 low)
+2026-05-12 13:49:58,782 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0, Stock alerts: 0 (0 out, 0 low)
+2026-05-12 13:49:59,082 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0, Stock alerts: 0 (0 out, 0 low)
+2026-05-12 13:49:59,532 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0, Stock alerts: 0 (0 out, 0 low)
+2026-05-12 13:49:59,533 - app - INFO - Admin reports viewed
+2026-05-12 13:52:30,468 - app - INFO - New product created: አልጋ (ID: 1)
+2026-05-12 13:52:30,771 - app - INFO - Admin product list viewed - 1 products
+2026-05-12 13:52:40,430 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 13:54:09,693 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 13:56:48,188 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:00:27,494 - app - INFO - Admin logged out
+2026-05-12 14:00:27,759 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-12 14:00:35,098 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
