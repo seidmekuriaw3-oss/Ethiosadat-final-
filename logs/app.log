@@ -54754,3 +54754,44 @@ HINT:  No function matches the given name and argument types. You might need to 
 2026-05-12 10:08:10,934 - app - INFO - Admin inbox viewed — 2 messages
 2026-05-12 10:08:10,968 - app - INFO - Admin inbox viewed — 2 messages
 2026-05-12 10:08:10,990 - app - INFO - Admin inbox viewed — 1 messages
+2026-05-12 10:11:24,576 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 10:11:24,962 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 10:11:26,197 - app - INFO - Admin reports viewed
+2026-05-12 10:11:26,228 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 10:11:34,674 - app - INFO - Admin ads list viewed - 0 ads
+2026-05-12 10:11:36,110 - app - INFO - Admin reports viewed
+2026-05-12 10:11:36,741 - app - INFO - Admin reports viewed
+2026-05-12 10:11:39,046 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:11:39,429 - app - INFO - Admin reports viewed
+2026-05-12 10:11:39,713 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:11:40,106 - app - INFO - Admin reports viewed
+2026-05-12 10:11:46,275 - app - ERROR - Error loading products report: column "c.name" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.*, c.name as category_name,
+                    ^
+
+2026-05-12 10:11:46,600 - app - INFO - Admin reports viewed
+2026-05-12 10:11:46,817 - app - ERROR - Error loading products report: column "c.name" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.*, c.name as category_name,
+                    ^
+
+2026-05-12 10:11:47,122 - app - INFO - Admin reports viewed
+2026-05-12 10:11:52,087 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:11:52,534 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:11:55,315 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:11:59,643 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:12:45,112 - app - INFO - Admin inbox viewed — 2 messages
+2026-05-12 10:13:05,034 - app - INFO - Admin orders list viewed - 0 orders
+2026-05-12 10:13:57,400 - app - INFO - ==================================================
+2026-05-12 10:13:57,400 - app - INFO - Ethiosadat Application Started
+2026-05-12 10:13:57,400 - app - INFO - ==================================================
+2026-05-12 10:13:57,906 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 10:13:58,339 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-12 10:14:16,017 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-12 10:14:16,039 - app - INFO - Admin dashboard accessed - Products: 0, Orders: 0
+2026-05-12 10:14:16,081 - app - INFO - Admin inbox viewed — 2 messages

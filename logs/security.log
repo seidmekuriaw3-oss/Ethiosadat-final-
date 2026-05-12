@@ -15018,3 +15018,19 @@ HINT:  No function matches the given name and argument types. You might need to 
 2026-05-12 10:07:24,474 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
 2026-05-12 10:07:24,595 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
 2026-05-12 10:07:24,716 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-12 10:11:39,046 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:11:39,713 - app - ERROR - Error loading sales report: column "c.name_am" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.name_am as name, c.name_am as category,
+                                  ^
+
+2026-05-12 10:11:46,275 - app - ERROR - Error loading products report: column "c.name" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.*, c.name as category_name,
+                    ^
+
+2026-05-12 10:11:46,817 - app - ERROR - Error loading products report: column "c.name" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT p.*, c.name as category_name,
+                    ^
+

@@ -190,11 +190,127 @@
     }
     .inbox-stat strong { font-size: 20px; color: #1a73e8; }
     .inbox-stat.unread-stat strong { color: #e53935; }
+    /* ── Reply button ── */
+    .reply-btn {
+        background: linear-gradient(135deg, #1a73e8, #0d47a1);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 12px;
+        cursor: pointer;
+        font-size: 13px;
+        white-space: nowrap;
+        transition: opacity 0.2s, transform 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .reply-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .reply-btn:active { transform: translateY(0); }
+
+    /* ── Reply dropdown ── */
+    .reply-dropdown {
+        position: fixed;
+        background: #fff;
+        border: 1px solid #e0e7f3;
+        border-radius: 14px;
+        box-shadow: 0 8px 32px rgba(26,115,232,0.18), 0 2px 8px rgba(0,0,0,0.10);
+        min-width: 280px;
+        max-width: 340px;
+        z-index: 9999;
+        display: none;
+        overflow: hidden;
+        animation: replyFadeIn 0.18s ease;
+    }
+    .reply-dropdown.open { display: block; }
+    @keyframes replyFadeIn {
+        from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .reply-dropdown-header {
+        padding: 12px 16px 10px;
+        border-bottom: 1px solid #eef2fb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .reply-dropdown-header span {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a2e;
+    }
+    .reply-dropdown-header button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #aaa;
+        font-size: 18px;
+        line-height: 1;
+        padding: 0 2px;
+        transition: color 0.15s;
+    }
+    .reply-dropdown-header button:hover { color: #333; }
+    .reply-option {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 14px 16px;
+        text-decoration: none;
+        color: #222;
+        transition: background 0.15s;
+        border-bottom: 1px solid #f4f6fb;
+        cursor: pointer;
+    }
+    .reply-option:last-child { border-bottom: none; }
+    .reply-option:hover { background: #f0f6ff; }
+    .reply-option-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+    .reply-option-icon.email-icon { background: #e8f0fe; }
+    .reply-option-icon.wa-icon    { background: #e8f5e9; }
+    .reply-option-text { flex: 1; min-width: 0; }
+    .reply-option-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 2px;
+    }
+    .reply-option-desc {
+        font-size: 11px;
+        color: #888;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .reply-option-unavailable {
+        opacity: 0.45;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+    /* Dark-mode aware */
+    @media (prefers-color-scheme: dark) {
+        .reply-dropdown { background: #1e2235; border-color: #2a3050; }
+        .reply-dropdown-header { border-color: #2a3050; }
+        .reply-dropdown-header span { color: #e0e6ff; }
+        .reply-option { color: #dde4ff; border-color: #252a40; }
+        .reply-option:hover { background: #1a2545; }
+        .reply-option-title { color: #e0e6ff; }
+        .reply-option-icon.email-icon { background: #1a2a50; }
+        .reply-option-icon.wa-icon    { background: #1a3025; }
+    }
     @media (max-width: 768px) {
         .message-row { flex-wrap: wrap; }
-        .msg-actions { flex-direction: row; width: 100%; justify-content: flex-end; }
+        .msg-actions { flex-direction: row; width: 100%; justify-content: flex-end; flex-wrap: wrap; }
         .inbox-toolbar { flex-direction: column; }
         .inbox-toolbar form { width: 100%; }
+        .reply-dropdown { min-width: 250px; max-width: 92vw; }
     }
 </style>
 {% endblock %}
@@ -267,7 +383,13 @@
     {% if messages %}
     <div id="messageList">
         {% for msg in messages %}
-        <div class="message-row {% if not msg.is_read %}unread{% endif %}" id="msg-{{ msg.id }}" data-id="{{ msg.id }}">
+        <div class="message-row {% if not msg.is_read %}unread{% endif %}"
+             id="msg-{{ msg.id }}"
+             data-id="{{ msg.id }}"
+             data-name="{{ msg.name | e }}"
+             data-email="{{ msg.email | e }}"
+             data-phone="{{ msg.phone | e }}"
+             data-message="{{ msg.message | e }}">
             <div class="{% if not msg.is_read %}unread-dot{% else %}read-dot{% endif %}" id="dot-{{ msg.id }}"></div>
             <div class="msg-avatar">{{ msg.name[0].upper() if msg.name else '?' }}</div>
             <div class="msg-body">
@@ -296,6 +418,12 @@
                 {% endif %}
             </div>
             <div class="msg-actions">
+                <button class="reply-btn"
+                        id="replyBtn-{{ msg.id }}"
+                        onclick="openReplyMenu({{ msg.id }}, event)"
+                        title="Reply to this message">
+                    ↩ Reply
+                </button>
                 <button onclick="toggleRead({{ msg.id }})"
                         id="readBtn-{{ msg.id }}"
                         title="{% if msg.is_read %}Mark as unread{% else %}Mark as read{% endif %}"
@@ -331,6 +459,28 @@
         </p>
     </div>
     {% endif %}
+
+    <!-- Shared Reply Dropdown (one instance, repositioned per message) -->
+    <div class="reply-dropdown" id="replyDropdown" role="menu" aria-label="Reply options">
+        <div class="reply-dropdown-header">
+            <span id="replyDropdownTitle">Reply to …</span>
+            <button onclick="closeReplyMenu()" aria-label="Close">&times;</button>
+        </div>
+        <a id="replyEmailOption" href="#" class="reply-option" target="_blank" rel="noopener">
+            <div class="reply-option-icon email-icon">📧</div>
+            <div class="reply-option-text">
+                <div class="reply-option-title">Reply via Email</div>
+                <div class="reply-option-desc" id="replyEmailDesc">No email provided</div>
+            </div>
+        </a>
+        <a id="replyWaOption" href="#" class="reply-option" target="_blank" rel="noopener">
+            <div class="reply-option-icon wa-icon">💬</div>
+            <div class="reply-option-text">
+                <div class="reply-option-title">Reply via WhatsApp</div>
+                <div class="reply-option-desc" id="replyWaDesc">No phone provided</div>
+            </div>
+        </a>
+    </div>
 
 </div>
 {% endblock %}
@@ -467,5 +617,133 @@
             list.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><h3>No messages</h3><p>All messages have been deleted.</p></div>';
         }
     }
+
+    /* ─── Reply dropdown ─────────────────────────────────────── */
+    let _activeReplyId = null;
+
+    function openReplyMenu(id, event) {
+        event.stopPropagation();
+
+        const row     = document.getElementById('msg-' + id);
+        const btn     = document.getElementById('replyBtn-' + id);
+        const dropdown = document.getElementById('replyDropdown');
+        if (!row || !dropdown) return;
+
+        const name    = row.dataset.name    || '';
+        const email   = row.dataset.email   || '';
+        const phone   = row.dataset.phone   || '';
+        const message = row.dataset.message || '';
+
+        /* ── header ── */
+        document.getElementById('replyDropdownTitle').textContent =
+            'Reply to ' + (name || 'customer');
+
+        /* ── email option ── */
+        const emailOpt  = document.getElementById('replyEmailOption');
+        const emailDesc = document.getElementById('replyEmailDesc');
+        if (email) {
+            const subject = encodeURIComponent('Re: Your message to Ethiosadat Furniture');
+            const snippet = message.length > 120 ? message.slice(0, 120) + '…' : message;
+            const body    = encodeURIComponent(
+                'Dear ' + name + ',\n\nThank you for contacting Ethiosadat Furniture.\n\n' +
+                '\n\n──────────────────────\n' +
+                'Your original message:\n' + snippet
+            );
+            emailOpt.href = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
+            emailDesc.textContent = email;
+            emailOpt.classList.remove('reply-option-unavailable');
+        } else {
+            emailOpt.href = '#';
+            emailDesc.textContent = 'No email address provided';
+            emailOpt.classList.add('reply-option-unavailable');
+        }
+
+        /* ── WhatsApp option ── */
+        const waOpt  = document.getElementById('replyWaOption');
+        const waDesc = document.getElementById('replyWaDesc');
+        if (phone) {
+            const cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
+            const waPhone = cleaned.startsWith('0') ? '251' + cleaned.slice(1) : cleaned;
+            const snippet = message.length > 100 ? message.slice(0, 100) + '…' : message;
+            const waText  = encodeURIComponent(
+                'Hello ' + name + ', thank you for reaching out to Ethiosadat Furniture! 🪑\n\n' +
+                'Regarding your message:\n"' + snippet + '"\n\n' +
+                'We are happy to help you.'
+            );
+            waOpt.href = 'https://wa.me/' + waPhone + '?text=' + waText;
+            waDesc.textContent = phone;
+            waOpt.classList.remove('reply-option-unavailable');
+        } else {
+            waOpt.href = '#';
+            waDesc.textContent = 'No phone number provided';
+            waOpt.classList.add('reply-option-unavailable');
+        }
+
+        /* ── position below the Reply button ── */
+        const rect = btn.getBoundingClientRect();
+        const vpW  = window.innerWidth;
+        const menuW = Math.min(320, vpW - 24);
+
+        let left = rect.right - menuW;
+        if (left < 12) left = 12;
+        if (left + menuW > vpW - 12) left = vpW - menuW - 12;
+
+        let top = rect.bottom + 6;
+        const menuH = 160;
+        if (top + menuH > window.innerHeight - 12) {
+            top = rect.top - menuH - 6;
+        }
+
+        dropdown.style.top   = top  + 'px';
+        dropdown.style.left  = left + 'px';
+        dropdown.style.width = menuW + 'px';
+
+        dropdown.classList.add('open');
+        _activeReplyId = id;
+
+        /* auto-mark as read when replying */
+        const msgRow = document.getElementById('msg-' + id);
+        if (msgRow && msgRow.classList.contains('unread')) {
+            fetch('/admin/inbox/' + id + '/mark-read', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success && data.is_read) {
+                    msgRow.classList.remove('unread');
+                    const dot = document.getElementById('dot-' + id);
+                    if (dot) dot.className = 'read-dot';
+                    const readBtn = document.getElementById('readBtn-' + id);
+                    if (readBtn) { readBtn.innerHTML = '↩️ Unread'; readBtn.title = 'Mark as unread'; }
+                    updateMetaBadge(msgRow, true);
+                    refreshSidebarBadge();
+                }
+            })
+            .catch(() => {});
+        }
+    }
+
+    function closeReplyMenu() {
+        const dropdown = document.getElementById('replyDropdown');
+        if (dropdown) dropdown.classList.remove('open');
+        _activeReplyId = null;
+    }
+
+    /* close on outside click */
+    document.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('replyDropdown');
+        if (!dropdown || !dropdown.classList.contains('open')) return;
+        if (!dropdown.contains(e.target)) closeReplyMenu();
+    });
+
+    /* close on Escape */
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeReplyMenu();
+    });
+
+    /* reposition on scroll/resize */
+    window.addEventListener('scroll', closeReplyMenu, { passive: true });
+    window.addEventListener('resize', closeReplyMenu, { passive: true });
 </script>
 {% endblock %}
