@@ -26,6 +26,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/hamburger.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/icons.css') }}">
     
+    <!-- Unregister any old service workers immediately — must run before any fetch calls -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for (var r of registrations) { r.unregister(); }
+        });
+        caches.keys().then(function(keys) {
+            keys.forEach(function(k) { caches.delete(k); });
+        });
+    }
+    </script>
+
     {% block extra_css %}
     <style>
         /* RTL Support */

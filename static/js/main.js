@@ -1269,28 +1269,13 @@ function supportsWebP() {
     return false;
 }
 
-// ==================== Service Worker Registration (PWA) ====================
+// ==================== Service Worker Cleanup ====================
 function initServiceWorker() {
-    if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/static/service-worker.js')
-                .then(registration => {
-                    console.log('ServiceWorker registered successfully:', registration.scope);
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        console.log('ServiceWorker update found!');
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                if (window.showToast) {
-                                    window.showToast('New version available! Refresh to update.', 'info', 10000);
-                                }
-                            }
-                        });
-                    });
-                })
-                .catch(error => {
-                    console.log('ServiceWorker registration failed:', error);
-                });
+    // Service worker disabled — unregister any existing registrations
+    // to prevent old SWs from intercepting fetch requests.
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+            regs.forEach(r => r.unregister());
         });
     }
 }
