@@ -55453,3 +55453,53 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-13 02:28:50,745 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
 2026-05-13 02:29:02,269 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
 2026-05-13 02:29:02,336 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-13 02:29:41,600 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-13 02:29:44,757 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-13 02:29:46,957 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-13 02:30:20,732 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-13 02:30:20,732 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/static/images/logo.svg
+2026-05-13 02:30:39,635 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-13 02:30:42,863 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-13 02:30:45,180 - app - INFO - Cart viewed - Items: 1, Total: 150000.0 ETB
+2026-05-13 02:30:45,483 - app - INFO - Cart viewed - Items: 1, Total: 150000.0 ETB
+2026-05-13 02:31:26,940 - app - WARNING - Failed login attempt for email: seidmekuriaw3@gmail.com
+2026-05-13 02:31:43,518 - app - WARNING - Failed login attempt for email: customer@ethiosadat.com
+2026-05-13 02:32:34,978 - app - INFO - New user registered: seidmekuriaw3@gmail.com
+2026-05-13 02:32:34,979 - app - INFO - Welcome email would be sent to seidmekuriaw3@gmail.com
+2026-05-13 02:32:34,985 - app - INFO - Merged guest cart with user 2
+2026-05-13 02:32:35,510 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-13 02:32:42,834 - app - INFO - Cart viewed - Items: 1, Total: 121500.0 ETB
+2026-05-13 02:32:43,125 - app - INFO - Cart viewed - Items: 1, Total: 121500.0 ETB
+2026-05-13 02:34:17,080 - app - INFO - Order created: 20260513-Q0SZ3K by user 2
+2026-05-13 02:34:17,084 - app - INFO - WhatsApp order notification prepared
+2026-05-13 02:34:17,355 - app - ERROR - Error sending WhatsApp order: 'price'
+2026-05-13 02:34:17,355 - app - ERROR - Order confirmation error: auth/order_confirmation.html
+2026-05-13 02:34:17,626 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-13 02:34:28,385 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/favicon.ico
+2026-05-13 02:34:32,591 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-13 02:34:47,606 - app - INFO - Admin logged in: admin@ethiosadat.com
+2026-05-13 02:34:47,915 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 1, Stock alerts: 0 (0 out, 0 low)
+2026-05-13 02:34:48,595 - app - INFO - Admin dashboard accessed - Products: 1, Orders: 1, Stock alerts: 0 (0 out, 0 low)
+2026-05-13 02:34:48,597 - app - INFO - Admin reports viewed
+2026-05-13 02:35:02,885 - app - INFO - Admin orders list viewed - 1 orders
+2026-05-13 02:35:03,156 - app - INFO - Admin orders list viewed - 1 orders
+2026-05-13 02:38:33,090 - app - INFO - Admin orders list viewed - 1 orders
+2026-05-13 02:38:33,137 - app - INFO - Admin orders list viewed - 1 orders
+2026-05-13 02:38:34,722 - app - INFO - Admin orders list viewed - 1 orders
+2026-05-13 02:39:31,727 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-13 02:39:32,026 - app - INFO - Admin inbox viewed — 0 messages
+2026-05-13 02:40:56,401 - app - ERROR - Error sending notification: invalid input syntax for type integer: "admin"
+LINE 6: ...ሉ', '', '', '', '', 'customers', CURRENT_TIMESTAMP, 'admin')
+                                                               ^
+
+2026-05-13 02:50:38,476 - app - INFO - ==================================================
+2026-05-13 02:50:38,478 - app - INFO - Ethiosadat Application Started
+2026-05-13 02:50:38,478 - app - INFO - ==================================================
+2026-05-13 02:50:39,980 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-13 02:50:48,753 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-13 02:50:59,627 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-13 02:51:14,140 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-13 02:51:14,428 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-13 02:51:35,146 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
+2026-05-13 02:51:36,592 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-13 02:51:38,185 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0

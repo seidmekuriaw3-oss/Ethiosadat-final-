@@ -15107,3 +15107,15 @@ LINE 1: SELECT p.*, c.name as category_name,
 2026-05-13 02:11:31,219 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
 2026-05-13 02:11:31,227 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/apple-touch-icon.png
 2026-05-13 02:11:31,318 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/static/images/logo.svg
+2026-05-13 02:30:20,732 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2026-05-13 02:30:20,732 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/static/images/logo.svg
+2026-05-13 02:31:26,940 - app - WARNING - Failed login attempt for email: seidmekuriaw3@gmail.com
+2026-05-13 02:31:43,518 - app - WARNING - Failed login attempt for email: customer@ethiosadat.com
+2026-05-13 02:34:17,355 - app - ERROR - Error sending WhatsApp order: 'price'
+2026-05-13 02:34:17,355 - app - ERROR - Order confirmation error: auth/order_confirmation.html
+2026-05-13 02:34:28,385 - app - WARNING - 404 Error: http://4676a5d6-185a-4f86-a56e-6986cebe9929-00-2xdual1q0jx6p.janeway.replit.dev/favicon.ico
+2026-05-13 02:34:32,591 - app - WARNING - Failed admin login attempt for email: admin@ethiosadat.com from 127.0.0.1
+2026-05-13 02:40:56,401 - app - ERROR - Error sending notification: invalid input syntax for type integer: "admin"
+LINE 6: ...ሉ', '', '', '', '', 'customers', CURRENT_TIMESTAMP, 'admin')
+                                                               ^
+
