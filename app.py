@@ -2483,6 +2483,44 @@ def add_to_cart():
         return redirect(request.referrer or url_for('index'))
 
 
+@app.route('/go/cart/add/<int:product_id>')
+def go_cart_add(product_id):
+    """Server-side fallback: add item to cart and redirect back. Used when JS fetch is blocked."""
+    quantity = int(request.args.get('qty', 1))
+    return_url = request.args.get('next') or request.referrer or url_for('index')
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name, name_am, stock_quantity FROM products WHERE id = ? AND is_active = 1", (product_id,))
+        product = cursor.fetchone()
+        if not product:
+            flash('Product not found.', 'danger')
+            return redirect(return_url)
+        if product[3] is not None and product[3] <= 0:
+            flash('This item is out of stock.', 'warning')
+            return redirect(return_url)
+        product_name = product[1] or product[2]
+        if session.get('user_id'):
+            cursor.execute("SELECT id, quantity FROM cart_items WHERE user_id = ? AND product_id = ?", (session['user_id'], product_id))
+            existing = cursor.fetchone()
+            if existing:
+                cursor.execute("UPDATE cart_items SET quantity = ? WHERE id = ?", (existing[1] + quantity, existing[0]))
+            else:
+                cursor.execute("INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?, ?, ?)", (session['user_id'], product_id, quantity))
+            conn.commit()
+        else:
+            cart = session.get('cart', {})
+            cart[str(product_id)] = cart.get(str(product_id), 0) + quantity
+            session['cart'] = cart
+            session.modified = True
+            session.permanent = True
+        flash(f'{product_name} added to cart!', 'success')
+    except Exception as e:
+        app.logger.error(f"go_cart_add error: {e}")
+        flash('Could not add item to cart. Please try again.', 'error')
+    return redirect(return_url)
+
+
 @app.route('/cart/update', methods=['POST'])
 def update_cart():
     """Update item quantities in the shopping cart."""

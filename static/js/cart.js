@@ -41,12 +41,8 @@ class CartManager {
             this.loadFromStorage();
         }
         
-        // Fetch fresh data from server
+        // Fetch fresh data from server (silently — ignores empty/failed responses)
         this.refresh();
-        
-        // Set up auto-refresh
-        if (this.refreshTimer) clearInterval(this.refreshTimer);
-        this.refreshTimer = setInterval(() => this.refresh(), CART_CONFIG.autoRefreshInterval);
     }
     
     loadFromStorage() {
@@ -238,17 +234,17 @@ class CartManager {
     
     addItem(productId, quantity = 1) {
         this.isLoading = true;
-        const url = CART_API.add + '?product_id=' + parseInt(productId) + '&quantity=' + parseInt(quantity);
+        const pid = parseInt(productId);
+        const qty = parseInt(quantity);
+        const fallback = () => { window.location.href = '/go/cart/add/' + pid + '?qty=' + qty; };
+        const url = CART_API.add + '?product_id=' + pid + '&quantity=' + qty;
         return fetch(url, { method: 'GET', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-        .then(res => res.json())
-        .then(data => {
-            console.log('[Cart] /api/cart/add response:', JSON.stringify(data));
+        .then(res => res.text())
+        .then(text => {
+            if (!text || !text.trim()) { fallback(); return { success: true, message: 'Adding to cart...' }; }
+            const data = JSON.parse(text);
             if (data.success) {
-                if (typeof data.cart_count === 'number') {
-                    this.count = data.cart_count;
-                    this.updateCartBadges();
-                }
-                this.refresh();
+                if (typeof data.cart_count === 'number') { this.count = data.cart_count; this.updateCartBadges(); }
                 return { success: true, message: data.message || 'Product added to cart!' };
             } else {
                 throw new Error(data.error || data.message || 'Failed to add to cart');
@@ -256,11 +252,13 @@ class CartManager {
         })
         .catch(error => {
             console.error('[Cart] Error adding to cart:', error);
+            if (!error.message || error.message.includes('JSON') || error.message.includes('end of') || error.message.includes('token')) {
+                fallback();
+                return { success: true, message: 'Adding to cart...' };
+            }
             return { success: false, message: error.message };
         })
-        .finally(() => {
-            this.isLoading = false;
-        });
+        .finally(() => { this.isLoading = false; });
     }
     
     updateItem(productId, quantity) {
@@ -270,15 +268,17 @@ class CartManager {
         
         const url = CART_API.update + '?product_id=' + parseInt(productId) + '&quantity=' + parseInt(quantity);
         return fetch(url, { method: 'GET', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                this.refresh();
-                return { success: true };
-            }
+        .then(res => res.text())
+        .then(text => {
+            if (!text || !text.trim()) { window.location.href = '/cart'; return { success: true }; }
+            const data = JSON.parse(text);
+            if (data.success) { this.refresh(); return { success: true }; }
             throw new Error(data.error || 'Update failed');
         })
         .catch(error => {
+            if (!error.message || error.message.includes('JSON') || error.message.includes('end of')) {
+                window.location.href = '/cart'; return { success: true };
+            }
             console.error('Error updating cart:', error);
             return { success: false, message: error.message };
         });
@@ -287,15 +287,17 @@ class CartManager {
     removeItem(productId) {
         const url = CART_API.remove + '?product_id=' + parseInt(productId);
         return fetch(url, { method: 'GET', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                this.refresh();
-                return { success: true };
-            }
+        .then(res => res.text())
+        .then(text => {
+            if (!text || !text.trim()) { window.location.href = '/cart'; return { success: true }; }
+            const data = JSON.parse(text);
+            if (data.success) { this.refresh(); return { success: true }; }
             throw new Error(data.error || 'Remove failed');
         })
         .catch(error => {
+            if (!error.message || error.message.includes('JSON') || error.message.includes('end of')) {
+                window.location.href = '/cart'; return { success: true };
+            }
             console.error('Error removing from cart:', error);
             return { success: false, message: error.message };
         });
