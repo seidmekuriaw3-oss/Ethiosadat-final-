@@ -238,18 +238,8 @@ class CartManager {
     
     addItem(productId, quantity = 1) {
         this.isLoading = true;
-        
-        return fetch(CART_API.add, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                product_id: parseInt(productId),
-                quantity: parseInt(quantity)
-            })
-        })
+        const url = CART_API.add + '?product_id=' + parseInt(productId) + '&quantity=' + parseInt(quantity);
+        return fetch(url, { method: 'GET', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then(res => res.json())
         .then(data => {
             console.log('[Cart] /api/cart/add response:', JSON.stringify(data));
@@ -278,17 +268,8 @@ class CartManager {
             return this.removeItem(productId);
         }
         
-        return fetch(CART_API.update, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                product_id: parseInt(productId),
-                quantity: parseInt(quantity)
-            })
-        })
+        const url = CART_API.update + '?product_id=' + parseInt(productId) + '&quantity=' + parseInt(quantity);
+        return fetch(url, { method: 'GET', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then(res => res.json())
         .then(data => {
             if (data.success) {
@@ -304,14 +285,8 @@ class CartManager {
     }
     
     removeItem(productId) {
-        return fetch(CART_API.remove, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({ product_id: parseInt(productId) })
-        })
+        const url = CART_API.remove + '?product_id=' + parseInt(productId);
+        return fetch(url, { method: 'GET', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then(res => res.json())
         .then(data => {
             if (data.success) {

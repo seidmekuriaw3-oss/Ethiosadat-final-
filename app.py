@@ -5468,20 +5468,18 @@ def api_get_cart():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
-@app.route('/api/cart/add', methods=['POST'])
+@app.route('/api/cart/add', methods=['GET', 'POST'])
 def api_cart_add():
-    """API endpoint to add item to cart."""
-    # STEP 1 DEBUG: print fires at the very first moment Flask receives the request.
-    # If this line never appears in the terminal, the request is blocked before Flask.
-    print(f"DEBUG /api/cart/add: hit by {request.remote_addr} method={request.method} content_type={request.content_type}", flush=True)
+    """API endpoint to add item to cart. Accepts GET (query params), form-encoded POST, or JSON POST."""
     try:
-        data = request.get_json(silent=True)
-        if data is None:
-            print(f"DEBUG /api/cart/add: request.get_json() returned None — body={request.data!r}", flush=True)
-            return jsonify({'success': False, 'error': 'Invalid or missing JSON body'}), 400
+        if request.method == 'GET':
+            data = request.args
+        elif request.content_type and 'application/json' in request.content_type:
+            data = request.get_json(silent=True) or {}
+        else:
+            data = request.form
         product_id = data.get('product_id')
         quantity = int(data.get('quantity', 1))
-        print(f"DEBUG /api/cart/add: product_id={product_id} quantity={quantity} user_id={session.get('user_id')} guest_cart={session.get('cart')}", flush=True)
         
         if not product_id:
             return jsonify({'success': False, 'error': 'Product ID required'}), 400
@@ -5543,11 +5541,16 @@ def api_cart_add():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
-@app.route('/api/cart/update', methods=['POST'])
+@app.route('/api/cart/update', methods=['GET', 'POST'])
 def api_cart_update():
-    """API endpoint to update cart item quantity."""
+    """API endpoint to update cart item quantity. Accepts GET, form-encoded POST, or JSON POST."""
     try:
-        data = request.get_json()
+        if request.method == 'GET':
+            data = request.args
+        elif request.content_type and 'application/json' in request.content_type:
+            data = request.get_json(silent=True) or {}
+        else:
+            data = request.form
         product_id = data.get('product_id')
         quantity = int(data.get('quantity', 1))
         
@@ -5588,11 +5591,16 @@ def api_cart_update():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
-@app.route('/api/cart/remove', methods=['POST'])
+@app.route('/api/cart/remove', methods=['GET', 'POST'])
 def api_cart_remove():
-    """API endpoint to remove item from cart."""
+    """API endpoint to remove item from cart. Accepts GET, form-encoded POST, or JSON POST."""
     try:
-        data = request.get_json()
+        if request.method == 'GET':
+            data = request.args
+        elif request.content_type and 'application/json' in request.content_type:
+            data = request.get_json(silent=True) or {}
+        else:
+            data = request.form
         product_id = data.get('product_id')
         
         if not product_id:
