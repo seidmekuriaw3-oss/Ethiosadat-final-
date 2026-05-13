@@ -1006,7 +1006,23 @@ def index():
         new_list = [row_to_dict(p) for p in new_products] if new_products else []
         ads_list = [row_to_dict(ad) for ad in ads] if ads else []
         categories_list = [row_to_dict(cat) for cat in categories] if categories else []
-        
+
+        # Recently viewed products (stored as string IDs in session)
+        recently_viewed_ids = session.get('recently_viewed', [])
+        recently_viewed_list = []
+        if recently_viewed_ids:
+            placeholders = ','.join(['?' for _ in recently_viewed_ids])
+            cursor.execute(f"""
+                SELECT p.*, c.name as category_name, c.name_am as category_name_am
+                FROM products p
+                LEFT JOIN categories c ON p.category_id = c.id
+                WHERE p.id IN ({placeholders}) AND p.is_active = 1
+            """, [int(i) for i in recently_viewed_ids])
+            rows = cursor.fetchall()
+            # Preserve the session order (most recent first)
+            row_map = {str(row['id']): row_to_dict(row) for row in rows}
+            recently_viewed_list = [row_map[i] for i in recently_viewed_ids if i in row_map]
+
         # Platform detection for showing/hiding about section
         platform = get_platform()
         show_about = platform == 'desktop' or platform == 'mobile_browser'
@@ -1018,6 +1034,7 @@ def index():
                                new_products=new_list,
                                ads=ads_list,
                                categories=categories_list,
+                               recently_viewed_products=recently_viewed_list,
                                show_about=show_about,
                                platform=platform,
                                lang=lang,
@@ -1033,6 +1050,7 @@ def index():
                                new_products=[],
                                ads=[], 
                                categories=[],
+                               recently_viewed_products=[],
                                show_about=True,
                                platform='desktop',
                                lang=lang, 
@@ -1061,7 +1079,17 @@ def product_detail(product_id):
         if not product:
             flash('Product not found', 'error')
             return redirect(url_for('index'))
-        
+
+        # Track recently viewed — keep the 6 most recent unique product IDs
+        recently_viewed = session.get('recently_viewed', [])
+        pid = str(product_id)
+        if pid in recently_viewed:
+            recently_viewed.remove(pid)
+        recently_viewed.insert(0, pid)
+        session['recently_viewed'] = recently_viewed[:6]
+        session.modified = True
+        session.permanent = True
+
         # 2. ተዛማጅ ምርቶችን ማምጣት
         cursor.execute("""
             SELECT p.*, c.name as category_name
