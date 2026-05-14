@@ -401,14 +401,14 @@ def place_order():
             order_number, user_id, status, payment_status, payment_method,
             subtotal, discount, shipping_fee, total,
             shipping_address, shipping_city, shipping_phone, notes
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id
     """, (
         order_number, session['user_id'], 'pending', 'pending', payment_method,
         subtotal, discount, shipping_cost, total,
         shipping_address, shipping_city, shipping_phone, notes
     ))
-    
-    order_id = cursor.lastrowid
+    row = cursor.fetchone()
+    order_id = row[0] if row else None
     
     # Create order items and update stock
     for item in cart_items:

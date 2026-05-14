@@ -527,20 +527,27 @@ def user_register():
 
         try:
             conn = get_db()
-            conn.row_factory = __import__('sqlite3').Row
             cursor = conn.cursor()
             cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
             if cursor.fetchone():
                 flash('Email already registered!', 'danger')
                 return redirect(url_for('customer.user_register'))
 
+            import random as _random
+            base_username = email.split('@')[0].lower()
+            username = base_username
+            cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
+            if cursor.fetchone():
+                username = base_username + str(_random.randint(100, 9999))
+
             password_hash = generate_password_hash(password, method='pbkdf2:sha256')
             cursor.execute("""
-                INSERT INTO users (full_name, email, phone, password_hash, is_admin, is_active)
-                VALUES (?, ?, ?, ?, 0, 1)
-            """, (full_name, email, phone, password_hash))
+                INSERT INTO users (username, full_name, email, phone, password_hash, is_admin, is_active)
+                VALUES (?, ?, ?, ?, ?, 0, 1) RETURNING id
+            """, (username, full_name, email, phone, password_hash))
+            row = cursor.fetchone()
             conn.commit()
-            user_id = cursor.lastrowid
+            user_id = row[0] if row else None
 
             session['user_id'] = user_id
             session['user_name'] = full_name

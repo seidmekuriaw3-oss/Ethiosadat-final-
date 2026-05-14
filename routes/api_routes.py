@@ -482,15 +482,21 @@ def api_register():
     
     # Create user
     from werkzeug.security import generate_password_hash
+    import random as _random
     password_hash = generate_password_hash(password, method='pbkdf2:sha256')
-    
+    base_username = email.split('@')[0].lower()
+    username = base_username
+    cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
+    if cursor.fetchone():
+        username = base_username + str(_random.randint(100, 9999))
+
     cursor.execute("""
-        INSERT INTO users (full_name, email, phone, password_hash, is_admin, is_active)
-        VALUES (?, ?, ?, ?, 0, 1)
-    """, (full_name, email, phone, password_hash))
-    
+        INSERT INTO users (username, full_name, email, phone, password_hash, is_admin, is_active)
+        VALUES (?, ?, ?, ?, ?, 0, 1) RETURNING id
+    """, (username, full_name, email, phone, password_hash))
+    row = cursor.fetchone()
     db.commit()
-    user_id = cursor.lastrowid
+    user_id = row[0] if row else None
     
     # Auto login after registration
     session['user_id'] = user_id
@@ -651,7 +657,7 @@ def api_place_order():
             order_number, user_id, status, payment_status,
             subtotal, discount, shipping_fee, total,
             shipping_address, shipping_city, shipping_phone, notes
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id
     """, (
         order_number, session['user_id'], 'pending', 'pending',
         subtotal, discount, shipping_cost, total,
@@ -660,8 +666,8 @@ def api_place_order():
         data.get('shipping_phone', session.get('user_phone', '')),
         data.get('notes', '')
     ))
-    
-    order_id = cursor.lastrowid
+    row = cursor.fetchone()
+    order_id = row[0] if row else None
     
     # Create order items
     for item in items_list:
@@ -1133,12 +1139,13 @@ def api_submit_order():
                 order_number, user_id, status, payment_status,
                 subtotal, discount, shipping_fee, total,
                 shipping_address, shipping_phone, notes, customer_name, customer_email
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id
         """, (order_number, session['user_id'], 'pending', 'pending',
               subtotal, discount, shipping_cost, total,
               shipping_address, customer_phone, notes, customer_name, customer_email))
 
-        order_id = cursor.lastrowid
+        row = cursor.fetchone()
+        order_id = row[0] if row else None
 
         for item in items_list:
             cursor.execute("""
