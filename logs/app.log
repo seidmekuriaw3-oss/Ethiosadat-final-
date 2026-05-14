@@ -58974,3 +58974,12 @@ jinja2.exceptions.TemplateNotFound: customer/faq.html
 jinja2.exceptions.TemplateNotFound: customer/faq.html
 
 2026-05-14 07:24:32,185 - app - WARNING - 404 Error: http://localhost:5000/api/search-products
+2026-05-14 10:16:32,725 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 10:16:33,012 - app - INFO - Database initialized successfully
+2026-05-14 10:16:33,016 - app - INFO - Application initialized successfully
+2026-05-14 10:16:42,561 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 10:16:42,602 - app - INFO - Database initialized successfully
+2026-05-14 10:16:42,602 - app - INFO - Application initialized successfully
+2026-05-14 10:17:40,144 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 10:17:40,236 - app - INFO - Database initialized successfully
+2026-05-14 10:17:40,237 - app - INFO - Application initialized successfully
