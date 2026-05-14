@@ -563,7 +563,7 @@
         if (loginForm) loginForm.style.display = 'block';
         if (registerForm) registerForm.style.display = 'none';
         if (profileView) profileView.style.display = 'none';
-        if (modalTitle) modalTitle.innerHTML = '🔐 ' + ('{% if lang == 'am' %}ግባ{% else %}Login{% endif %}');
+        if (modalTitle) modalTitle.innerHTML = '🔐 ' + ('{% if lang == "am" %}ግባ{% else %}Login{% endif %}');
     }
     
     function showRegisterForm() {
@@ -575,7 +575,7 @@
         if (loginForm) loginForm.style.display = 'none';
         if (registerForm) registerForm.style.display = 'block';
         if (profileView) profileView.style.display = 'none';
-        if (modalTitle) modalTitle.innerHTML = '📝 ' + ('{% if lang == 'am' %}ተመዝገብ{% else %}Register{% endif %}');
+        if (modalTitle) modalTitle.innerHTML = '📝 ' + ('{% if lang == "am" %}ተመዝገብ{% else %}Register{% endif %}');
     }
     
     function showProfileView() {
