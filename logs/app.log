@@ -55503,3 +55503,8 @@ LINE 6: ...ሉ', '', '', '', '', 'customers', CURRENT_TIMESTAMP, 'admin')
 2026-05-13 02:51:35,146 - app - INFO - Cart viewed - Items: 0, Total: 200 ETB
 2026-05-13 02:51:36,592 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
 2026-05-13 02:51:38,185 - app - INFO - Home page - Featured: 1, New: 1, Ads: 0
+2026-05-14 05:54:07,062 - app - INFO - ==================================================
+2026-05-14 05:54:07,062 - app - INFO - Ethiosadat Application Started
+2026-05-14 05:54:07,062 - app - INFO - ==================================================
+2026-05-14 05:54:09,913 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-14 05:54:21,885 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0

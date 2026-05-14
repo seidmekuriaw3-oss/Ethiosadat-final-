@@ -32,3 +32,13 @@ psycopg2-binary
 python-dotenv
 requests
 werkzeug
+flask
+flask-caching
+flask-limiter
+flask-session
+gunicorn
+pillow
+psycopg2-binary
+python-dotenv
+requests
+werkzeug
