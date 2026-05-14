@@ -186,14 +186,14 @@
     <!-- Header -->
     <div style="margin-bottom: 24px;">
         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
-            <a href="{{ url_for('admin_products') }}" style="color: var(--text-muted, #666); text-decoration: none; font-size: 24px;">←</a>
+            <a href="{{ url_for('admin.products') }}" style="color: var(--text-muted, #666); text-decoration: none; font-size: 24px;">←</a>
             <h1 style="margin: 0;">✏️ Edit Product</h1>
         </div>
         <p style="color: var(--text-muted, #666); margin: 0;">Update product information</p>
     </div>
 
     <!-- Main Form -->
-    <form method="post" action="{{ url_for('admin_product_edit', pid=product.id) }}" enctype="multipart/form-data" id="productForm" onsubmit="return validateForm()">
+    <form method="post" action="{{ url_for('admin.product_edit', pid=product.id) }}" enctype="multipart/form-data" id="productForm" onsubmit="return validateForm()">
         
         <!-- Basic Information Section -->
         <div class="form-section">
@@ -499,7 +499,7 @@
 
         <!-- Form Actions -->
         <div class="action-buttons">
-            <a href="{{ url_for('admin_products') }}" class="btn btn-outline" style="padding: 12px 24px; text-decoration: none;">Cancel</a>
+            <a href="{{ url_for('admin.products') }}" class="btn btn-outline" style="padding: 12px 24px; text-decoration: none;">Cancel</a>
             <button type="submit" class="btn btn-primary" style="padding: 12px 32px; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer;">
                 <span>💾</span> Save Changes
             </button>
@@ -597,7 +597,7 @@
         const callback = () => {
             if (window.showLoading) window.showLoading(true);
             
-            fetch('{{ url_for("admin_product_edit", pid=0) }}'.replace('/0', '/' + productId), {
+            fetch('{{ url_for('admin.product_edit', pid=0) }}'.replace('/0', '/' + productId), {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',

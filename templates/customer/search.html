@@ -359,7 +359,7 @@
              data-product-id="{{ product.id }}"
              data-price="{{ product.price }}"
              data-name="{{ product_name(product) }}"
-             onclick="location.href='{{ url_for('product_detail', product_id=product.id) }}'">
+             onclick="location.href='{{ url_for('customer.product_detail', product_id=product.id) }}'">
             <div class="product-image">
                 {% if product.thumbnail and product.thumbnail|trim != '' and product.thumbnail != 'None' %}
                     <img src="{{ url_for('static', filename=product.thumbnail) }}"
@@ -389,7 +389,7 @@
                         onclick="event.stopPropagation(); if(window.addToCart) addToCart('{{ product.id }}', 1, this)">
                     {{ t.add_to_cart }}
                 </button>
-                <a href="{{ url_for('product_detail', product_id=product.id) }}"
+                <a href="{{ url_for('customer.product_detail', product_id=product.id) }}"
                    class="btn-details"
                    onclick="event.stopPropagation()">{{ t.view_details }}</a>
             </div>
@@ -405,7 +405,7 @@
         <p>{{ t.try_searching_for }}</p>
         <div>
             {% for cat in categories %}
-            <a href="{{ url_for('search') }}?q={{ category_name(cat)|urlencode }}" class="suggestion-tag">
+            <a href="{{ url_for('customer.search') }}?q={{ category_name(cat)|urlencode }}" class="suggestion-tag">
                 {% if cat.icon %}{{ cat.icon }}{% endif %} {{ category_name(cat) }}
             </a>
             {% endfor %}
@@ -425,7 +425,7 @@
             <li>{{ t.tip_check_spelling }}</li>
             <li>{{ t.tip_browse_categories }}</li>
         </ul>
-        <a href="{{ url_for('index') }}" class="btn btn-primary" style="text-decoration: none;">
+        <a href="{{ url_for('customer.index') }}" class="btn btn-primary" style="text-decoration: none;">
             {{ t.back_to_home }}
         </a>
     </div>
@@ -435,7 +435,7 @@
         <p>{{ t.popular_searches }}</p>
         <div>
             {% for cat in categories %}
-            <a href="{{ url_for('search') }}?q={{ category_name(cat)|urlencode }}" class="suggestion-tag">
+            <a href="{{ url_for('customer.search') }}?q={{ category_name(cat)|urlencode }}" class="suggestion-tag">
                 {% if cat.icon %}{{ cat.icon }}{% endif %} {{ category_name(cat) }}
             </a>
             {% endfor %}
@@ -450,8 +450,8 @@
     const CURRENT_LANG = "{{ lang }}";
     const IS_RTL = CURRENT_LANG === 'ar';
     const STATIC_BASE = "{{ url_for('static', filename='') }}";
-    const DETAIL_BASE = "{{ url_for('product_detail', product_id=0) }}".replace('/0', '/');
-    const SEARCH_URL = "{{ url_for('search') }}";
+    const DETAIL_BASE = "{{ url_for('customer.product_detail', product_id=0) }}".replace('/0', '/');
+    const SEARCH_URL = "{{ url_for('customer.search') }}";
     const ADD_TO_CART_TEXT = {{ t.add_to_cart | tojson }};
     const VIEW_DETAILS_TEXT = {{ t.view_details | tojson }};
 

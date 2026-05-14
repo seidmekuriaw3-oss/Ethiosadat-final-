@@ -205,7 +205,7 @@
         
         <!-- Checkout Form -->
         <div class="checkout-form">
-            <form method="post" action="{{ url_for('checkout') }}" id="checkoutForm" onsubmit="return validateAndSubmit(event)">
+            <form method="post" action="{{ url_for('cart.checkout') }}" id="checkoutForm" onsubmit="return validateAndSubmit(event)">
                 <div class="form-group">
                     <label>Full Name <span class="required">*</span></label>
                     <input type="text" name="shipping_address" id="shippingAddress" class="form-control" 
@@ -304,7 +304,7 @@
         <div style="font-size: 64px; margin-bottom: 20px;">🛒</div>
         <h2 style="color: var(--text-color, #333);">Your cart is empty</h2>
         <p style="color: var(--text-muted, #666); margin-bottom: 24px;">Add some products to your cart before checking out.</p>
-        <a href="{{ url_for('products') }}" class="btn btn-primary" style="text-decoration: none;">Continue Shopping →</a>
+        <a href="{{ url_for('customer.products') }}" class="btn btn-primary" style="text-decoration: none;">Continue Shopping →</a>
     </div>
     
     {% endif %}

@@ -184,8 +184,8 @@
             <p style="color: var(--text-muted, #666); margin: 0;">Manage your store products inventory</p>
         </div>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <a href="{{ url_for('admin_import_products') }}" class="btn btn-outline">📥 Import CSV</a>
-            <a href="{{ url_for('admin_product_create') }}" class="btn btn-primary">➕ Add New Product</a>
+            <a href="{{ url_for('admin.import_products') }}" class="btn btn-outline">📥 Import CSV</a>
+            <a href="{{ url_for('admin.product_create') }}" class="btn btn-primary">➕ Add New Product</a>
         </div>
     </div>
 
@@ -292,8 +292,8 @@
                         <div class="actions-dropdown">
                             <button class="actions-btn">⋮</button>
                             <div class="actions-dropdown-content">
-                                <a href="{{ url_for('admin_product_edit', pid=product.id) }}">✏️ Edit</a>
-                                <a href="{{ url_for('admin_products', pid=product.id) }}">👁️ View</a>
+                                <a href="{{ url_for('admin.product_edit', pid=product.id) }}">✏️ Edit</a>
+                                <a href="{{ url_for('admin.products', pid=product.id) }}">👁️ View</a>
                                 <a onclick="toggleFeatured({{ product.id }}, this)">⭐ Toggle Featured</a>
                                 <a onclick="duplicateProduct({{ product.id }})">📋 Duplicate</a>
                                 <a href="#" onclick="deleteProduct({{ product.id }}, '{{ product.name_am }}')" style="color: #f44336;">🗑️ Delete</a>
@@ -307,7 +307,7 @@
                         <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
                         <h3>No Products Found</h3>
                         <p>Click the "Add New Product" button to create your first product.</p>
-                        <a href="{{ url_for('admin_product_create') }}" class="btn btn-primary" style="margin-top: 10px;">➕ Add New Product</a>
+                        <a href="{{ url_for('admin.product_create') }}" class="btn btn-primary" style="margin-top: 10px;">➕ Add New Product</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -449,7 +449,7 @@
         const confirmFn = window.showConfirm || confirm;
         const callback = () => {
             showLoading(true);
-            fetch('{{ url_for("admin_bulk_delete_products") }}', {
+            fetch('{{ url_for('admin.bulk_delete_products') }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -488,7 +488,7 @@
         if (!newCategoryId) return;
         
         showLoading(true);
-        fetch('{{ url_for("admin_products") }}', {
+        fetch('{{ url_for('admin.products') }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -517,7 +517,7 @@
         const confirmFn = window.showConfirm || confirm;
         const callback = () => {
             showLoading(true);
-            fetch('{{ url_for("admin_product_delete", pid=0) }}'.replace('/0', '/' + productId), {
+            fetch('{{ url_for('admin.product_delete', pid=0) }}'.replace('/0', '/' + productId), {
                 method: 'DELETE',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -550,7 +550,7 @@
     }
 
     function toggleFeatured(productId, element) {
-        fetch('{{ url_for("admin_product_toggle_featured", pid=0) }}'.replace('/0', '/' + productId), {
+        fetch('{{ url_for('admin.product_toggle_featured', pid=0) }}'.replace('/0', '/' + productId), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -578,7 +578,7 @@
 
     function duplicateProduct(productId) {
         showLoading(true);
-        fetch('{{ url_for("admin_product_create", pid=0) }}'.replace('/0', '/' + productId), {
+        fetch('{{ url_for('admin.product_create', pid=0) }}'.replace('/0', '/' + productId), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

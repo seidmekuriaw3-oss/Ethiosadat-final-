@@ -589,7 +589,7 @@
     <div class="tab-panel" id="panel-orders" role="tabpanel">
         {% if orders %}
             {% for order in orders %}
-            <a class="order-card-item" href="{{ url_for('order_detail', order_id=order.id) }}">
+            <a class="order-card-item" href="{{ url_for('customer.order_detail', order_id=order.id) }}">
                 <div class="oc-left">
                     <div class="oc-num">Order #{{ order.order_number }}</div>
                     <div class="oc-date">
@@ -616,7 +616,7 @@
             <div class="empty-state">
                 <div class="empty-icon">📭</div>
                 <p>You haven't placed any orders yet.</p>
-                <a href="{{ url_for('products') }}" class="btn-save" style="display:inline-block;text-decoration:none;padding:12px 28px;">
+                <a href="{{ url_for('customer.products') }}" class="btn-save" style="display:inline-block;text-decoration:none;padding:12px 28px;">
                     Start Shopping →
                 </a>
             </div>
@@ -632,7 +632,7 @@
             <h3>✏️ Edit Profile</h3>
             <button class="modal-close-x" onclick="closeEdit()">✕</button>
         </div>
-        <form method="post" action="{{ url_for('update_profile') }}" id="editForm" onsubmit="return submitEdit()">
+        <form method="post" action="{{ url_for('customer.update_profile') }}" id="editForm" onsubmit="return submitEdit()">
             <div class="form-row">
                 <div class="fg">
                     <label>Full Name <span style="color:#e53935">*</span></label>
@@ -752,7 +752,7 @@ function submitPw() {
     const btn = document.getElementById('pwBtn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-sm"></span>Updating…';
-    fetch('{{ url_for("change_password") }}', {
+    fetch('{{ url_for('customer.change_password') }}', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
         body: JSON.stringify({ password: pw })
@@ -777,7 +777,7 @@ function submitPw() {
 /* ─ Logout ─ */
 function doLogout() {
     if (confirm('Are you sure you want to logout?'))
-        window.location.href = '{{ url_for("user_logout") }}';
+        window.location.href = '{{ url_for('customer.user_logout') }}';
 }
 
 /* ─ Delete account ─ */
@@ -787,14 +787,14 @@ function doDeleteAccount() {
     if (!ok) return;
     const pw = prompt('Enter your password to confirm:');
     if (!pw) return;
-    fetch('{{ url_for("delete_account") }}', {
+    fetch('{{ url_for('customer.delete_account') }}', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
         body: JSON.stringify({ password: pw })
     })
     .then(r => r.json())
     .then(d => {
-        if (d.success) { alert('Account deleted.'); window.location.href = '{{ url_for("index") }}'; }
+        if (d.success) { alert('Account deleted.'); window.location.href = '{{ url_for('customer.index') }}'; }
         else alert(d.error || 'Incorrect password.');
     })
     .catch(() => alert('Network error. Please try again.'));

@@ -299,8 +299,8 @@
             </p>
         </div>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <a href="{{ url_for('admin_import_products_sample') }}" class="btn btn-outline">📄 Sample CSV</a>
-            <a href="{{ url_for('admin_products') }}" class="btn btn-outline">← Products</a>
+            <a href="{{ url_for('admin.import_products_sample') }}" class="btn btn-outline">📄 Sample CSV</a>
+            <a href="{{ url_for('admin.products') }}" class="btn btn-outline">← Products</a>
         </div>
     </div>
 
@@ -315,7 +315,7 @@
                 {{ row_errors|length }} row(s) below were skipped — see error details.
             </span>
             {% endif %}
-            <a href="{{ url_for('admin_products') }}">View all products →</a>
+            <a href="{{ url_for('admin.products') }}">View all products →</a>
         </div>
     </div>
     {% endif %}
@@ -377,7 +377,7 @@
         <h3>📂 Upload CSV File</h3>
 
         <form method="POST" enctype="multipart/form-data" id="importForm"
-              action="{{ url_for('admin_import_products') }}">
+              action="{{ url_for('admin.import_products') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <div class="drop-zone" id="dropZone">
@@ -509,7 +509,7 @@
             💡 <strong>Category matching is case-insensitive.</strong>
             Typing <code>sofa</code>, <code>Sofa</code>, or <code>SOFA</code> all work.
             You can also use the Amharic name (e.g. <code>ሶፋ</code>).
-            Download the <a href="{{ url_for('admin_import_products_sample') }}">sample CSV</a>
+            Download the <a href="{{ url_for('admin.import_products_sample') }}">sample CSV</a>
             to see a ready-to-use template with all columns.
         </div>
     </div>

@@ -127,13 +127,13 @@
     
     <!-- Header -->
     <div style="margin-bottom: 24px;">
-        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline" style="margin-bottom: 12px; display: inline-block;">← Back to Dashboard</a>
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline" style="margin-bottom: 12px; display: inline-block;">← Back to Dashboard</a>
         <h1 style="margin: 8px 0 4px 0;">⚙️ Admin Settings</h1>
         <p style="color: var(--text-muted, #666); margin: 0;">Configure your store settings and preferences</p>
     </div>
 
     <!-- Main Settings Form -->
-    <form method="post" action="{{ url_for('admin_settings') }}" id="settingsForm" onsubmit="return validateForm()">
+    <form method="post" action="{{ url_for('admin.settings') }}" id="settingsForm" onsubmit="return validateForm()">
         
         <!-- General Settings -->
         <div class="settings-card">
@@ -267,7 +267,7 @@
             <button type="submit" class="btn btn-primary" style="padding: 12px 28px;">
                 💾 Save All Settings
             </button>
-            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline" style="padding: 12px 28px; text-decoration: none;">
+            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline" style="padding: 12px 28px; text-decoration: none;">
                 Cancel
             </a>
             <button type="button" onclick="resetToDefaults()" class="btn btn-outline" style="border-color: #ff9800; color: #ff9800;">
@@ -292,7 +292,7 @@
                 {% endif %}
             {% endfor %}
         {% endwith %}
-        <form method="post" action="{{ url_for('admin_change_password') }}" onsubmit="return validatePasswordForm()">
+        <form method="post" action="{{ url_for('admin.change_password') }}" onsubmit="return validatePasswordForm()">
             <div class="form-group">
                 <label>Current Password</label>
                 <input type="password" name="current_password" id="current_password" placeholder="Enter current password" autocomplete="current-password">
@@ -437,7 +437,7 @@
         const callback = () => {
             if (window.showLoading) window.showLoading(true);
             
-            fetch('{{ url_for("admin_clear_cache") }}', {
+            fetch('{{ url_for('admin.clear_cache') }}', {
                 method: 'POST',
                 headers: { 
                     'X-Requested-With': 'XMLHttpRequest',
@@ -479,7 +479,7 @@
     function backupDatabase() {
         if (window.showLoading) window.showLoading(true);
         
-        fetch('{{ url_for("admin_backup_database") }}', {
+        fetch('{{ url_for('admin.backup_database') }}', {
             method: 'POST',
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
@@ -515,7 +515,7 @@
         const callback = () => {
             if (window.showLoading) window.showLoading(true);
             
-            fetch('{{ url_for("admin_dashboard") }}', {
+            fetch('{{ url_for('admin.dashboard') }}', {
                 method: 'POST',
                 headers: { 
                     'X-Requested-With': 'XMLHttpRequest',

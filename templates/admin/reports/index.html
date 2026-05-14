@@ -172,7 +172,7 @@
                 <p><strong>Total Revenue:</strong> <span style="color: var(--primary, #1a73e8); font-size: 20px; font-weight: bold;" id="salesTotalRevenue">{{ total_revenue|default(0) }} ETB</span></p>
                 <p><strong>Average Order:</strong> <span id="salesAvgOrder">0</span> ETB</p>
             </div>
-            <a href="{{ url_for('admin_reports_sales') }}" class="btn btn-outline" style="width: 100%; text-align: center;">View Details →</a>
+            <a href="{{ url_for('admin.reports_sales') }}" class="btn btn-outline" style="width: 100%; text-align: center;">View Details →</a>
         </div>
         
         <!-- Products Report Card -->
@@ -190,7 +190,7 @@
                 <p><strong>Low Stock Items:</strong> <span id="lowStockCount" style="color: #f44336;">0</span></p>
                 <p><strong>Out of Stock:</strong> <span id="outOfStockCount">0</span></p>
             </div>
-            <a href="{{ url_for('admin_reports_products') }}" class="btn btn-outline" style="width: 100%; text-align: center;">View Details →</a>
+            <a href="{{ url_for('admin.reports_products') }}" class="btn btn-outline" style="width: 100%; text-align: center;">View Details →</a>
         </div>
         
         <!-- Orders Report Card -->
@@ -210,7 +210,7 @@
                 <p><strong>Delivered Orders:</strong> <span style="color: #4caf50; font-weight: bold;" id="deliveredOrders">{{ completed_orders|default(0) }}</span></p>
                 <p><strong>Cancelled Orders:</strong> <span style="color: #f44336; font-weight: bold;" id="cancelledOrders">0</span></p>
             </div>
-            <a href="{{ url_for('admin_orders') }}" class="btn btn-outline" style="width: 100%; text-align: center;">View Details →</a>
+            <a href="{{ url_for('admin.orders') }}" class="btn btn-outline" style="width: 100%; text-align: center;">View Details →</a>
         </div>
     </div>
 
@@ -258,9 +258,9 @@
             <span>⚡</span> Quick Actions
         </h3>
         <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
-            <a href="{{ url_for('admin_reports', report_type='sales') }}" class="btn btn-primary">📥 Export Sales Report (CSV)</a>
-            <a href="{{ url_for('admin_reports', report_type='products') }}" class="btn btn-primary">📥 Export Products Report (CSV)</a>
-            <a href="{{ url_for('admin_reports', report_type='orders') }}" class="btn btn-primary">📥 Export Orders Report (CSV)</a>
+            <a href="{{ url_for('admin.reports', report_type='sales') }}" class="btn btn-primary">📥 Export Sales Report (CSV)</a>
+            <a href="{{ url_for('admin.reports', report_type='products') }}" class="btn btn-primary">📥 Export Products Report (CSV)</a>
+            <a href="{{ url_for('admin.reports', report_type='orders') }}" class="btn btn-primary">📥 Export Orders Report (CSV)</a>
             <button onclick="generatePDF()" class="btn btn-outline">📄 Generate PDF Report</button>
         </div>
     </div>
@@ -374,7 +374,7 @@
             customDiv.style.display = 'flex';
         } else {
             customDiv.style.display = 'none';
-            fetch(`{{ url_for("admin_reports") }}?period=${period}`)
+            fetch(`{{ url_for('admin.reports') }}?period=${period}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -393,7 +393,7 @@
         if (startDate && endDate) {
             if (window.showLoading) window.showLoading(true);
             
-            fetch(`{{ url_for("admin_reports") }}?start=${startDate}&end=${endDate}`)
+            fetch(`{{ url_for('admin.reports') }}?start=${startDate}&end=${endDate}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -429,14 +429,14 @@
 
     // Export all reports
     function exportAllReports() {
-        window.location.href = '{{ url_for("admin_reports") }}';
+        window.location.href = '{{ url_for('admin.reports') }}';
     }
 
     // Generate PDF
     function generatePDF() {
         if (window.showLoading) window.showLoading(true);
         
-        fetch('{{ url_for("admin_reports") }}', {
+        fetch('{{ url_for('admin.reports') }}', {
             method: 'POST',
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })

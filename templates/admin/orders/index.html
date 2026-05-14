@@ -104,32 +104,32 @@
 
     <!-- Status Tabs -->
     <div class="status-tabs">
-        <a href="{{ url_for('admin_orders') }}"
+        <a href="{{ url_for('admin.orders') }}"
            class="status-tab {% if current_status == 'all' %}active{% endif %}">
             All
             <span class="tab-count">{{ orders|length }}</span>
         </a>
-        <a href="{{ url_for('admin_orders', status='pending') }}"
+        <a href="{{ url_for('admin.orders', status='pending') }}"
            class="status-tab {% if current_status == 'pending' %}active{% endif %}">
             Pending
             {% if status_counts.get('pending') %}<span class="tab-count">{{ status_counts['pending'] }}</span>{% endif %}
         </a>
-        <a href="{{ url_for('admin_orders', status='confirmed') }}"
+        <a href="{{ url_for('admin.orders', status='confirmed') }}"
            class="status-tab {% if current_status == 'confirmed' %}active{% endif %}">
             Confirmed
             {% if status_counts.get('confirmed') %}<span class="tab-count">{{ status_counts['confirmed'] }}</span>{% endif %}
         </a>
-        <a href="{{ url_for('admin_orders', status='shipped') }}"
+        <a href="{{ url_for('admin.orders', status='shipped') }}"
            class="status-tab {% if current_status == 'shipped' %}active{% endif %}">
             Shipped
             {% if status_counts.get('shipped') %}<span class="tab-count">{{ status_counts['shipped'] }}</span>{% endif %}
         </a>
-        <a href="{{ url_for('admin_orders', status='delivered') }}"
+        <a href="{{ url_for('admin.orders', status='delivered') }}"
            class="status-tab {% if current_status == 'delivered' %}active{% endif %}">
             Delivered
             {% if status_counts.get('delivered') %}<span class="tab-count">{{ status_counts['delivered'] }}</span>{% endif %}
         </a>
-        <a href="{{ url_for('admin_orders', status='cancelled') }}"
+        <a href="{{ url_for('admin.orders', status='cancelled') }}"
            class="status-tab {% if current_status == 'cancelled' %}active{% endif %}">
             Cancelled
             {% if status_counts.get('cancelled') %}<span class="tab-count">{{ status_counts['cancelled'] }}</span>{% endif %}
@@ -137,14 +137,14 @@
     </div>
 
     <!-- Search / Filter Bar -->
-    <form method="GET" action="{{ url_for('admin_orders') }}" class="filter-bar">
+    <form method="GET" action="{{ url_for('admin.orders') }}" class="filter-bar">
         {% if current_status != 'all' %}
         <input type="hidden" name="status" value="{{ current_status }}">
         {% endif %}
         <input type="text" name="search" value="{{ search }}" placeholder="🔍 Search by order #, customer, or phone…">
         <button type="submit" class="admin-btn admin-btn-primary">Search</button>
         {% if search %}
-        <a href="{{ url_for('admin_orders', status=current_status) }}" class="admin-btn admin-btn-secondary">Clear</a>
+        <a href="{{ url_for('admin.orders', status=current_status) }}" class="admin-btn admin-btn-secondary">Clear</a>
         {% endif %}
     </form>
 
@@ -180,12 +180,12 @@
                     </td>
                     <td>
                         <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                            <a href="{{ url_for('admin_order_detail', oid=order.id) }}"
+                            <a href="{{ url_for('admin.order_detail', oid=order.id) }}"
                                class="admin-btn admin-btn-primary"
                                style="padding: 6px 12px; font-size: 12px;">
                                 👁 View
                             </a>
-                            <a href="{{ url_for('admin_export_order', oid=order.id) }}"
+                            <a href="{{ url_for('admin.export_order', oid=order.id) }}"
                                class="admin-btn admin-btn-secondary"
                                style="padding: 6px 12px; font-size: 12px;">
                                 📄 Export
@@ -203,10 +203,10 @@
             <p>
                 {% if search %}
                     No orders match your search "{{ search }}".
-                    <a href="{{ url_for('admin_orders') }}">Clear search</a>
+                    <a href="{{ url_for('admin.orders') }}">Clear search</a>
                 {% elif current_status != 'all' %}
                     No {{ current_status }} orders at this time.
-                    <a href="{{ url_for('admin_orders') }}">View all orders</a>
+                    <a href="{{ url_for('admin.orders') }}">View all orders</a>
                 {% else %}
                     No orders have been placed yet.
                 {% endif %}

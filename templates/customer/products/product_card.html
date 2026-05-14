@@ -369,7 +369,7 @@
     // Navigate to product detail page
     function goToProduct(productId) {
         if (productId) {
-            window.location.href = '{{ url_for('product_detail', product_id=0) }}'.replace('/0', '/' + productId);
+            window.location.href = '{{ url_for('customer.product_detail', product_id=0) }}'.replace('/0', '/' + productId);
         }
     }
     

@@ -191,7 +191,7 @@
                 <h1 style="margin: 0 0 10px 0;">📢 Advertisements</h1>
                 <p style="margin: 0; opacity: 0.9;">Manage your store advertisements and promotions</p>
             </div>
-            <a href="{{ url_for('admin_ad_create') }}" class="btn btn-primary" style="background: white; color: #1a73e8;">
+            <a href="{{ url_for('admin.ad_create') }}" class="btn btn-primary" style="background: white; color: #1a73e8;">
                 <span style="font-size: 18px;">➕</span> Create New Ad
             </a>
         </div>
@@ -275,7 +275,7 @@
                     {% endif %}
                     
                     <div class="action-buttons">
-                        <a href="{{ url_for('admin_ad_edit', aid=ad.id) }}" class="btn-icon btn-edit" title="Edit">✏️</a>
+                        <a href="{{ url_for('admin.ad_edit', aid=ad.id) }}" class="btn-icon btn-edit" title="Edit">✏️</a>
                         <button onclick="toggleAdStatus({{ ad.id }}, this)" class="btn-icon btn-toggle" title="Toggle Status">
                             {% if ad.is_active %}🔘{% else %}⚪{% endif %}
                         </button>
@@ -295,7 +295,7 @@
             <div class="empty-state-icon">📢</div>
             <h3>No Advertisements Yet</h3>
             <p>Create your first advertisement to promote your products.</p>
-            <a href="{{ url_for('admin_ad_create') }}" class="btn btn-primary" style="margin-top: 20px;">➕ Create New Ad</a>
+            <a href="{{ url_for('admin.ad_create') }}" class="btn btn-primary" style="margin-top: 20px;">➕ Create New Ad</a>
         </div>
         {% endif %}
     </div>
@@ -367,7 +367,7 @@
         const callback = () => {
             if (window.showLoading) window.showLoading(true);
             
-            fetch('{{ url_for("admin_ad_delete", aid=0) }}'.replace('/0', '/' + adId), {
+            fetch('{{ url_for('admin.ad_delete', aid=0) }}'.replace('/0', '/' + adId), {
                 method: 'DELETE',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -415,7 +415,7 @@
         
         if (window.showLoading) window.showLoading(true);
         
-        fetch('{{ url_for("admin_ad_toggle", aid=0) }}'.replace('/0', '/' + adId), {
+        fetch('{{ url_for('admin.ad_toggle', aid=0) }}'.replace('/0', '/' + adId), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

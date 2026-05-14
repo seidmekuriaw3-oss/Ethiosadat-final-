@@ -137,7 +137,7 @@
     <!-- Header -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
         <div>
-            <a href="{{ url_for('admin_reports') }}" class="btn btn-outline" style="margin-bottom: 12px; display: inline-block;">← Back to Reports</a>
+            <a href="{{ url_for('admin.reports') }}" class="btn btn-outline" style="margin-bottom: 12px; display: inline-block;">← Back to Reports</a>
             <h1 style="margin: 8px 0 4px;">📦 Products Report</h1>
             <p style="color: var(--text-muted, #666); margin: 0;">Product inventory and performance analysis</p>
         </div>
@@ -317,7 +317,7 @@
     });
 
     function loadProductStats() {
-        fetch('{{ url_for("admin_reports") }}')
+        fetch('{{ url_for('admin.reports') }}')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {

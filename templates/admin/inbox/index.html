@@ -483,15 +483,15 @@
 
     <!-- Filter Tabs -->
     <div class="filter-tabs">
-        <a href="{{ url_for('admin_inbox') }}{% if search %}?search={{ search }}{% endif %}"
+        <a href="{{ url_for('admin.admin_inbox') }}{% if search %}?search={{ search }}{% endif %}"
            class="filter-tab {% if filter_status == 'all' %}active{% endif %}">
             All <span class="tab-count">{{ total_count }}</span>
         </a>
-        <a href="{{ url_for('admin_inbox', filter='unread') }}{% if search %}&search={{ search }}{% endif %}"
+        <a href="{{ url_for('admin.admin_inbox', filter='unread') }}{% if search %}&search={{ search }}{% endif %}"
            class="filter-tab {% if filter_status == 'unread' %}active{% endif %}">
             Unread <span class="tab-count">{{ unread_count }}</span>
         </a>
-        <a href="{{ url_for('admin_inbox', filter='read') }}{% if search %}&search={{ search }}{% endif %}"
+        <a href="{{ url_for('admin.admin_inbox', filter='read') }}{% if search %}&search={{ search }}{% endif %}"
            class="filter-tab {% if filter_status == 'read' %}active{% endif %}">
             Read <span class="tab-count">{{ total_count - unread_count }}</span>
         </a>
@@ -499,14 +499,14 @@
 
     <!-- Search Toolbar -->
     <div class="inbox-toolbar">
-        <form method="GET" action="{{ url_for('admin_inbox') }}">
+        <form method="GET" action="{{ url_for('admin.admin_inbox') }}">
             {% if filter_status != 'all' %}
             <input type="hidden" name="filter" value="{{ filter_status }}">
             {% endif %}
             <input type="text" name="search" value="{{ search }}" placeholder="🔍 Search by name, email, phone, or message…">
             <button type="submit" class="admin-btn admin-btn-primary">Search</button>
             {% if search %}
-            <a href="{{ url_for('admin_inbox', filter=filter_status) }}" class="admin-btn admin-btn-secondary">Clear</a>
+            <a href="{{ url_for('admin.admin_inbox', filter=filter_status) }}" class="admin-btn admin-btn-secondary">Clear</a>
             {% endif %}
         </form>
     </div>
@@ -612,13 +612,13 @@
         <p>
             {% if search %}
                 No messages match "<strong>{{ search }}</strong>".
-                <a href="{{ url_for('admin_inbox', filter=filter_status) }}">Clear search</a>
+                <a href="{{ url_for('admin.admin_inbox', filter=filter_status) }}">Clear search</a>
             {% elif filter_status == 'unread' %}
                 All messages have been read.
-                <a href="{{ url_for('admin_inbox') }}">View all</a>
+                <a href="{{ url_for('admin.admin_inbox') }}">View all</a>
             {% elif filter_status == 'read' %}
                 No read messages yet.
-                <a href="{{ url_for('admin_inbox') }}">View all</a>
+                <a href="{{ url_for('admin.admin_inbox') }}">View all</a>
             {% else %}
                 No contact messages yet. When customers submit the contact form, messages appear here.
             {% endif %}

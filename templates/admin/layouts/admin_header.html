@@ -101,7 +101,7 @@
                     </div>
                 </div>
                 <div style="padding: 10px 16px; border-top: 1px solid var(--border-color, #eee); text-align: center;">
-                    <a href="{{ url_for('admin_dashboard') }}" style="color: var(--primary, #1a73e8); text-decoration: none; font-size: 12px;">View all</a>
+                    <a href="{{ url_for('admin.dashboard') }}" style="color: var(--primary, #1a73e8); text-decoration: none; font-size: 12px;">View all</a>
                 </div>
             </div>
         </div>
@@ -152,7 +152,7 @@
                 margin-top: 10px;
                 overflow: hidden;
             ">
-                <a href="{{ url_for('admin_dashboard') }}" style="
+                <a href="{{ url_for('admin.dashboard') }}" style="
                     display: flex;
                     align-items: center;
                     gap: 12px;
@@ -163,7 +163,7 @@
                 ">
                     <span>👤</span> My Profile
                 </a>
-                <a href="{{ url_for('admin_settings') }}" style="
+                <a href="{{ url_for('admin.settings') }}" style="
                     display: flex;
                     align-items: center;
                     gap: 12px;
@@ -175,7 +175,7 @@
                     <span>⚙️</span> Settings
                 </a>
                 <hr style="margin: 0; border-color: var(--border-color, #eee);">
-                <a href="{{ url_for('index') }}" style="
+                <a href="{{ url_for('customer.index') }}" style="
                     display: flex;
                     align-items: center;
                     gap: 12px;
@@ -186,7 +186,7 @@
                 ">
                     <span>🏠</span> View Store
                 </a>
-                <a href="{{ url_for('admin_logout') }}" style="
+                <a href="{{ url_for('admin.admin_logout') }}" style="
                     display: flex;
                     align-items: center;
                     gap: 12px;
@@ -210,7 +210,7 @@
     font-size: 13px;
     color: var(--text-muted, #666);
 ">
-    <a href="{{ url_for('admin_dashboard') }}" style="color: var(--primary, #1a73e8); text-decoration: none;">Home</a>
+    <a href="{{ url_for('admin.dashboard') }}" style="color: var(--primary, #1a73e8); text-decoration: none;">Home</a>
     {% set parts = request.path.split('/') %}
     {% for part in parts %}
         {% if part and part != 'admin' %}
@@ -218,7 +218,7 @@
             {% if loop.last %}
                 <span style="color: var(--text-color, #333); font-weight: 500;">{{ part|replace('_', ' ')|replace('-', ' ')|title }}</span>
             {% else %}
-                <a href="{{ url_for('admin_dashboard') }}/{{ part }}" style="color: var(--text-muted, #666); text-decoration: none;">{{ part|replace('_', ' ')|replace('-', ' ')|title }}</a>
+                <a href="{{ url_for('admin.dashboard') }}/{{ part }}" style="color: var(--text-muted, #666); text-decoration: none;">{{ part|replace('_', ' ')|replace('-', ' ')|title }}</a>
             {% endif %}
         {% endif %}
     {% endfor %}
@@ -364,7 +364,7 @@
     
     // Fetch notifications
     function fetchNotifications() {
-        fetch('{{ url_for("api_cart_count") if url_for is defined else "/api/admin/notifications" }}')
+        fetch('{{ url_for('api.api_cart_count') if url_for is defined else "/api/admin/notifications" }}')
             .then(res => res.json())
             .then(data => {
                 const list = document.getElementById('notificationList');
@@ -407,7 +407,7 @@
         }
         
         searchTimeout = setTimeout(() => {
-            fetch(`{{ url_for("api_search_products") if url_for is defined else "/api/admin/search" }}?q=${encodeURIComponent(query)}`)
+            fetch(`{{ url_for('api.api_search_products') if url_for is defined else "/api/admin/search" }}?q=${encodeURIComponent(query)}`)
                 .then(res => res.json())
                 .then(data => {
                     if (!resultsDiv) return;
@@ -460,7 +460,7 @@
         if (notifInterval) clearInterval(notifInterval);
         
         notifInterval = setInterval(() => {
-            fetch('{{ url_for("api_cart_count") if url_for is defined else "/api/admin/notifications/count" }}')
+            fetch('{{ url_for('api.api_cart_count') if url_for is defined else "/api/admin/notifications/count" }}')
                 .then(res => res.json())
                 .then(data => {
                     const badge = document.getElementById('notificationBadge');

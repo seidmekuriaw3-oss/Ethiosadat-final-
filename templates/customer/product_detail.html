@@ -336,7 +336,7 @@
                         {% if stock == 0 %}disabled{% endif %}>
                     🛒 Add to Cart
                 </button>
-                <a href="{{ url_for('products') }}" class="btn btn-outline">← Continue Shopping</a>
+                <a href="{{ url_for('customer.products') }}" class="btn btn-outline">← Continue Shopping</a>
             </div>
         </div>
     </div>
@@ -387,7 +387,7 @@
         <h2>🔗 You May Also Like</h2>
         <div class="related-grid">
             {% for related in related_products %}
-            <div class="related-card" onclick="location.href='{{ url_for('product_detail', product_id=related.id) }}'">
+            <div class="related-card" onclick="location.href='{{ url_for('customer.product_detail', product_id=related.id) }}'">
                 <div class="related-image">
                     {% if related.thumbnail and related.thumbnail|trim != '' and related.thumbnail != 'None' %}
                         <img src="{{ url_for('static', filename=related.thumbnail) }}" alt="{{ related.name_am }}" loading="lazy"

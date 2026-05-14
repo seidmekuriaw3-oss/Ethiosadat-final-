@@ -69,7 +69,7 @@
                 color: rgba(255,255,255,0.4);
             ">MAIN</div>
             
-            <a href="{{ url_for('admin_dashboard') }}" class="nav-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}" style="
+            <a href="{{ url_for('admin.dashboard') }}" class="nav-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -95,7 +95,7 @@
                 margin-top: 8px;
             ">PRODUCTS</div>
             
-            <a href="{{ url_for('admin_products') }}" class="nav-item {% if request.endpoint in ('admin_products', 'admin_product_edit', 'admin_product_view') %}active{% endif %}" style="
+            <a href="{{ url_for('admin.products') }}" class="nav-item {% if request.endpoint in ('admin_products', 'admin_product_edit', 'admin_product_view') %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -126,7 +126,7 @@
                 {% endif %}
             </a>
             
-            <a href="{{ url_for('admin_product_create') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.product_create') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -140,7 +140,7 @@
                 <span class="nav-text">Add Product</span>
             </a>
 
-            <a href="{{ url_for('admin_import_products') }}" class="nav-item {% if request.endpoint == 'admin_import_products' %}active{% endif %}" style="
+            <a href="{{ url_for('admin.import_products') }}" class="nav-item {% if request.endpoint == 'admin_import_products' %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -154,7 +154,7 @@
                 <span class="nav-text">Import Products</span>
             </a>
             
-            <a href="{{ url_for('admin_products') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.products') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -180,7 +180,7 @@
                 margin-top: 8px;
             ">ORDERS</div>
             
-            <a href="{{ url_for('admin_orders') }}" class="nav-item {% if request.endpoint in ('admin_orders', 'admin_order_detail') %}active{% endif %}" style="
+            <a href="{{ url_for('admin.orders') }}" class="nav-item {% if request.endpoint in ('admin_orders', 'admin_order_detail') %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -215,7 +215,7 @@
                 margin-top: 8px;
             ">MARKETING</div>
             
-            <a href="{{ url_for('admin_ads') }}" class="nav-item {% if request.endpoint in ('admin_ads', 'admin_ad_create', 'admin_ad_edit') %}active{% endif %}" style="
+            <a href="{{ url_for('admin.ads') }}" class="nav-item {% if request.endpoint in ('admin_ads', 'admin_ad_create', 'admin_ad_edit') %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -236,7 +236,7 @@
                 ">{{ ads_count|default(0) }}</span>
             </a>
             
-            <a href="{{ url_for('admin_ad_create') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.ad_create') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -250,7 +250,7 @@
                 <span class="nav-text">Create Ad</span>
             </a>
             
-            <a href="{{ url_for('admin_ads') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.ads') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -264,7 +264,7 @@
                 <span class="nav-text">Promotions</span>
             </a>
             
-            <a href="{{ url_for('admin_send_notification') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.send_notification') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -290,7 +290,7 @@
                 margin-top: 8px;
             ">REPORTS</div>
             
-            <a href="{{ url_for('admin_reports') }}" class="nav-item {% if request.endpoint in ('admin_reports', 'admin_reports_sales', 'admin_reports_products') %}active{% endif %}" style="
+            <a href="{{ url_for('admin.reports') }}" class="nav-item {% if request.endpoint in ('admin_reports', 'admin_reports_sales', 'admin_reports_products') %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -304,7 +304,7 @@
                 <span class="nav-text">Overview</span>
             </a>
             
-            <a href="{{ url_for('admin_reports_sales') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.reports_sales') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -318,7 +318,7 @@
                 <span class="nav-text">Sales Report</span>
             </a>
             
-            <a href="{{ url_for('admin_reports_products') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.reports_products') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -332,7 +332,7 @@
                 <span class="nav-text">Products Report</span>
             </a>
             
-            <a href="{{ url_for('admin_users') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.admin_users') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -358,7 +358,7 @@
                 margin-top: 8px;
             ">SYSTEM</div>
             
-            <a href="{{ url_for('admin_settings') }}" class="nav-item {% if request.endpoint == 'admin_settings' %}active{% endif %}" style="
+            <a href="{{ url_for('admin.settings') }}" class="nav-item {% if request.endpoint == 'admin_settings' %}active{% endif %}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -372,7 +372,7 @@
                 <span class="nav-text">Settings</span>
             </a>
             
-            <a href="{{ url_for('admin_users') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.admin_users') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -386,7 +386,7 @@
                 <span class="nav-text">Users</span>
             </a>
             
-            <a href="{{ url_for('admin_backup_database') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.backup_database') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -400,7 +400,7 @@
                 <span class="nav-text">Backup</span>
             </a>
             
-            <a href="{{ url_for('admin_dashboard') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.dashboard') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -414,7 +414,7 @@
                 <span class="nav-text">System Logs</span>
             </a>
             
-            <a href="{{ url_for('admin_clear_cache') }}" class="nav-item" style="
+            <a href="{{ url_for('admin.clear_cache') }}" class="nav-item" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -423,7 +423,7 @@
                 text-decoration: none;
                 transition: all 0.3s;
                 border-left: 3px solid transparent;
-            " onclick="event.preventDefault(); fetch('{{ url_for('admin_clear_cache') }}', {method:'POST'}).then(()=>{ if(window.showToast) window.showToast('Cache cleared!','success'); })">
+            " onclick="event.preventDefault(); fetch('{{ url_for('admin.clear_cache') }}', {method:'POST'}).then(()=>{ if(window.showToast) window.showToast('Cache cleared!','success'); })">
                 <span class="nav-icon">🗑️</span>
                 <span class="nav-text">Clear Cache</span>
             </a>
@@ -436,7 +436,7 @@
         border-top: 1px solid rgba(255,255,255,0.1);
         margin-top: auto;
     ">
-        <a href="{{ url_for('index') }}" style="
+        <a href="{{ url_for('customer.index') }}" style="
             display: flex;
             align-items: center;
             gap: 12px;
@@ -449,7 +449,7 @@
             <span class="nav-text">View Store</span>
         </a>
         
-        <a href="{{ url_for('admin_logout') }}" style="
+        <a href="{{ url_for('admin.admin_logout') }}" style="
             display: flex;
             align-items: center;
             gap: 12px;
@@ -631,7 +631,7 @@
     });
     
     function fetchCounts() {
-        fetch('{{ url_for("api_cart_count") if url_for is defined else "/api/admin/counts" }}')
+        fetch('{{ url_for('api.api_cart_count') if url_for is defined else "/api/admin/counts" }}')
             .then(res => res.json())
             .then(data => {
                 const productsSpan = document.getElementById('productsCount');

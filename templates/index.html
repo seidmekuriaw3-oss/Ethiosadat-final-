@@ -388,8 +388,8 @@
     <p>Quality furniture at affordable prices in Addis Ababa</p>
     <p>🚚 Free shipping on orders over 5000 ETB</p>
     <div class="hero-buttons">
-        <a href="{{ url_for('products') }}" class="hero-btn hero-btn-primary">Shop Now →</a>
-        <a href="{{ url_for('about') }}" class="hero-btn hero-btn-secondary">Learn More</a>
+        <a href="{{ url_for('customer.products') }}" class="hero-btn hero-btn-primary">Shop Now →</a>
+        <a href="{{ url_for('customer.about') }}" class="hero-btn hero-btn-secondary">Learn More</a>
     </div>
 </div>
 
@@ -403,7 +403,7 @@
 </div>
 <div class="categories-grid">
     {% for cat in categories %}
-    <a href="{{ url_for('products', category=cat.id) }}" class="category-card">
+    <a href="{{ url_for('customer.products', category=cat.id) }}" class="category-card">
         <div class="category-icon">
             {% if cat.name_am == 'ሶፋ' %}🛋️
             {% elif cat.name_am == 'አልጋ' %}🛏️
@@ -415,7 +415,7 @@
         <div class="category-name">{{ cat.name_am if lang == 'am' else cat.name }}</div>
     </a>
     {% endfor %}
-    <a href="{{ url_for('products') }}" class="category-card">
+    <a href="{{ url_for('customer.products') }}" class="category-card">
         <div class="category-icon">🔄</div>
         <div class="category-name">{% if lang == 'am' %}ሁሉም{% else %}All Products{% endif %}</div>
     </a>
@@ -461,7 +461,7 @@
     {% endfor %}
 </div>
 <div class="view-all-btn">
-    <a href="{{ url_for('products') }}" class="hero-btn hero-btn-primary">View All Products →</a>
+    <a href="{{ url_for('customer.products') }}" class="hero-btn hero-btn-primary">View All Products →</a>
 </div>
 {% else %}
 <div style="text-align: center; padding: 60px; background: var(--bg-white, white); border-radius: 20px;">
@@ -516,12 +516,12 @@
 <!-- Admin Login Link (only visible when not logged in) -->
 <div style="text-align: center; margin-top: 40px; padding: 20px;">
     {% if not session.get('admin') and not session.get('is_admin') %}
-    <a href="{{ url_for('admin_login') }}" class="hero-btn hero-btn-secondary" style="background: #1a1a2e; color: #d4af37;">
+    <a href="{{ url_for('admin.admin_login') }}" class="hero-btn hero-btn-secondary" style="background: #1a1a2e; color: #d4af37;">
         👑 Admin Login
     </a>
     {% endif %}
     {% if session.get('admin') or session.get('is_admin') %}
-    <a href="{{ url_for('admin_dashboard') }}" class="hero-btn hero-btn-secondary" style="background: #1a1a2e; color: #d4af37;">
+    <a href="{{ url_for('admin.dashboard') }}" class="hero-btn hero-btn-secondary" style="background: #1a1a2e; color: #d4af37;">
         👑 Go to Admin Panel
     </a>
     {% endif %}

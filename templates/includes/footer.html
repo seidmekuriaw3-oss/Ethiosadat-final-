@@ -41,11 +41,11 @@
                     🔗 {% if lang == 'am' %}ፈጣን አገናኞች{% else %}Quick Links{% endif %}
                 </h3>
                 <ul class="footer-links">
-                    <li><a href="{{ url_for('index') }}">🏠 {% if lang == 'am' %}መነሻ{% else %}Home{% endif %}</a></li>
-                    <li><a href="{{ url_for('products') }}">📦 {% if lang == 'am' %}ምርቶች{% else %}Products{% endif %}</a></li>
-                    <li><a href="{{ url_for('about') }}">ℹ️ {% if lang == 'am' %}ስለ እኛ{% else %}About Us{% endif %}</a></li>
-                    <li><a href="{{ url_for('contact') }}">📞 {% if lang == 'am' %}አግኙን{% else %}Contact{% endif %}</a></li>
-                    <li><a href="{{ url_for('faq') }}">❓ {% if lang == 'am' %}በየጥ{% else %}FAQ{% endif %}</a></li>
+                    <li><a href="{{ url_for('customer.index') }}">🏠 {% if lang == 'am' %}መነሻ{% else %}Home{% endif %}</a></li>
+                    <li><a href="{{ url_for('customer.products') }}">📦 {% if lang == 'am' %}ምርቶች{% else %}Products{% endif %}</a></li>
+                    <li><a href="{{ url_for('customer.about') }}">ℹ️ {% if lang == 'am' %}ስለ እኛ{% else %}About Us{% endif %}</a></li>
+                    <li><a href="{{ url_for('customer.contact') }}">📞 {% if lang == 'am' %}አግኙን{% else %}Contact{% endif %}</a></li>
+                    <li><a href="{{ url_for('customer.faq') }}">❓ {% if lang == 'am' %}በየጥ{% else %}FAQ{% endif %}</a></li>
                 </ul>
             </div>
             
@@ -55,10 +55,10 @@
                     🛠️ {% if lang == 'am' %}የደንበኛ አገልግሎት{% else %}Customer Service{% endif %}
                 </h3>
                 <ul class="footer-links">
-                    <li><a href="{{ url_for('shipping_info') }}">🚚 {% if lang == 'am' %}ማጓጓዝ መረጃ{% else %}Shipping Info{% endif %}</a></li>
-                    <li><a href="{{ url_for('returns_policy') }}">🔄 {% if lang == 'am' %}መመለስ እና መለዋወጥ{% else %}Returns & Exchanges{% endif %}</a></li>
-                    <li><a href="{{ url_for('privacy') }}">🔒 {% if lang == 'am' %}ግላዊነት ፖሊሲ{% else %}Privacy Policy{% endif %}</a></li>
-                    <li><a href="{{ url_for('terms') }}">📜 {% if lang == 'am' %}ውሎች እና ሁኔታዎች{% else %}Terms & Conditions{% endif %}</a></li>
+                    <li><a href="{{ url_for('customer.shipping_info') }}">🚚 {% if lang == 'am' %}ማጓጓዝ መረጃ{% else %}Shipping Info{% endif %}</a></li>
+                    <li><a href="{{ url_for('customer.returns_policy') }}">🔄 {% if lang == 'am' %}መመለስ እና መለዋወጥ{% else %}Returns & Exchanges{% endif %}</a></li>
+                    <li><a href="{{ url_for('customer.privacy') }}">🔒 {% if lang == 'am' %}ግላዊነት ፖሊሲ{% else %}Privacy Policy{% endif %}</a></li>
+                    <li><a href="{{ url_for('customer.terms') }}">📜 {% if lang == 'am' %}ውሎች እና ሁኔታዎች{% else %}Terms & Conditions{% endif %}</a></li>
                     <li><a href="#">🗺️ {% if lang == 'am' %}የገጽ ካርታ{% else %}Sitemap{% endif %}</a></li>
                 </ul>
             </div>
@@ -397,7 +397,7 @@
         
         if (window.showLoading) window.showLoading(true);
         
-        fetch('{{ url_for("contact") }}', {
+        fetch('{{ url_for('customer.contact') }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

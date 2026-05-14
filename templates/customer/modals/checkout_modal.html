@@ -315,7 +315,7 @@
     
     // Fetch cart data for checkout
     function fetchCartForCheckout() {
-        fetch('{{ url_for("api_get_cart") }}')
+        fetch('{{ url_for('api.api_get_cart') }}')
             .then(response => response.text())
             .then(text => {
                 if (!text || !text.trim()) { closeCheckoutModal(); return; }
@@ -413,7 +413,7 @@
         };
         
         // Submit order
-        fetch('{{ url_for("api_submit_order") }}', {
+        fetch('{{ url_for('api.api_submit_order') }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -98,7 +98,7 @@
             <p style="color: #666; margin: 0;">Manage your store advertisements and promotions</p>
         </div>
         <div>
-            <a href="{{ url_for('admin_ad_create') }}" class="btn btn-primary">
+            <a href="{{ url_for('admin.ad_create') }}" class="btn btn-primary">
                 ➕ Add New Ad
             </a>
         </div>
@@ -145,11 +145,11 @@
                                        preload="metadata"
                                        poster="{{ url_for('static', filename='images/placeholder.png')}}"
                                        onerror="this.onerror=null; this.poster=`{{ url_for('static', filename='images/placeholder.png') }}`;">
-                                    <source src="{{ url_for('uploaded_ad_media', filename=media_name) }}" type="video/mp4">
+                                    <source src="/static/uploads/ads/{{ media_name }}" type="video/mp4">
                                 </video>
                             {% else %}
                                 <img class="ad-preview"
-                                     src="{{ url_for('uploaded_ad_media', filename=media_name) }}"
+                                     src="/static/uploads/ads/{{ media_name }}"
                                      alt="Ad media"
                                      loading="lazy"
                                      onerror="this.onerror=null; this.src=`{{ url_for('static', filename='images/placeholder.png') }}`;">
@@ -181,7 +181,7 @@
                     </td>
                     <td style="padding: 12px; text-align: center;">
                         <button class="ad-status {% if ad.is_active %}status-active{% else %}status-inactive{% endif %}"
-                                onclick="toggleAdStatus({{ ad.id }}, this, '{{ url_for('admin_ad_toggle', aid=ad.id) }}')">
+                                onclick="toggleAdStatus({{ ad.id }}, this, '{{ url_for('admin.ad_toggle', aid=ad.id) }}')">
                             {% if ad.is_active %}Active{% else %}Inactive{% endif %}
                         </button>
                     </td>
@@ -189,10 +189,10 @@
                         <span class="sort-handle" draggable="true" data-id="{{ ad.id }}" style="cursor: grab;">⋮⋮</span>
                     </td>
                     <td style="padding: 12px; text-align: center;">
-                        <a href="{{ url_for('admin_ad_edit', aid=ad.id) }}"
+                        <a href="{{ url_for('admin.ad_edit', aid=ad.id) }}"
                            style="background: none; border: none; color: #ff9800; cursor: pointer; margin-right: 8px; text-decoration: none; display: inline-block;"
                            title="Edit">✏️</a>
-                        <button onclick="deleteAd({{ ad.id }}, '{{ url_for('admin_ad_delete', aid=ad.id) }}')"
+                        <button onclick="deleteAd({{ ad.id }}, '{{ url_for('admin.ad_delete', aid=ad.id) }}')"
                                 style="background: none; border: none; color: #f44336; cursor: pointer;"
                                 title="Delete">🗑️</button>
                     </td>
@@ -203,7 +203,7 @@
                         <div class="empty-state-icon">📭</div>
                         <h3>No Advertisements Found</h3>
                         <p>Click the "Add New Ad" button to create your first advertisement.</p>
-                        <a href="{{ url_for('admin_ad_create') }}" class="btn btn-primary">➕ Create First Ad</a>
+                        <a href="{{ url_for('admin.ad_create') }}" class="btn btn-primary">➕ Create First Ad</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -386,7 +386,7 @@
                 const srcId = srcRow.dataset.id;
                 const destId = destRow.dataset.id;
 
-                fetch('{{ url_for("admin_ad_reorder") }}', {
+                fetch('{{ url_for('admin.ad_reorder') }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

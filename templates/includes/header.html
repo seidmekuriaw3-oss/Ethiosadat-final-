@@ -15,7 +15,7 @@
         
         <!-- Search Bar -->
         <div class="search-wrapper">
-            <form action="{{ url_for('search') }}" method="get" class="search-form" onsubmit="return handleSearch(event)">
+            <form action="{{ url_for('customer.search') }}" method="get" class="search-form" onsubmit="return handleSearch(event)">
                 <input type="text" 
                        name="q" 
                        id="searchInput"
@@ -31,13 +31,13 @@
         
         <!-- Desktop Navigation -->
         <nav class="desktop-nav" aria-label="Main navigation">
-            <a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'customer.index' %}active{% endif %}" title="Home">
+            <a href="{{ url_for('customer.index') }}" class="nav-link {% if request.endpoint == 'customer.index' %}active{% endif %}" title="Home">
                 🏠 <span>Home</span>
             </a>
-            <a href="{{ url_for('products') }}" class="nav-link" title="Products">
+            <a href="{{ url_for('customer.products') }}" class="nav-link" title="Products">
                 📦 <span>Products</span>
             </a>
-            <a href="{{ url_for('view_cart') }}" class="nav-link cart-link {% if request.endpoint == 'cart.view_cart' %}active{% endif %}" title="Cart" style="position: relative;">
+            <a href="{{ url_for('cart.view_cart') }}" class="nav-link cart-link {% if request.endpoint == 'cart.view_cart' %}active{% endif %}" title="Cart" style="position: relative;">
                 🛒 <span>Cart</span>
                 <span id="desktopCartCount" class="cart-badge" style="display: none;">0</span>
             </a>
@@ -45,7 +45,7 @@
                 👤 <span>Account</span>
             </div>
             {% if session.get('admin') or session.get('is_admin') %}
-            <a href="{{ url_for('admin_dashboard') }}" class="nav-link admin-link" title="Admin Panel">
+            <a href="{{ url_for('admin.dashboard') }}" class="nav-link admin-link" title="Admin Panel">
                 👑 <span>Admin</span>
             </a>
             {% endif %}
@@ -53,7 +53,7 @@
         
         <!-- Mobile Icons -->
         <div class="mobile-icons">
-            <a href="{{ url_for('view_cart') }}" class="mobile-cart" style="position: relative;">
+            <a href="{{ url_for('cart.view_cart') }}" class="mobile-cart" style="position: relative;">
                 🛒
                 <span id="mobileCartCount" class="cart-badge" style="display: none;">0</span>
             </a>
@@ -74,20 +74,20 @@
             <button class="close-menu" onclick="toggleMobileMenu()">&times;</button>
         </div>
         <div class="mobile-menu-body">
-            <a href="{{ url_for('index') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">
+            <a href="{{ url_for('customer.index') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">
                 🏠 Home
             </a>
-            <a href="{{ url_for('products') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">
+            <a href="{{ url_for('customer.products') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">
                 📦 Products
             </a>
-            <a href="{{ url_for('view_cart') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">
+            <a href="{{ url_for('cart.view_cart') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">
                 🛒 Cart
             </a>
             <div class="mobile-nav-link" onclick="openUserModal(); toggleMobileMenu();">
                 👤 Account
             </div>
             {% if session.get('admin') or session.get('is_admin') %}
-            <a href="{{ url_for('admin_dashboard') }}" class="mobile-nav-link admin-link" onclick="toggleMobileMenu()">
+            <a href="{{ url_for('admin.dashboard') }}" class="mobile-nav-link admin-link" onclick="toggleMobileMenu()">
                 👑 Admin Panel
             </a>
             {% endif %}
@@ -98,20 +98,20 @@
     <a href="{{ url_for('set_language', lang='ar') }}" class="lang-option">🇸🇦 العربية</a>
 </div>
                 <hr class="menu-divider">
-            <a href="{{ url_for('about') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">
+            <a href="{{ url_for('customer.about') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">
                 ℹ️ About Us
             </a>
-            <a href="{{ url_for('contact') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">
+            <a href="{{ url_for('customer.contact') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">
                 📞 Contact
             </a>
             {% if session.get('user_id') or session.get('admin') %}
             {% if session.get('admin') or session.get('is_admin') %}
-            <a href="{{ url_for('admin_logout') }}" class="mobile-nav-link logout" onclick="toggleMobileMenu()">
+            <a href="{{ url_for('admin.admin_logout') }}" class="mobile-nav-link logout" onclick="toggleMobileMenu()">
                 🚪 Logout
             </a>
             {% endif %}
             {% if session.get('user_id') %}
-            <a href="{{ url_for('user_logout') }}" class="mobile-nav-link logout" onclick="toggleMobileMenu()">
+            <a href="{{ url_for('customer.user_logout') }}" class="mobile-nav-link logout" onclick="toggleMobileMenu()">
                 🚪 Logout
             </a>
             {% endif %}
@@ -573,12 +573,12 @@
             }
             
             searchTimeout = setTimeout(() => {
-                fetch('{{ url_for("api_search_products") }}?q=' + encodeURIComponent(query) + '&limit=5')
+                fetch('{{ url_for('api.api_search_products') }}?q=' + encodeURIComponent(query) + '&limit=5')
                     .then(res => res.json())
                     .then(data => {
                         if (data.products && data.products.length > 0) {
                             suggestionsDiv.innerHTML = data.products.map(p => `
-                                <div class="suggestion-item" onclick="location.href='{{ url_for('product_detail', product_id=0) }}'.replace('/0', '/' + ${p.id})">
+                                <div class="suggestion-item" onclick="location.href='{{ url_for('customer.product_detail', product_id=0) }}'.replace('/0', '/' + ${p.id})">
                                     <span class="suggestion-icon">🪑</span>
                                     <div class="suggestion-info">
                                         <div class="suggestion-name">${escapeHtml(p.name_am || p.name)}</div>
@@ -660,7 +660,7 @@
     
     // Fetch cart count on load
     document.addEventListener('DOMContentLoaded', function() {
-        fetch('{{ url_for("api_cart_count") }}')
+        fetch('{{ url_for('api.api_cart_count') }}')
             .then(res => res.text())
             .then(text => {
                 if (!text || !text.trim()) return;

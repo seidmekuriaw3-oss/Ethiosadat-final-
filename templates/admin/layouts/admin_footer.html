@@ -37,7 +37,7 @@
         <!-- Version -->
         <div style="color: var(--text-muted-light, #999); font-size: 12px;">
             Version 2.0.0 | 
-            <a href="{{ url_for('index') }}" style="color: var(--primary, #1a73e8); text-decoration: none;">View Store →</a>
+            <a href="{{ url_for('customer.index') }}" style="color: var(--primary, #1a73e8); text-decoration: none;">View Store →</a>
         </div>
     </div>
     
@@ -65,9 +65,9 @@
         
         <!-- Links -->
         <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-            <a href="{{ url_for('admin_dashboard') }}" style="color: var(--text-muted-light, #999); text-decoration: none; font-size: 12px;">Dashboard</a>
-            <a href="{{ url_for('admin_settings') }}" style="color: var(--text-muted-light, #999); text-decoration: none; font-size: 12px;">Settings</a>
-            <a href="{{ url_for('contact') }}" style="color: var(--text-muted-light, #999); text-decoration: none; font-size: 12px;">Support</a>
+            <a href="{{ url_for('admin.dashboard') }}" style="color: var(--text-muted-light, #999); text-decoration: none; font-size: 12px;">Dashboard</a>
+            <a href="{{ url_for('admin.settings') }}" style="color: var(--text-muted-light, #999); text-decoration: none; font-size: 12px;">Settings</a>
+            <a href="{{ url_for('customer.contact') }}" style="color: var(--text-muted-light, #999); text-decoration: none; font-size: 12px;">Support</a>
             <a href="#" onclick="clearAdminCache(event)" style="color: var(--text-muted-light, #999); text-decoration: none; font-size: 12px;">Clear Cache</a>
         </div>
     </div>
@@ -225,7 +225,7 @@
         // Clear previous timeout
         if (updateTimeout) clearTimeout(updateTimeout);
         
-        fetch('{{ url_for("api_cart_count") if url_for is defined else "/api/admin/stats" }}', {
+        fetch('{{ url_for('api.api_cart_count') if url_for is defined else "/api/admin/stats" }}', {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             }
@@ -260,7 +260,7 @@
         const callback = () => {
             if (window.showLoading) window.showLoading(true);
             
-            fetch('{{ url_for("admin_clear_cache") if url_for is defined else "/admin/clear-cache" }}', {
+            fetch('{{ url_for('admin.clear_cache') if url_for is defined else "/admin/clear-cache" }}', {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',

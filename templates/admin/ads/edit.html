@@ -129,14 +129,14 @@
     <!-- Header -->
     <div style="margin-bottom: 24px;">
         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
-            <a href="{{ url_for('admin_ads') }}" style="color: #666; text-decoration: none; font-size: 24px;" aria-label="Back to ads list">←</a>
+            <a href="{{ url_for('admin.ads') }}" style="color: #666; text-decoration: none; font-size: 24px;" aria-label="Back to ads list">←</a>
             <h1 style="margin: 0; font-size: 1.8rem;">✏️ Edit Advertisement</h1>
         </div>
         <p style="color: #666; margin: 0;">Update your advertisement details</p>
     </div>
 
     <!-- Main Form -->
-    <form method="post" action="{{ url_for('admin_ad_edit', aid=ad.id) }}" enctype="multipart/form-data" id="adForm" onsubmit="return validateForm()">
+    <form method="post" action="{{ url_for('admin.ad_edit', aid=ad.id) }}" enctype="multipart/form-data" id="adForm" onsubmit="return validateForm()">
         <input type="hidden" name="_method" value="PUT">
         
         <!-- Current Media Display -->
@@ -319,7 +319,7 @@
 
         <!-- Form Actions -->
         <div style="display: flex; gap: 16px; justify-content: flex-end; margin-top: 32px; padding-bottom: 40px;">
-            <a href="{{ url_for('admin_ads') }}" class="btn btn-outline" style="padding: 12px 24px; text-decoration: none;">Cancel</a>
+            <a href="{{ url_for('admin.ads') }}" class="btn btn-outline" style="padding: 12px 24px; text-decoration: none;">Cancel</a>
             <button type="submit" class="btn btn-primary" style="padding: 12px 32px; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer;">
                 <span>💾</span> Save Changes
             </button>
@@ -417,7 +417,7 @@
     // Delete media function
     function deleteMedia(adId) {
         if (!adId) return;
-        const deleteUrl = "{{ url_for('admin_ad_delete', aid=0) }}".replace('/0', `/${adId}`);
+        const deleteUrl = "{{ url_for('admin.ad_delete', aid=0) }}".replace('/0', `/${adId}`);
         
         const confirmFn = window.showConfirm || confirm;
         const callback = () => {

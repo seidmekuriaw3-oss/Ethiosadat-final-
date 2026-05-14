@@ -105,7 +105,7 @@
     </div>
 
     <div style="margin-bottom: 20px;">
-        <a href="{{ url_for('user_profile') }}" style="color: #1a73e8; text-decoration: none; font-weight: 500;">
+        <a href="{{ url_for('customer.user_profile') }}" style="color: #1a73e8; text-decoration: none; font-weight: 500;">
             ← Back to Profile
         </a>
     </div>
@@ -155,7 +155,7 @@
             </div>
 
             <div class="order-actions">
-                <a href="{{ url_for('order_detail', order_id=order.id) }}" class="btn-sm btn-primary-sm">
+                <a href="{{ url_for('customer.order_detail', order_id=order.id) }}" class="btn-sm btn-primary-sm">
                     👁️ View Details
                 </a>
                 {% if order.status == 'pending' %}
@@ -173,7 +173,7 @@
             <div class="icon">📦</div>
             <h2>No orders yet</h2>
             <p>You haven't placed any orders. Start shopping and your orders will appear here.</p>
-            <a href="{{ url_for('products') }}" class="btn-sm btn-primary-sm" style="padding: 12px 32px; font-size: 15px;">
+            <a href="{{ url_for('customer.products') }}" class="btn-sm btn-primary-sm" style="padding: 12px 32px; font-size: 15px;">
                 🛍️ Start Shopping
             </a>
         </div>

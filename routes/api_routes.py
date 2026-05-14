@@ -795,3 +795,369 @@ def api_get_settings():
             'currency': settings.get('currency', 'ETB')
         }
     })
+
+
+# ==================== CATEGORIES API ====================
+
+@api_bp.route('/categories')
+def api_categories():
+    """Get all active categories with product counts."""
+    try:
+        db = get_db()
+        db.row_factory = __import__('sqlite3').Row
+        cursor = db.cursor()
+        cursor.execute("""
+            SELECT c.*, COUNT(p.id) as product_count
+            FROM categories c
+            LEFT JOIN products p ON p.category_id = c.id AND p.is_active = 1
+            WHERE c.is_active = 1
+            GROUP BY c.id
+            ORDER BY c.sort_order ASC
+        """)
+        categories = cursor.fetchall()
+        return jsonify({
+            'success': True,
+            'categories': [dict(c) for c in categories] if categories else []
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+# ==================== WISHLIST API ====================
+
+@api_bp.route('/wishlist/add', methods=['POST'])
+def api_wishlist_add():
+    """Add product to wishlist."""
+    if not session.get('user_id'):
+        return jsonify({'success': False, 'error': 'Please login first'}), 401
+    try:
+        data = request.get_json()
+        product_id = data.get('product_id')
+        if not product_id:
+            return jsonify({'success': False, 'error': 'Product ID required'}), 400
+
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("""
+            INSERT INTO wishlist (user_id, product_id)
+            VALUES (?, ?)
+            ON CONFLICT (user_id, product_id) DO NOTHING
+        """, (session['user_id'], product_id))
+        db.commit()
+        return jsonify({'success': True, 'message': 'Added to wishlist'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@api_bp.route('/wishlist/remove', methods=['POST'])
+def api_wishlist_remove():
+    """Remove product from wishlist."""
+    if not session.get('user_id'):
+        return jsonify({'success': False, 'error': 'Please login first'}), 401
+    try:
+        data = request.get_json()
+        product_id = data.get('product_id')
+        if not product_id:
+            return jsonify({'success': False, 'error': 'Product ID required'}), 400
+
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("DELETE FROM wishlist WHERE user_id = ? AND product_id = ?",
+                       (session['user_id'], product_id))
+        db.commit()
+        return jsonify({'success': True, 'message': 'Removed from wishlist'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+# ==================== COUPON API ====================
+
+@api_bp.route('/apply-coupon', methods=['POST'])
+def api_apply_coupon():
+    """Apply discount coupon to cart."""
+    try:
+        data = request.get_json()
+        code = data.get('code', '').strip().upper()
+        if not code:
+            return jsonify({'success': False, 'error': 'Coupon code required'}), 400
+
+        db = get_db()
+        db.row_factory = __import__('sqlite3').Row
+        cursor = db.cursor()
+
+        cursor.execute("""
+            SELECT * FROM coupons
+            WHERE code = ? AND is_active = 1
+            AND (valid_from IS NULL OR valid_from <= CURRENT_TIMESTAMP)
+            AND (valid_to IS NULL OR valid_to >= CURRENT_TIMESTAMP)
+            AND (usage_limit IS NULL OR used_count < usage_limit)
+        """, (code,))
+        coupon = cursor.fetchone()
+
+        if not coupon:
+            return jsonify({'success': False, 'error': 'Invalid or expired coupon code'}), 400
+
+        # Get cart subtotal
+        subtotal = 0
+        if session.get('user_id'):
+            cursor.execute("""
+                SELECT SUM(p.price * ci.quantity) as total
+                FROM cart_items ci JOIN products p ON ci.product_id = p.id
+                WHERE ci.user_id = ?
+            """, (session['user_id'],))
+            result = cursor.fetchone()
+            subtotal = result['total'] or 0 if result else 0
+
+        if subtotal < (coupon['min_order'] or 0):
+            return jsonify({'success': False,
+                            'error': f"Minimum order of {coupon['min_order']} ETB required"}), 400
+
+        if coupon['discount_type'] == 'percentage':
+            discount = subtotal * (coupon['discount_value'] / 100)
+            if coupon['max_discount']:
+                discount = min(discount, coupon['max_discount'])
+        else:
+            discount = coupon['discount_value']
+
+        session['applied_coupon'] = {
+            'code': code,
+            'discount': discount,
+            'coupon_id': coupon['id']
+        }
+        session.modified = True
+
+        return jsonify({
+            'success': True,
+            'message': f'Coupon applied! You saved {discount:.2f} ETB',
+            'discount': discount
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+# ==================== REVIEWS API ====================
+
+@api_bp.route('/product/<int:product_id>/reviews', methods=['GET', 'POST'])
+def product_reviews(product_id):
+    """Get or add product reviews."""
+    if request.method == 'GET':
+        try:
+            db = get_db()
+            db.row_factory = __import__('sqlite3').Row
+            cursor = db.cursor()
+            cursor.execute("""
+                SELECT r.*, u.full_name as user_name
+                FROM reviews r JOIN users u ON r.user_id = u.id
+                WHERE r.product_id = ? AND r.is_approved = 1
+                ORDER BY r.created_at DESC LIMIT 20
+            """, (product_id,))
+            reviews = cursor.fetchall()
+            reviews_list = [dict(r) for r in reviews] if reviews else []
+            avg_rating = (sum(r['rating'] for r in reviews_list) / len(reviews_list)
+                          if reviews_list else 0)
+            return jsonify({
+                'success': True,
+                'reviews': reviews_list,
+                'average_rating': round(avg_rating, 1),
+                'total_reviews': len(reviews_list)
+            })
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    # POST - add review
+    if not session.get('user_id'):
+        return jsonify({'success': False, 'error': 'Please login to leave a review'}), 401
+    try:
+        data = request.get_json()
+        rating = data.get('rating', 0)
+        comment = data.get('comment', '').strip()
+
+        if rating < 1 or rating > 5:
+            return jsonify({'success': False, 'error': 'Rating must be between 1 and 5'}), 400
+        if not comment:
+            return jsonify({'success': False, 'error': 'Please write a review'}), 400
+
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT id FROM reviews WHERE product_id = ? AND user_id = ?",
+                       (product_id, session['user_id']))
+        if cursor.fetchone():
+            return jsonify({'success': False, 'error': 'You have already reviewed this product'}), 400
+
+        cursor.execute("""
+            INSERT INTO reviews (product_id, user_id, rating, comment, is_approved)
+            VALUES (?, ?, ?, ?, 0)
+        """, (product_id, session['user_id'], rating, comment))
+        db.commit()
+        return jsonify({'success': True, 'message': 'Review submitted! Awaiting approval.'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+# ==================== NEWSLETTER API ====================
+
+@api_bp.route('/subscribe-newsletter', methods=['POST'])
+def subscribe_newsletter():
+    """Subscribe to newsletter."""
+    try:
+        data = request.get_json()
+        email = data.get('email', '').strip().lower()
+        if not email:
+            return jsonify({'success': False, 'error': 'Email is required'}), 400
+        if not re.match(r'^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$', email):
+            return jsonify({'success': False, 'error': 'Invalid email address'}), 400
+
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("""
+            INSERT INTO newsletter (email) VALUES (?)
+            ON CONFLICT (email) DO NOTHING
+        """, (email,))
+        db.commit()
+        return jsonify({'success': True, 'message': 'Successfully subscribed to newsletter!'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+# ==================== TRANSLATION API ====================
+
+@api_bp.route('/translate', methods=['POST'])
+def api_translate():
+    """Translate text to target language."""
+    try:
+        from utils.translation_cache import translate_text
+        data = request.get_json()
+        text = data.get('text', '').strip()
+        target_lang = data.get('target_lang', 'en')
+        if not text:
+            return jsonify({'error': 'Text is required'}), 400
+        translated = translate_text(text, target_lang)
+        return jsonify({'status': 'success', 'original': text,
+                        'translated': translated, 'language': target_lang})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+@api_bp.route('/translate-batch', methods=['POST'])
+def api_translate_batch():
+    """Translate multiple texts at once."""
+    try:
+        from utils.translation_cache import batch_translate
+        data = request.get_json()
+        texts = data.get('texts', [])
+        target_lang = data.get('target_lang', 'en')
+        if not texts or not isinstance(texts, list):
+            return jsonify({'error': 'Texts array is required'}), 400
+        translations = batch_translate(texts, target_lang)
+        return jsonify({'status': 'success', 'translations': translations,
+                        'language': target_lang, 'count': len(translations)})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+# ==================== PLATFORM API ====================
+
+@api_bp.route('/platform')
+def api_platform():
+    """Get current platform information."""
+    from middleware.platform import get_platform, is_android_app
+    from flask import request as _req
+    return jsonify({
+        'success': True,
+        'platform': get_platform(),
+        'is_android_app': is_android_app(),
+        'user_agent': _req.headers.get('User-Agent', '')
+    })
+
+
+# ==================== SUBMIT ORDER API ====================
+
+@api_bp.route('/submit-order', methods=['POST'])
+def api_submit_order():
+    """Submit order via AJAX (quick-checkout modal)."""
+    if not session.get('user_id'):
+        return jsonify({'success': False, 'error': 'Please login to place order'}), 401
+    try:
+        data = request.get_json()
+        customer_name = (data.get('customer_name') or '').strip()
+        customer_phone = (data.get('customer_phone') or '').strip()
+        shipping_address = (data.get('customer_address') or '').strip() or 'Not provided'
+        customer_email = (data.get('customer_email') or '').strip() or None
+        notes = (data.get('order_notes') or '').strip()
+
+        if not customer_name or not customer_phone:
+            return jsonify({'success': False, 'error': 'Name and phone number are required'}), 400
+
+        db = get_db()
+        db.row_factory = __import__('sqlite3').Row
+        cursor = db.cursor()
+
+        cursor.execute("""
+            SELECT ci.product_id, ci.quantity, p.price, p.name, p.name_am
+            FROM cart_items ci JOIN products p ON ci.product_id = p.id
+            WHERE ci.user_id = %s
+        """, (session['user_id'],))
+        cart_items = cursor.fetchall()
+
+        if not cart_items:
+            return jsonify({'success': False, 'error': 'Cart is empty'}), 400
+
+        from middleware.platform import is_android_app
+        android_user = is_android_app()
+
+        subtotal = 0
+        items_list = []
+        for item in cart_items:
+            price = item['price'] or 0
+            qty = item['quantity'] or 1
+            unit_price = price * 0.9 if android_user else price
+            subtotal += unit_price * qty
+            items_list.append({
+                'product_id': item['product_id'], 'quantity': qty,
+                'price': unit_price, 'name': item['name'],
+                'name_am': item['name_am'] or item['name'],
+            })
+
+        discount = subtotal * 0.1 if android_user else 0
+        subtotal_after_discount = subtotal - discount
+        threshold = int(os.environ.get('FREE_SHIPPING_THRESHOLD', '5000'))
+        shipping_cost = 0 if subtotal_after_discount >= threshold else int(os.environ.get('SHIPPING_COST', '200'))
+        total = subtotal_after_discount + shipping_cost
+
+        import random, string
+        from datetime import datetime as _dt
+        order_number = f"{_dt.now().strftime('%Y%m%d')}-{''.join(random.choices(string.ascii_uppercase + string.digits, k=6))}"
+
+        cursor.execute("""
+            INSERT INTO orders (
+                order_number, user_id, status, payment_status,
+                subtotal, discount, shipping_fee, total,
+                shipping_address, shipping_phone, notes, customer_name, customer_email
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (order_number, session['user_id'], 'pending', 'pending',
+              subtotal, discount, shipping_cost, total,
+              shipping_address, customer_phone, notes, customer_name, customer_email))
+
+        order_id = cursor.lastrowid
+
+        for item in items_list:
+            cursor.execute("""
+                INSERT INTO order_items (order_id, product_id, quantity, price_at_time)
+                VALUES (%s, %s, %s, %s)
+            """, (order_id, item['product_id'], item['quantity'], item['price']))
+            cursor.execute("""
+                UPDATE products SET stock_quantity = stock_quantity - %s WHERE id = %s
+            """, (item['quantity'], item['product_id']))
+
+        cursor.execute("DELETE FROM cart_items WHERE user_id = %s", (session['user_id'],))
+        db.commit()
+
+        return jsonify({
+            'success': True,
+            'message': 'Order placed successfully!',
+            'order_id': order_id,
+            'order_number': order_number,
+            'total': total,
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
