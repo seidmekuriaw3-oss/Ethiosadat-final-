@@ -173,7 +173,7 @@
     let lastServerStatus = true;
     
     function checkServerStatus() {
-        fetch('{{ url_for("health_check") if url_for is defined else "/health" }}', {
+        fetch('{{ url_for("utility.health_check") if url_for is defined else "/health" }}', {
             method: 'GET',
             headers: { 
                 'X-Requested-With': 'XMLHttpRequest',

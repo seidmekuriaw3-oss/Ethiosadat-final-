@@ -502,7 +502,7 @@
 
     // Check system status
     function checkSystemStatus() {
-        fetch('{{ url_for("health_check") }}')
+        fetch('{{ url_for("utility.health_check") }}')
             .then(response => {
                 const statusSpan = document.getElementById('systemStatus');
                 if (statusSpan) {

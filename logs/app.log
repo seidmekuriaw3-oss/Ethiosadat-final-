@@ -59094,3 +59094,9 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'user_l
 2026-05-14 17:34:29,830 - app - INFO - Initializing Ethiosadat Furniture Application
 2026-05-14 17:34:29,889 - app - INFO - Database initialized successfully
 2026-05-14 17:34:29,890 - app - INFO - Application initialized successfully
+2026-05-14 17:35:25,857 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:35:25,896 - app - INFO - Database initialized successfully
+2026-05-14 17:35:25,897 - app - INFO - Application initialized successfully
+2026-05-14 17:36:06,258 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:36:06,288 - app - INFO - Database initialized successfully
+2026-05-14 17:36:06,288 - app - INFO - Application initialized successfully
