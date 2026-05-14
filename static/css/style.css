@@ -2298,3 +2298,84 @@ select.form-control {
     color: var(--gray);
     margin-top: 0.5rem;
 }
+
+/* ==================== PROFILE PANEL (slide-out modal) ==================== */
+.prof-stat-card > div {
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.prof-stat-card:hover > div {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.14) !important;
+}
+.prof-info-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+}
+.prof-field-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #9ba3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 5px;
+}
+.prof-field-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+    word-break: break-word;
+}
+.prof-field-value.muted {
+    color: #c5cad8;
+    font-style: italic;
+    font-weight: 400;
+}
+.prof-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 14px;
+    border: 2px solid #f44336;
+    color: #f44336;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    margin-top: 10px;
+    transition: background 0.22s ease, color 0.22s ease;
+    background: transparent;
+}
+.prof-logout-btn:hover {
+    background: #f44336;
+    color: #fff;
+}
+.prof-edit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    background: var(--primary);
+    color: #fff;
+    transition: background 0.22s ease, transform 0.18s ease, box-shadow 0.18s ease;
+    margin-bottom: 0;
+}
+.prof-edit-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(26,115,232,0.30);
+}

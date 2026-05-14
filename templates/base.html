@@ -399,86 +399,134 @@
             <!-- Main account panel -->
             <div id="account-main-panel">
                 <div class="profile-info">
-                    <!-- Avatar + Name + Email -->
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <div id="profile-avatar" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;"></div>
-                        <h3 id="profile-name" style="margin: 4px 0 2px; font-size:17px;"></h3>
-                        <p id="profile-email" style="color: #888; margin: 0; font-size: 13px;"></p>
+
+                    <!-- ── Avatar Header ── -->
+                    <div style="text-align:center;padding:8px 0 22px;">
+                        <div id="profile-avatar" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 8px 24px rgba(26,115,232,0.30);letter-spacing:0;"></div>
+                        <h3 id="profile-name" style="margin:0 0 4px;font-size:18px;font-weight:700;color:#1a1a2e;"></h3>
+                        <p id="profile-email" style="margin:0;font-size:13px;color:#9ba3b8;"></p>
                     </div>
-                    <!-- Info fields -->
-                    <div style="background:#f8f9fc;border-radius:14px;padding:14px 16px;margin-bottom:16px;">
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+                    <!-- ── Personal Info Card ── -->
+                    <div class="prof-info-card">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                             <div>
-                                <div style="font-size:10px;font-weight:700;color:#9ba3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">📞 Phone</div>
-                                <div id="profile-phone" style="font-size:14px;font-weight:600;color:#333;"></div>
+                                <div class="prof-field-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9ba3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 8.81a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 0h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 7.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                    Phone
+                                </div>
+                                <div id="profile-phone" class="prof-field-value muted">Not set</div>
                             </div>
                             <div>
-                                <div style="font-size:10px;font-weight:700;color:#9ba3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">🏙️ City</div>
-                                <div id="profile-city" style="font-size:14px;font-weight:600;color:#333;"></div>
+                                <div class="prof-field-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9ba3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    City
+                                </div>
+                                <div id="profile-city" class="prof-field-value muted">Not set</div>
                             </div>
                             <div style="grid-column:1/-1;">
-                                <div style="font-size:10px;font-weight:700;color:#9ba3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">🏠 Address</div>
-                                <div id="profile-address" style="font-size:14px;font-weight:600;color:#333;"></div>
+                                <div class="prof-field-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9ba3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                    Address
+                                </div>
+                                <div id="profile-address" class="prof-field-value muted">Not set</div>
                             </div>
                         </div>
                     </div>
-                    <!-- Order Stats -->
-                    <div id="profile-stats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;">
-                        <div style="background:#e8f0fe;border-radius:12px;padding:10px 8px;text-align:center;">
-                            <div id="stat-total" style="font-size:20px;font-weight:800;color:#1a73e8;">—</div>
-                            <div style="font-size:10px;color:#555;font-weight:600;">Orders</div>
-                        </div>
-                        <div style="background:#e8f5e9;border-radius:12px;padding:10px 8px;text-align:center;">
-                            <div id="stat-delivered" style="font-size:20px;font-weight:800;color:#43a047;">—</div>
-                            <div style="font-size:10px;color:#555;font-weight:600;">Delivered</div>
-                        </div>
-                        <div style="background:#fff3e0;border-radius:12px;padding:10px 8px;text-align:center;">
-                            <div id="stat-pending" style="font-size:20px;font-weight:800;color:#e65100;">—</div>
-                            <div style="font-size:10px;color:#555;font-weight:600;">Pending</div>
-                        </div>
+
+                    <!-- ── Stats Cards (glassmorphism, clickable) ── -->
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;">
+                        <a href="{{ url_for('customer.user_orders') }}" class="prof-stat-card" style="text-decoration:none;">
+                            <div style="background:rgba(26,115,232,0.10);border:1px solid rgba(26,115,232,0.18);border-radius:16px;padding:14px 6px;text-align:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 16px rgba(26,115,232,0.10);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto 5px;"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                                <div id="stat-total" style="font-size:22px;font-weight:800;color:#1a73e8;line-height:1.1;">—</div>
+                                <div style="font-size:9px;font-weight:700;color:#1a73e8;opacity:0.75;margin-top:3px;text-transform:uppercase;letter-spacing:0.6px;">Orders</div>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('customer.user_orders', status='delivered') }}" class="prof-stat-card" style="text-decoration:none;">
+                            <div style="background:rgba(67,160,71,0.10);border:1px solid rgba(67,160,71,0.18);border-radius:16px;padding:14px 6px;text-align:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 16px rgba(67,160,71,0.10);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#43a047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto 5px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                <div id="stat-delivered" style="font-size:22px;font-weight:800;color:#43a047;line-height:1.1;">—</div>
+                                <div style="font-size:9px;font-weight:700;color:#43a047;opacity:0.75;margin-top:3px;text-transform:uppercase;letter-spacing:0.6px;">Done</div>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('customer.user_orders', status='pending') }}" class="prof-stat-card" style="text-decoration:none;">
+                            <div style="background:rgba(230,81,0,0.10);border:1px solid rgba(230,81,0,0.18);border-radius:16px;padding:14px 6px;text-align:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 16px rgba(230,81,0,0.10);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e65100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto 5px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                <div id="stat-pending" style="font-size:22px;font-weight:800;color:#e65100;line-height:1.1;">—</div>
+                                <div style="font-size:9px;font-weight:700;color:#e65100;opacity:0.75;margin-top:3px;text-transform:uppercase;letter-spacing:0.6px;">Pending</div>
+                            </div>
+                        </a>
                     </div>
-                    <!-- Action Buttons -->
-                    <button onclick="openInlineEditProfile()" class="btn btn-primary" style="margin-bottom: 10px; width: 100%; border: none; cursor: pointer;">✏️ {{ t.edit_profile }}</button>
-                    <a href="{{ url_for('customer.user_orders') }}" class="btn btn-outline" style="margin-bottom: 10px; display: block; text-align: center;">📦 {{ t.my_orders }}</a>
-                    <a href="{{ url_for('customer.user_logout') }}" class="btn btn-danger" style="display: block; text-align: center;">🚪 {{ t.logout }}</a>
+
+                    <!-- ── Action Buttons ── -->
+                    <button onclick="openInlineEditProfile()" class="prof-edit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        {{ t.edit_profile }}
+                    </button>
+                    <a href="{{ url_for('customer.user_logout') }}" class="prof-logout-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        {{ t.logout }}
+                    </a>
+
                 </div>
             </div>
             <!-- Inline Edit Profile panel -->
             <div id="account-edit-panel" style="display: none;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-                    <button onclick="closeInlineEditProfile()" style="background: none; border: none; font-size: 22px; cursor: pointer; color: #666;">←</button>
-                    <h3 style="margin: 0; font-size: 17px;">📝 {{ t.edit_profile }}</h3>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:22px;">
+                    <button onclick="closeInlineEditProfile()" style="background:none;border:none;cursor:pointer;color:#555;display:flex;align-items:center;padding:6px 8px;border-radius:8px;transition:background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='none'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <h3 style="margin:0;font-size:17px;font-weight:700;color:#1a1a2e;">{{ t.edit_profile }}</h3>
                 </div>
                 <form id="inline-edit-form" onsubmit="submitInlineEdit(event)">
                     <div class="form-group">
-                        <label style="font-size: 13px; font-weight: 600; color: #555;">👤 Full Name <span style="color:#e53935">*</span></label>
+                        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            Full Name <span style="color:#e53935;font-size:14px;line-height:1;">*</span>
+                        </label>
                         <input type="text" id="inline-fn" name="full_name" required placeholder="Your full name"
-                               style="width:100%;padding:10px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:14px;box-sizing:border-box;">
+                               style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;box-sizing:border-box;transition:border-color 0.2s;outline:none;" onfocus="this.style.borderColor='#1a73e8'" onblur="this.style.borderColor='#e0e0e0'">
                     </div>
                     <div class="form-group">
-                        <label style="font-size: 13px; font-weight: 600; color: #555;">📧 Email</label>
+                        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            Email
+                        </label>
                         <input type="email" id="inline-email" disabled
-                               style="width:100%;padding:10px 14px;border:1.5px solid #eee;border-radius:10px;font-size:14px;background:#f5f5f5;color:#999;box-sizing:border-box;">
-                        <small style="color:#aaa;font-size:11px;">Email cannot be changed</small>
+                               style="width:100%;padding:11px 14px;border:1.5px solid #eee;border-radius:12px;font-size:14px;background:#f8f8f8;color:#aaa;box-sizing:border-box;">
+                        <small style="color:#bbb;font-size:11px;margin-top:3px;display:block;">Email cannot be changed</small>
                     </div>
                     <div class="form-group">
-                        <label style="font-size: 13px; font-weight: 600; color: #555;">📞 Phone</label>
+                        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 8.81a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 0h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 7.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            Phone
+                        </label>
                         <input type="tel" id="inline-phone" name="phone" placeholder="09xxxxxxxx"
-                               style="width:100%;padding:10px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:14px;box-sizing:border-box;">
+                               style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;box-sizing:border-box;transition:border-color 0.2s;outline:none;" onfocus="this.style.borderColor='#1a73e8'" onblur="this.style.borderColor='#e0e0e0'">
                     </div>
                     <div class="form-group">
-                        <label style="font-size: 13px; font-weight: 600; color: #555;">🏙️ City</label>
+                        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            City
+                        </label>
                         <input type="text" id="inline-city" name="city" placeholder="e.g. Addis Ababa"
-                               style="width:100%;padding:10px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:14px;box-sizing:border-box;">
+                               style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;box-sizing:border-box;transition:border-color 0.2s;outline:none;" onfocus="this.style.borderColor='#1a73e8'" onblur="this.style.borderColor='#e0e0e0'">
                     </div>
                     <div class="form-group">
-                        <label style="font-size: 13px; font-weight: 600; color: #555;">🏠 Address</label>
+                        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            Address
+                        </label>
                         <textarea id="inline-address" name="address" rows="2" placeholder="Your delivery address"
-                                  style="width:100%;padding:10px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:14px;box-sizing:border-box;resize:none;"></textarea>
+                                  style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;box-sizing:border-box;resize:none;transition:border-color 0.2s;outline:none;" onfocus="this.style.borderColor='#1a73e8'" onblur="this.style.borderColor='#e0e0e0'"></textarea>
                     </div>
-                    <div style="display: flex; gap: 10px; margin-top: 6px;">
-                        <button type="submit" id="inline-save-btn" class="btn btn-primary" style="flex:1; border:none; cursor:pointer;">💾 Save</button>
-                        <button type="button" onclick="closeInlineEditProfile()" class="btn btn-outline" style="flex:1; cursor:pointer;">Cancel</button>
+                    <div style="display:flex;gap:10px;margin-top:8px;">
+                        <button type="submit" id="inline-save-btn" class="prof-edit-btn" style="flex:1;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            Save
+                        </button>
+                        <button type="button" onclick="closeInlineEditProfile()" style="flex:1;padding:13px;border-radius:14px;border:1.5px solid #ddd;background:#fff;font-size:14px;font-weight:600;color:#666;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='#fff'">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -683,17 +731,15 @@
         .then(data => {
             if (data.success) {
                 const u = data.user;
-                const muted = 'color:#bbb;font-style:italic;font-weight:400;';
-                const normal = 'font-size:14px;font-weight:600;color:#333;';
                 if (profileName) profileName.textContent = u.full_name || sessionName;
                 if (profileAvatar) profileAvatar.textContent = (u.full_name || sessionName || '?')[0].toUpperCase();
 
                 const ph = document.getElementById('profile-phone');
                 const ci = document.getElementById('profile-city');
                 const ad = document.getElementById('profile-address');
-                if (ph) { ph.textContent = u.phone || 'Not set'; ph.style.cssText = u.phone ? normal : muted; }
-                if (ci) { ci.textContent = u.city  || 'Not set'; ci.style.cssText = u.city  ? normal : muted; }
-                if (ad) { ad.textContent = u.address || 'Not set'; ad.style.cssText = u.address ? normal : muted; }
+                if (ph) { ph.textContent = u.phone || 'Not set'; ph.className = 'prof-field-value' + (u.phone ? '' : ' muted'); }
+                if (ci) { ci.textContent = u.city  || 'Not set'; ci.className = 'prof-field-value' + (u.city  ? '' : ' muted'); }
+                if (ad) { ad.textContent = u.address || 'Not set'; ad.className = 'prof-field-value' + (u.address ? '' : ' muted'); }
 
                 const stats = data.order_stats || {};
                 const st = document.getElementById('stat-total');
@@ -779,9 +825,9 @@
 
                 if (pName) pName.textContent = newName;
                 if (pAvatar) pAvatar.textContent = newName ? newName[0].toUpperCase() : '?';
-                if (pPhone) { pPhone.textContent = newPhone || 'Not set'; pPhone.style.cssText = newPhone ? normal : muted; }
-                if (pCity)  { pCity.textContent  = newCity  || 'Not set'; pCity.style.cssText  = newCity  ? normal : muted; }
-                if (pAddr)  { pAddr.textContent  = newAddress || 'Not set'; pAddr.style.cssText = newAddress ? normal : muted; }
+                if (pPhone) { pPhone.textContent = newPhone || 'Not set'; pPhone.className = 'prof-field-value' + (newPhone ? '' : ' muted'); }
+                if (pCity)  { pCity.textContent  = newCity  || 'Not set'; pCity.className  = 'prof-field-value' + (newCity  ? '' : ' muted'); }
+                if (pAddr)  { pAddr.textContent  = newAddress || 'Not set'; pAddr.className = 'prof-field-value' + (newAddress ? '' : ' muted'); }
 
                 if (window.showToast) window.showToast(data.message || 'Profile updated!', 'success');
                 closeInlineEditProfile();

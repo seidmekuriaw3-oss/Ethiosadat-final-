@@ -699,21 +699,36 @@ def delete_account():
 @customer_bp.route('/orders')
 @user_login_required
 def user_orders():
-    """User order history."""
+    """User order history, optionally filtered by status."""
     lang = get_lang()
+    from flask import request as _req
+    status_filter = _req.args.get('status', '').strip().lower()
     try:
         conn = get_db()
         conn.row_factory = __import__('sqlite3').Row
         cursor = conn.cursor()
-        cursor.execute("""
-            SELECT * FROM orders WHERE user_id = ? ORDER BY id DESC
-        """, (session['user_id'],))
+        if status_filter == 'delivered':
+            cursor.execute(
+                "SELECT * FROM orders WHERE user_id = ? AND status = 'delivered' ORDER BY id DESC",
+                (session['user_id'],)
+            )
+        elif status_filter == 'pending':
+            cursor.execute(
+                "SELECT * FROM orders WHERE user_id = ? AND status NOT IN ('delivered','cancelled') ORDER BY id DESC",
+                (session['user_id'],)
+            )
+        else:
+            cursor.execute(
+                "SELECT * FROM orders WHERE user_id = ? ORDER BY id DESC",
+                (session['user_id'],)
+            )
         orders = cursor.fetchall()
         return render_template('auth/user_orders.html',
-                               orders=[dict(o) for o in orders] if orders else [], lang=lang)
+                               orders=[dict(o) for o in orders] if orders else [],
+                               lang=lang, status_filter=status_filter)
     except Exception as e:
         print(f"User orders error: {e}")
-        return render_template('auth/user_orders.html', orders=[], lang=lang)
+        return render_template('auth/user_orders.html', orders=[], lang=lang, status_filter='')
 
 
 @customer_bp.route('/order/<int:order_id>')
