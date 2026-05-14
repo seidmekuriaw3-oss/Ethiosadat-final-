@@ -30,6 +30,7 @@
         justify-content: center;
         font-size: 40px;
         font-weight: bold;
+        flex-shrink: 0;
     }
     .profile-header h1 {
         margin: 0 0 5px 0;
@@ -38,6 +39,36 @@
     .profile-header p {
         margin: 0;
         opacity: 0.9;
+    }
+    .profile-header-actions {
+        margin-left: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+    }
+    .discount-badge {
+        background: #4caf50;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        display: inline-block;
+    }
+    .btn-edit-profile {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.5);
+        padding: 8px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+    .btn-edit-profile:hover {
+        background: rgba(255,255,255,0.35);
     }
     .profile-card {
         background: var(--bg-white, white);
@@ -56,53 +87,40 @@
         align-items: center;
         gap: 10px;
     }
-    .form-group {
-        margin-bottom: 20px;
-    }
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
-        color: var(--text-color, #333);
-    }
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-        width: 100%;
-        padding: 12px 14px;
-        border: 1px solid var(--border-color, #ddd);
-        border-radius: 10px;
-        font-size: 14px;
-        transition: all 0.3s;
-        background: var(--bg-white, white);
-        color: var(--text-color, #333);
-    }
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
-        outline: none;
-        border-color: #1a73e8;
-        box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
-    }
-    .form-row {
+    .info-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 20px;
     }
-    .btn-save {
-        background: linear-gradient(135deg, #1a73e8, #0d47a1);
-        color: white;
-        border: none;
-        padding: 12px 28px;
-        border-radius: 10px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
+    .info-field {
+        padding: 14px 16px;
+        background: var(--bg-hover, #f8f9fa);
+        border-radius: 12px;
+        border-left: 3px solid #1a73e8;
     }
-    .btn-save:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(26,115,232,0.4);
+    .info-field label {
+        display: block;
+        font-size: 12px;
+        color: var(--text-muted, #888);
+        font-weight: 500;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .info-field p {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text-color, #333);
+    }
+    .info-field.full-width {
+        grid-column: 1 / -1;
+    }
+    .info-badge {
+        background: var(--bg-hover, #f5f5f5);
+        border-radius: 10px;
+        padding: 15px;
+        border-left: 4px solid #1a73e8;
     }
     .btn-outline {
         background: transparent;
@@ -134,24 +152,6 @@
         background: #d32f2f;
         transform: translateY(-2px);
     }
-    .info-badge {
-        background: var(--bg-hover, #f5f5f5);
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 20px;
-        border-left: 4px solid #1a73e8;
-    }
-    .info-badge p {
-        margin: 5px 0;
-    }
-    .discount-badge {
-        background: #4caf50;
-        color: white;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        display: inline-block;
-    }
     .success-message {
         background: #e8f5e9;
         color: #2e7d32;
@@ -160,13 +160,118 @@
         margin-bottom: 20px;
         border-left: 4px solid #4caf50;
     }
-    .error-message {
+    .error-message-bar {
         background: #ffebee;
         color: #c62828;
         padding: 12px 16px;
         border-radius: 12px;
         margin-bottom: 20px;
         border-left: 4px solid #f44336;
+    }
+
+    /* Edit Profile Modal */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    .modal-overlay.active {
+        display: flex;
+    }
+    .modal-box {
+        background: var(--bg-white, white);
+        border-radius: 20px;
+        padding: 32px;
+        width: 100%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        position: relative;
+    }
+    .modal-box h3 {
+        margin: 0 0 24px 0;
+        font-size: 20px;
+        color: var(--text-color, #333);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 14px;
+        border-bottom: 2px solid var(--border-color, #f0f0f0);
+    }
+    .modal-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: var(--bg-hover, #f0f0f0);
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted, #666);
+        transition: background 0.2s;
+    }
+    .modal-close:hover {
+        background: #e0e0e0;
+    }
+    .form-group {
+        margin-bottom: 18px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 7px;
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--text-color, #333);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1px solid var(--border-color, #ddd);
+        border-radius: 10px;
+        font-size: 14px;
+        transition: all 0.3s;
+        background: var(--bg-white, white);
+        color: var(--text-color, #333);
+        box-sizing: border-box;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
+    }
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+    .btn-save {
+        background: linear-gradient(135deg, #1a73e8, #0d47a1);
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(26,115,232,0.4);
     }
     .spinner-sm {
         display: inline-block;
@@ -182,42 +287,32 @@
     @keyframes spin {
         to { transform: rotate(360deg); }
     }
+
     @media (max-width: 768px) {
-        .profile-container {
-            padding: 20px 15px;
-        }
-        .profile-header {
-            padding: 20px;
-            text-align: center;
-            justify-content: center;
-        }
-        .form-row {
-            grid-template-columns: 1fr;
-            gap: 0;
-        }
-        .profile-card {
-            padding: 20px;
-        }
+        .profile-container { padding: 20px 15px; }
+        .profile-header { padding: 20px; text-align: center; justify-content: center; }
+        .profile-header-actions { margin-left: 0; align-items: center; }
+        .info-grid { grid-template-columns: 1fr; }
+        .info-field.full-width { grid-column: auto; }
+        .form-row { grid-template-columns: 1fr; gap: 0; }
+        .profile-card { padding: 20px; }
+        .modal-box { padding: 24px; }
     }
     @media (prefers-color-scheme: dark) {
-        .info-badge {
-            background: #1a1a2e;
-        }
-        .success-message {
-            background: #1a3a2a;
-            color: #81c784;
-        }
-        .error-message {
-            background: #4a1a1a;
-            color: #ef9a9a;
-        }
+        .info-badge { background: #1a1a2e; }
+        .info-field { background: #1a1a2e; }
+        .success-message { background: #1a3a2a; color: #81c784; }
+        .error-message-bar { background: #4a1a1a; color: #ef9a9a; }
+        .modal-box { background: #1e1e2e; }
+        .modal-close { background: #2a2a3e; color: #ccc; }
+        .modal-close:hover { background: #3a3a4e; }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="profile-container">
-    
+
     <!-- Profile Header -->
     <div class="profile-header">
         <div class="profile-avatar">
@@ -230,88 +325,56 @@
             <p style="opacity: 0.8;">📞 {{ user.phone }}</p>
             {% endif %}
         </div>
-        <div style="margin-left: auto;">
+        <div class="profile-header-actions">
             <span class="discount-badge">🎉 10% OFF for members!</span>
+            <button class="btn-edit-profile" onclick="openEditModal()">✏️ Edit Profile</button>
         </div>
     </div>
-    
+
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% for category, message in messages %}
-            <div class="{% if category == 'error' or category == 'danger' %}error-message{% elif category == 'success' %}success-message{% else %}info-message{% endif %}">
+            <div class="{% if category == 'error' or category == 'danger' %}error-message-bar{% else %}success-message{% endif %}">
                 {{ message }}
             </div>
         {% endfor %}
     {% endwith %}
-    
-    <!-- Profile Information -->
+
+    <!-- Personal Information (read-only) -->
     <div class="profile-card">
         <h3>
             <span>👤</span> Personal Information
         </h3>
-        
-        <form method="post" action="{{ url_for('update_profile') }}" id="profileForm" onsubmit="return validateProfileForm()">
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Full Name <span style="color: #f44336;">*</span></label>
-                    <input type="text" 
-                           name="full_name" 
-                           id="full_name" 
-                           value="{{ user.full_name }}" 
-                           required
-                           placeholder="Your full name">
-                </div>
-                <div class="form-group">
-                    <label>Email Address <span style="color: #f44336;">*</span></label>
-                    <input type="email" 
-                           name="email" 
-                           id="email" 
-                           value="{{ user.email }}" 
-                           required
-                           readonly
-                           style="background: var(--bg-hover, #f5f5f5); cursor: not-allowed;">
-                    <small>Email cannot be changed</small>
-                </div>
+        <div class="info-grid">
+            <div class="info-field">
+                <label>Full Name</label>
+                <p>{{ user.full_name or 'Not provided' }}</p>
             </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" 
-                           name="phone" 
-                           id="phone" 
-                           value="{{ user.phone or '' }}" 
-                           placeholder="e.g., 0912345678">
-                </div>
-                <div class="form-group">
-                    <label>City</label>
-                    <input type="text" 
-                           name="city" 
-                           id="city" 
-                           value="{{ user.city or '' }}" 
-                           placeholder="e.g., Addis Ababa">
-                </div>
+            <div class="info-field">
+                <label>Email Address</label>
+                <p>{{ user.email or 'Not provided' }}</p>
             </div>
-            
-            <div class="form-group">
+            <div class="info-field">
+                <label>Phone Number</label>
+                <p>{{ user.phone or 'Not provided' }}</p>
+            </div>
+            <div class="info-field">
+                <label>City</label>
+                <p>{{ user.city or 'Not provided' }}</p>
+            </div>
+            {% if user.address %}
+            <div class="info-field full-width">
                 <label>Address</label>
-                <textarea name="address" 
-                          id="address" 
-                          rows="3" 
-                          placeholder="Your full address...">{{ user.address or '' }}</textarea>
+                <p>{{ user.address }}</p>
             </div>
-            
-            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
-                <button type="submit" class="btn-save" id="saveBtn">
-                    💾 Save Changes
-                </button>
-                <button type="button" onclick="resetForm()" class="btn-outline">
-                    Reset
-                </button>
+            {% endif %}
+            <div class="info-field">
+                <label>Member Since</label>
+                <p>{{ user.created_at.strftime('%B %d, %Y') if user.created_at else 'N/A' }}</p>
             </div>
-        </form>
+        </div>
     </div>
-    
+
     <!-- Order Statistics -->
     <div class="profile-card">
         <h3>
@@ -339,13 +402,12 @@
             <a href="{{ url_for('user_orders') }}" class="btn-outline">View All Orders →</a>
         </div>
     </div>
-    
+
     <!-- Account Settings -->
     <div class="profile-card">
         <h3>
             <span>⚙️</span> Account Settings
         </h3>
-        
         <div style="display: flex; gap: 15px; flex-wrap: wrap;">
             <a href="{{ url_for('change_password') }}" class="btn-outline">
                 🔒 Change Password
@@ -354,14 +416,8 @@
                 🚪 Logout
             </button>
         </div>
-        
-        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border-color, #eee);">
-            <p style="margin: 0; font-size: 12px; color: var(--text-muted, #666);">
-                Member since: {{ user.created_at.strftime('%B %d, %Y') if user.created_at else 'N/A' }}
-            </p>
-        </div>
     </div>
-    
+
     <!-- Danger Zone -->
     <div class="profile-card" style="border: 1px solid #ffebee;">
         <h3 style="color: #f44336;">
@@ -374,94 +430,131 @@
     </div>
 </div>
 
+<!-- Edit Profile Modal -->
+<div class="modal-overlay" id="editProfileModal" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeEditModal()" aria-label="Close">✕</button>
+        <h3>✏️ Edit Profile</h3>
+
+        <form method="post" action="{{ url_for('update_profile') }}" id="profileForm" onsubmit="return validateProfileForm()">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name <span style="color: #f44336;">*</span></label>
+                    <input type="text"
+                           name="full_name"
+                           id="full_name"
+                           value="{{ user.full_name }}"
+                           required
+                           placeholder="Your full name">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email"
+                           value="{{ user.email }}"
+                           readonly
+                           style="background: var(--bg-hover, #f5f5f5); cursor: not-allowed;">
+                    <small style="color: var(--text-muted, #999); font-size: 12px;">Email cannot be changed</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel"
+                           name="phone"
+                           id="phone"
+                           value="{{ user.phone or '' }}"
+                           placeholder="e.g., 0912345678">
+                </div>
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text"
+                           name="city"
+                           id="city"
+                           value="{{ user.city or '' }}"
+                           placeholder="e.g., Addis Ababa">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Address</label>
+                <textarea name="address"
+                          id="address"
+                          rows="3"
+                          placeholder="Your full address...">{{ user.address or '' }}</textarea>
+            </div>
+
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px;">
+                <button type="submit" class="btn-save" id="saveBtn">
+                    💾 Save Changes
+                </button>
+                <button type="button" onclick="closeEditModal()" class="btn-outline">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
-    // Form validation
+    function openEditModal() {
+        document.getElementById('editProfileModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeEditModal() {
+        document.getElementById('editProfileModal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function closeModalOnBackdrop(e) {
+        if (e.target === document.getElementById('editProfileModal')) {
+            closeEditModal();
+        }
+    }
+
     function validateProfileForm() {
         const fullName = document.getElementById('full_name').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const submitBtn = document.getElementById('saveBtn');
-        
+
         if (!fullName) {
-            showMessage('Please enter your full name', 'error');
+            alert('Please enter your full name');
             return false;
         }
-        
-        // Validate phone number if provided
+
         if (phone && !isValidPhone(phone)) {
-            showMessage('Please enter a valid phone number (e.g., 0912345678)', 'error');
+            alert('Please enter a valid phone number (e.g., 0912345678)');
             return false;
         }
-        
-        // Show loading state
+
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-sm"></span> Saving...';
-        
         return true;
     }
-    
+
     function isValidPhone(phone) {
         const cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
         const re = /^(09|07)[0-9]{8}$/;
         return re.test(cleaned);
     }
-    
-    function isValidEmail(email) {
-        const re = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
-        return re.test(email);
-    }
-    
-    // Reset form to original values
-    function resetForm() {
-        document.getElementById('full_name').value = '{{ user.full_name }}';
-        document.getElementById('phone').value = '{{ user.phone or '' }}';
-        document.getElementById('city').value = '{{ user.city or '' }}';
-        document.getElementById('address').value = '{{ user.address or '' }}';
-        
-        showMessage('Form reset to original values', 'info');
-    }
-    
-    // Show temporary message
-    function showMessage(message, type) {
-        // Remove existing temporary messages
-        const existingMsg = document.querySelector('.temp-message');
-        if (existingMsg) existingMsg.remove();
-        
-        const msgDiv = document.createElement('div');
-        msgDiv.className = type === 'error' ? 'error-message temp-message' : 'success-message temp-message';
-        msgDiv.textContent = message;
-        
-        const profileCard = document.querySelector('.profile-card');
-        if (profileCard && profileCard.parentNode) {
-            profileCard.parentNode.insertBefore(msgDiv, profileCard);
-        }
-        
-        setTimeout(() => {
-            msgDiv.style.opacity = '0';
-            msgDiv.style.transition = 'opacity 0.3s ease';
-            setTimeout(() => {
-                if (msgDiv && msgDiv.parentNode) msgDiv.remove();
-            }, 300);
-        }, 4000);
-    }
-    
-    // Logout function
+
     function logout() {
         if (confirm('Are you sure you want to logout?')) {
             window.location.href = '{{ url_for('user_logout') }}';
         }
     }
-    
-    // Delete account function
+
     function deleteAccount() {
         const confirmMsg = '⚠️ WARNING: This action cannot be undone!\n\n'
                          + 'All your personal information, order history, and account data will be permanently deleted.\n\n'
                          + 'Are you absolutely sure you want to delete your account?';
-        
+
         if (confirm(confirmMsg)) {
             const password = prompt('Please enter your password to confirm account deletion:');
             if (password) {
                 if (window.showLoading) window.showLoading(true);
-                
+
                 fetch('{{ url_for('delete_account') }}', {
                     method: 'POST',
                     headers: {
@@ -488,27 +581,23 @@
             }
         }
     }
-    
+
     // Auto-hide flash messages after 5 seconds
     setTimeout(() => {
-        const messages = document.querySelectorAll('.success-message, .error-message, .info-message');
+        const messages = document.querySelectorAll('.success-message, .error-message-bar');
         messages.forEach(msg => {
-            if (!msg.classList.contains('temp-message')) {
-                setTimeout(() => {
-                    msg.style.opacity = '0';
-                    msg.style.transition = 'opacity 0.3s ease';
-                    setTimeout(() => {
-                        if (msg && msg.parentNode) msg.remove();
-                    }, 300);
-                }, 5000);
-            }
+            setTimeout(() => {
+                msg.style.opacity = '0';
+                msg.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => { if (msg.parentNode) msg.remove(); }, 300);
+            }, 5000);
         });
     }, 100);
-    
-    // Remove loading state if page loads with error
+
+    // Reset save button if page reloaded with error
     window.addEventListener('load', function() {
         const submitBtn = document.getElementById('saveBtn');
-        if (submitBtn && submitBtn.disabled && !submitBtn.innerHTML.includes('Save')) {
+        if (submitBtn && submitBtn.disabled) {
             submitBtn.disabled = false;
             submitBtn.innerHTML = '💾 Save Changes';
         }
