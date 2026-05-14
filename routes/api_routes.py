@@ -1168,3 +1168,31 @@ def api_submit_order():
         })
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
+@api_bp.route('/user/profile', methods=['GET'])
+def api_get_user_profile():
+    """Return current logged-in user profile data as JSON."""
+    if not session.get('user_id'):
+        return jsonify({'success': False, 'error': 'Not logged in'}), 401
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute(
+            "SELECT id, full_name, email, phone, city, address FROM users WHERE id = ?",
+            (session['user_id'],)
+        )
+        row = cursor.fetchone()
+        if not row:
+            return jsonify({'success': False, 'error': 'User not found'}), 404
+        return jsonify({
+            'success': True,
+            'user': {
+                'full_name': row['full_name'] or '',
+                'email':     row['email'] or '',
+                'phone':     row['phone'] or '',
+                'city':      row['city'] or '',
+                'address':   row['address'] or '',
+            }
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500

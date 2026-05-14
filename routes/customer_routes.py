@@ -621,6 +621,7 @@ def update_profile():
     address = request.form.get('address', '').strip()
     city = request.form.get('city', '').strip()
 
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     try:
         conn = get_db()
         cursor = conn.cursor()
@@ -632,9 +633,13 @@ def update_profile():
         conn.commit()
         session['user_name'] = full_name
         session['user_phone'] = phone
+        if is_ajax:
+            return jsonify({'success': True, 'message': 'Profile updated successfully!'})
         flash('Profile updated successfully!', 'success')
     except Exception as e:
         print(f"Update profile error: {e}")
+        if is_ajax:
+            return jsonify({'success': False, 'error': str(e)}), 500
         flash('Error updating profile.', 'error')
 
     return redirect(url_for('customer.user_profile'))

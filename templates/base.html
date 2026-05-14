@@ -396,15 +396,57 @@
         
         <!-- Profile View -->
         <div id="profile-view" style="display: none;">
-            <div class="profile-info">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <div style="font-size: 60px;">👤</div>
-                    <h3 id="profile-name"></h3>
-                    <p id="profile-email"></p>
+            <!-- Main account panel -->
+            <div id="account-main-panel">
+                <div class="profile-info">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div style="font-size: 60px;">👤</div>
+                        <h3 id="profile-name" style="margin: 8px 0 4px;"></h3>
+                        <p id="profile-email" style="color: #888; margin: 0; font-size: 14px;"></p>
+                    </div>
+                    <button onclick="openInlineEditProfile()" class="btn btn-primary" style="margin-bottom: 10px; width: 100%; border: none; cursor: pointer;">📝 {{ t.edit_profile }}</button>
+                    <a href="{{ url_for('customer.user_orders') }}" class="btn btn-outline" style="margin-bottom: 10px; display: block; text-align: center;">📦 {{ t.my_orders }}</a>
+                    <a href="{{ url_for('customer.user_logout') }}" class="btn btn-danger" style="display: block; text-align: center;">🚪 {{ t.logout }}</a>
                 </div>
-                <a href="{{ url_for('customer.user_profile') }}" class="btn btn-primary" style="margin-bottom: 10px;">📝 {{ t.edit_profile }}</a>
-                <a href="{{ url_for('customer.user_orders') }}" class="btn btn-outline" style="margin-bottom: 10px;">📦 {{ t.my_orders }}</a>
-                <a href="{{ url_for('customer.user_logout') }}" class="btn btn-danger">🚪 {{ t.logout }}</a>
+            </div>
+            <!-- Inline Edit Profile panel -->
+            <div id="account-edit-panel" style="display: none;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <button onclick="closeInlineEditProfile()" style="background: none; border: none; font-size: 22px; cursor: pointer; color: #666;">←</button>
+                    <h3 style="margin: 0; font-size: 17px;">📝 {{ t.edit_profile }}</h3>
+                </div>
+                <form id="inline-edit-form" onsubmit="submitInlineEdit(event)">
+                    <div class="form-group">
+                        <label style="font-size: 13px; font-weight: 600; color: #555;">👤 Full Name <span style="color:#e53935">*</span></label>
+                        <input type="text" id="inline-fn" name="full_name" required placeholder="Your full name"
+                               style="width:100%;padding:10px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:14px;box-sizing:border-box;">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size: 13px; font-weight: 600; color: #555;">📧 Email</label>
+                        <input type="email" id="inline-email" disabled
+                               style="width:100%;padding:10px 14px;border:1.5px solid #eee;border-radius:10px;font-size:14px;background:#f5f5f5;color:#999;box-sizing:border-box;">
+                        <small style="color:#aaa;font-size:11px;">Email cannot be changed</small>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size: 13px; font-weight: 600; color: #555;">📞 Phone</label>
+                        <input type="tel" id="inline-phone" name="phone" placeholder="09xxxxxxxx"
+                               style="width:100%;padding:10px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:14px;box-sizing:border-box;">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size: 13px; font-weight: 600; color: #555;">🏙️ City</label>
+                        <input type="text" id="inline-city" name="city" placeholder="e.g. Addis Ababa"
+                               style="width:100%;padding:10px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:14px;box-sizing:border-box;">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size: 13px; font-weight: 600; color: #555;">🏠 Address</label>
+                        <textarea id="inline-address" name="address" rows="2" placeholder="Your delivery address"
+                                  style="width:100%;padding:10px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:14px;box-sizing:border-box;resize:none;"></textarea>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 6px;">
+                        <button type="submit" id="inline-save-btn" class="btn btn-primary" style="flex:1; border:none; cursor:pointer;">💾 Save</button>
+                        <button type="button" onclick="closeInlineEditProfile()" class="btn btn-outline" style="flex:1; cursor:pointer;">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -592,6 +634,82 @@
         if (modalTitle) modalTitle.innerHTML = '👤 ' + ('{% if lang == 'am' %}መገለጫ{% else %}My Account{% endif %}');
         if (profileName) profileName.textContent = '{{ session.get('user_name', '') }}';
         if (profileEmail) profileEmail.textContent = '{{ session.get('user_email', '') }}';
+        closeInlineEditProfile();
+    }
+
+    function openInlineEditProfile() {
+        document.getElementById('account-main-panel').style.display = 'none';
+        document.getElementById('account-edit-panel').style.display = 'block';
+        const modalTitle = document.getElementById('modal-title');
+        if (modalTitle) modalTitle.innerHTML = '📝 {% if lang == "am" %}መገለጫ ያስተካክሉ{% else %}Edit Profile{% endif %}';
+
+        fetch('{{ url_for("api.api_get_user_profile") }}', {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                const u = data.user;
+                const fn = document.getElementById('inline-fn');
+                const em = document.getElementById('inline-email');
+                const ph = document.getElementById('inline-phone');
+                const ci = document.getElementById('inline-city');
+                const ad = document.getElementById('inline-address');
+                if (fn) fn.value = u.full_name;
+                if (em) em.value = u.email;
+                if (ph) ph.value = u.phone;
+                if (ci) ci.value = u.city;
+                if (ad) ad.value = u.address;
+            }
+        })
+        .catch(() => {
+            const em = document.getElementById('inline-email');
+            if (em) em.value = '{{ session.get("user_email", "") }}';
+            const fn = document.getElementById('inline-fn');
+            if (fn) fn.value = '{{ session.get("user_name", "") }}';
+        });
+    }
+
+    function closeInlineEditProfile() {
+        const main = document.getElementById('account-main-panel');
+        const edit = document.getElementById('account-edit-panel');
+        if (main) main.style.display = 'block';
+        if (edit) edit.style.display = 'none';
+        const modalTitle = document.getElementById('modal-title');
+        if (modalTitle) modalTitle.innerHTML = '👤 {% if lang == "am" %}መገለጫ{% else %}My Account{% endif %}';
+    }
+
+    function submitInlineEdit(event) {
+        event.preventDefault();
+        const btn = document.getElementById('inline-save-btn');
+        btn.disabled = true;
+        btn.textContent = '⏳ Saving…';
+
+        const formData = new FormData(document.getElementById('inline-edit-form'));
+        fetch('{{ url_for("customer.update_profile") }}', {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                const newName = document.getElementById('inline-fn').value.trim();
+                const pName = document.getElementById('profile-name');
+                if (pName) pName.textContent = newName;
+                if (window.showToast) window.showToast(data.message || 'Profile updated!', 'success');
+                closeInlineEditProfile();
+            } else {
+                if (window.showToast) window.showToast(data.error || 'Update failed', 'error');
+            }
+        })
+        .catch(() => {
+            if (window.showToast) window.showToast('Network error. Please try again.', 'error');
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.textContent = '💾 Save';
+        });
     }
     
     // ==================== LOGIN/REGISTER AJAX SUBMIT ====================
