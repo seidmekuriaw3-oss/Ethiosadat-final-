@@ -399,12 +399,46 @@
             <!-- Main account panel -->
             <div id="account-main-panel">
                 <div class="profile-info">
+                    <!-- Avatar + Name + Email -->
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <div style="font-size: 60px;">👤</div>
-                        <h3 id="profile-name" style="margin: 8px 0 4px;"></h3>
-                        <p id="profile-email" style="color: #888; margin: 0; font-size: 14px;"></p>
+                        <div id="profile-avatar" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;"></div>
+                        <h3 id="profile-name" style="margin: 4px 0 2px; font-size:17px;"></h3>
+                        <p id="profile-email" style="color: #888; margin: 0; font-size: 13px;"></p>
                     </div>
-                    <button onclick="openInlineEditProfile()" class="btn btn-primary" style="margin-bottom: 10px; width: 100%; border: none; cursor: pointer;">📝 {{ t.edit_profile }}</button>
+                    <!-- Info fields -->
+                    <div style="background:#f8f9fc;border-radius:14px;padding:14px 16px;margin-bottom:16px;">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                            <div>
+                                <div style="font-size:10px;font-weight:700;color:#9ba3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">📞 Phone</div>
+                                <div id="profile-phone" style="font-size:14px;font-weight:600;color:#333;"></div>
+                            </div>
+                            <div>
+                                <div style="font-size:10px;font-weight:700;color:#9ba3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">🏙️ City</div>
+                                <div id="profile-city" style="font-size:14px;font-weight:600;color:#333;"></div>
+                            </div>
+                            <div style="grid-column:1/-1;">
+                                <div style="font-size:10px;font-weight:700;color:#9ba3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">🏠 Address</div>
+                                <div id="profile-address" style="font-size:14px;font-weight:600;color:#333;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Order Stats -->
+                    <div id="profile-stats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;">
+                        <div style="background:#e8f0fe;border-radius:12px;padding:10px 8px;text-align:center;">
+                            <div id="stat-total" style="font-size:20px;font-weight:800;color:#1a73e8;">—</div>
+                            <div style="font-size:10px;color:#555;font-weight:600;">Orders</div>
+                        </div>
+                        <div style="background:#e8f5e9;border-radius:12px;padding:10px 8px;text-align:center;">
+                            <div id="stat-delivered" style="font-size:20px;font-weight:800;color:#43a047;">—</div>
+                            <div style="font-size:10px;color:#555;font-weight:600;">Delivered</div>
+                        </div>
+                        <div style="background:#fff3e0;border-radius:12px;padding:10px 8px;text-align:center;">
+                            <div id="stat-pending" style="font-size:20px;font-weight:800;color:#e65100;">—</div>
+                            <div style="font-size:10px;color:#555;font-weight:600;">Pending</div>
+                        </div>
+                    </div>
+                    <!-- Action Buttons -->
+                    <button onclick="openInlineEditProfile()" class="btn btn-primary" style="margin-bottom: 10px; width: 100%; border: none; cursor: pointer;">✏️ {{ t.edit_profile }}</button>
                     <a href="{{ url_for('customer.user_orders') }}" class="btn btn-outline" style="margin-bottom: 10px; display: block; text-align: center;">📦 {{ t.my_orders }}</a>
                     <a href="{{ url_for('customer.user_logout') }}" class="btn btn-danger" style="display: block; text-align: center;">🚪 {{ t.logout }}</a>
                 </div>
@@ -627,14 +661,50 @@
         const modalTitle = document.getElementById('modal-title');
         const profileName = document.getElementById('profile-name');
         const profileEmail = document.getElementById('profile-email');
-        
+        const profileAvatar = document.getElementById('profile-avatar');
+
         if (loginForm) loginForm.style.display = 'none';
         if (registerForm) registerForm.style.display = 'none';
         if (profileView) profileView.style.display = 'block';
         if (modalTitle) modalTitle.innerHTML = '👤 ' + ('{% if lang == 'am' %}መገለጫ{% else %}My Account{% endif %}');
-        if (profileName) profileName.textContent = '{{ session.get('user_name', '') }}';
-        if (profileEmail) profileEmail.textContent = '{{ session.get('user_email', '') }}';
+
+        const sessionName = '{{ session.get('user_name', '') }}';
+        const sessionEmail = '{{ session.get('user_email', '') }}';
+        if (profileName) profileName.textContent = sessionName;
+        if (profileEmail) profileEmail.textContent = sessionEmail;
+        if (profileAvatar) profileAvatar.textContent = sessionName ? sessionName[0].toUpperCase() : '?';
+
         closeInlineEditProfile();
+
+        fetch('{{ url_for("api.api_get_user_profile") }}', {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                const u = data.user;
+                const muted = 'color:#bbb;font-style:italic;font-weight:400;';
+                const normal = 'font-size:14px;font-weight:600;color:#333;';
+                if (profileName) profileName.textContent = u.full_name || sessionName;
+                if (profileAvatar) profileAvatar.textContent = (u.full_name || sessionName || '?')[0].toUpperCase();
+
+                const ph = document.getElementById('profile-phone');
+                const ci = document.getElementById('profile-city');
+                const ad = document.getElementById('profile-address');
+                if (ph) { ph.textContent = u.phone || 'Not set'; ph.style.cssText = u.phone ? normal : muted; }
+                if (ci) { ci.textContent = u.city  || 'Not set'; ci.style.cssText = u.city  ? normal : muted; }
+                if (ad) { ad.textContent = u.address || 'Not set'; ad.style.cssText = u.address ? normal : muted; }
+
+                const stats = data.order_stats || {};
+                const st = document.getElementById('stat-total');
+                const sd = document.getElementById('stat-delivered');
+                const sp = document.getElementById('stat-pending');
+                if (st) st.textContent = stats.total ?? 0;
+                if (sd) sd.textContent = stats.delivered ?? 0;
+                if (sp) sp.textContent = stats.pending ?? 0;
+            }
+        })
+        .catch(() => {});
     }
 
     function openInlineEditProfile() {
@@ -695,8 +765,24 @@
         .then(data => {
             if (data.success) {
                 const newName = document.getElementById('inline-fn').value.trim();
+                const newPhone = document.getElementById('inline-phone').value.trim();
+                const newCity = document.getElementById('inline-city').value.trim();
+                const newAddress = document.getElementById('inline-address').value.trim();
+                const muted = 'color:#bbb;font-style:italic;font-weight:400;';
+                const normal = 'font-size:14px;font-weight:600;color:#333;';
+
                 const pName = document.getElementById('profile-name');
+                const pAvatar = document.getElementById('profile-avatar');
+                const pPhone = document.getElementById('profile-phone');
+                const pCity = document.getElementById('profile-city');
+                const pAddr = document.getElementById('profile-address');
+
                 if (pName) pName.textContent = newName;
+                if (pAvatar) pAvatar.textContent = newName ? newName[0].toUpperCase() : '?';
+                if (pPhone) { pPhone.textContent = newPhone || 'Not set'; pPhone.style.cssText = newPhone ? normal : muted; }
+                if (pCity)  { pCity.textContent  = newCity  || 'Not set'; pCity.style.cssText  = newCity  ? normal : muted; }
+                if (pAddr)  { pAddr.textContent  = newAddress || 'Not set'; pAddr.style.cssText = newAddress ? normal : muted; }
+
                 if (window.showToast) window.showToast(data.message || 'Profile updated!', 'success');
                 closeInlineEditProfile();
             } else {

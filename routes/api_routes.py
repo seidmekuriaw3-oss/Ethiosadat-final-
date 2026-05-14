@@ -1184,6 +1184,15 @@ def api_get_user_profile():
         row = cursor.fetchone()
         if not row:
             return jsonify({'success': False, 'error': 'User not found'}), 404
+
+        uid = session['user_id']
+        cursor.execute("SELECT COUNT(*) as cnt FROM orders WHERE user_id = ?", (uid,))
+        total_row = cursor.fetchone()
+        cursor.execute("SELECT COUNT(*) as cnt FROM orders WHERE user_id = ? AND status = 'delivered'", (uid,))
+        delivered_row = cursor.fetchone()
+        cursor.execute("SELECT COUNT(*) as cnt FROM orders WHERE user_id = ? AND status NOT IN ('delivered','cancelled')", (uid,))
+        pending_row = cursor.fetchone()
+
         return jsonify({
             'success': True,
             'user': {
@@ -1192,6 +1201,11 @@ def api_get_user_profile():
                 'phone':     row['phone'] or '',
                 'city':      row['city'] or '',
                 'address':   row['address'] or '',
+            },
+            'order_stats': {
+                'total':     total_row['cnt'] if total_row else 0,
+                'delivered': delivered_row['cnt'] if delivered_row else 0,
+                'pending':   pending_row['cnt'] if pending_row else 0,
             }
         })
     except Exception as e:
