@@ -30,7 +30,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "pkill -f 'python app.py' 2>/dev/null; sleep 2; python app.py"
+args = "pkill -f 'python app.py' 2>/dev/null; sleep 2; while true; do python app.py; echo 'App exited, restarting in 3s...'; sleep 3; done"
 waitForPort = 5000
 
 [agent]
