@@ -93,9 +93,9 @@
             {% endif %}
 <hr class="menu-divider">
 <div class="mobile-language">
-    <a href="{{ url_for('set_language', lang='am') }}" class="lang-option">🇪🇹 አማርኛ</a>
-    <a href="{{ url_for('set_language', lang='en') }}" class="lang-option">🇬🇧 English</a>
-    <a href="{{ url_for('set_language', lang='ar') }}" class="lang-option">🇸🇦 العربية</a>
+    <a href="{{ url_for('utility.set_language', lang='am') }}" class="lang-option">🇪🇹 አማርኛ</a>
+    <a href="{{ url_for('utility.set_language', lang='en') }}" class="lang-option">🇬🇧 English</a>
+    <a href="{{ url_for('utility.set_language', lang='ar') }}" class="lang-option">🇸🇦 العربية</a>
 </div>
                 <hr class="menu-divider">
             <a href="{{ url_for('customer.about') }}" class="mobile-nav-link" onclick="toggleMobileMenu()">

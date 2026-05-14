@@ -471,7 +471,7 @@
         ">
             <div style="font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 8px; text-align: center;">Language / ቋንቋ</div>
             <div style="display: flex; flex-direction: column; gap: 4px;">
-                <a href="{{ url_for('set_language', lang='am') }}" style="
+                <a href="{{ url_for('utility.set_language', lang='am') }}" style="
                     color: rgba(255,255,255,0.8);
                     text-decoration: none;
                     font-size: 12px;
@@ -481,7 +481,7 @@
                     text-align: center;
                     {% if session.get('lang') == 'am' %}background: rgba(255,255,255,0.2);{% endif %}
                 ">🇪🇹 አማርኛ</a>
-                <a href="{{ url_for('set_language', lang='en') }}" style="
+                <a href="{{ url_for('utility.set_language', lang='en') }}" style="
                     color: rgba(255,255,255,0.8);
                     text-decoration: none;
                     font-size: 12px;
@@ -491,7 +491,7 @@
                     text-align: center;
                     {% if session.get('lang') == 'en' or not session.get('lang') %}background: rgba(255,255,255,0.2);{% endif %}
                 ">🇬🇧 English</a>
-                <a href="{{ url_for('set_language', lang='ar') }}" style="
+                <a href="{{ url_for('utility.set_language', lang='ar') }}" style="
                     color: rgba(255,255,255,0.8);
                     text-decoration: none;
                     font-size: 12px;
