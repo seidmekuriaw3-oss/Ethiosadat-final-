@@ -432,8 +432,29 @@ def user_profile():
     cursor = db.cursor()
     cursor.execute("SELECT * FROM users WHERE id = ?", (session['user_id'],))
     user = cursor.fetchone()
-    
-    return render_template('auth/user_profile.html', user=user)
+
+    cursor.execute("""
+        SELECT 
+            COUNT(*) as total,
+            SUM(CASE WHEN status = 'delivered' THEN 1 ELSE 0 END) as delivered,
+            SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
+            SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelled,
+            SUM(total) as total_spent
+        FROM orders WHERE user_id = ?
+    """, (session['user_id'],))
+    order_stats_row = cursor.fetchone()
+    order_stats = dict(order_stats_row) if order_stats_row else {}
+
+    cursor.execute("""
+        SELECT * FROM orders
+        WHERE user_id = ?
+        ORDER BY id DESC
+        LIMIT 20
+    """, (session['user_id'],))
+    orders_raw = cursor.fetchall()
+    orders = [dict(o) for o in orders_raw] if orders_raw else []
+
+    return render_template('auth/user_profile.html', user=user, order_stats=order_stats, orders=orders)
 
 
 @customer_bp.route('/profile/update', methods=['POST'])
