@@ -1881,12 +1881,21 @@ def user_profile():
             FROM orders WHERE user_id = ?
         """, (session['user_id'],))
         order_stats = cursor.fetchone()
-        
 
-        
+        # Get recent orders for Order History tab
+        cursor.execute("""
+            SELECT * FROM orders 
+            WHERE user_id = ? 
+            ORDER BY id DESC
+            LIMIT 20
+        """, (session['user_id'],))
+        orders_raw = cursor.fetchall()
+        orders = [dict(o) for o in orders_raw] if orders_raw else []
+
         return render_template('auth/user_profile.html', 
                                user=dict(user) if user else None,
                                order_stats=dict(order_stats) if order_stats else {},
+                               orders=orders,
                                lang=lang, 
                                t=t)
                                

@@ -15121,3 +15121,5 @@ LINE 6: ...ሉ', '', '', '', '', 'customers', CURRENT_TIMESTAMP, 'admin')
 
 2026-05-14 05:55:34,158 - app - ERROR - Error serving static image logo.svg: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
 2026-05-14 05:55:34,158 - app - WARNING - 404 Error: http://fc46b92c-a561-4cc6-901a-9b6d80eafe74-00-rcp0zmq6pvk9.riker.replit.dev/static/images/logo.svg
+2026-05-14 06:12:42,093 - app - WARNING - Failed login attempt for email: seidmekuriaw3@gmail.com
+2026-05-14 06:12:57,985 - app - WARNING - Failed login attempt for email: seidmekuriaw3@gmail.com

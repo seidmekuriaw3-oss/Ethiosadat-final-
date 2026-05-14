@@ -55514,3 +55514,8 @@ LINE 6: ...ሉ', '', '', '', '', 'customers', CURRENT_TIMESTAMP, 'admin')
 2026-05-14 05:56:45,784 - app - INFO - New user registered: ethiosadat@gmail.com
 2026-05-14 05:56:45,784 - app - INFO - Welcome email would be sent to ethiosadat@gmail.com
 2026-05-14 06:09:09,990 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-14 06:11:56,408 - app - INFO - Home page - Featured: 0, New: 0, Ads: 0
+2026-05-14 06:12:42,093 - app - WARNING - Failed login attempt for email: seidmekuriaw3@gmail.com
+2026-05-14 06:12:57,985 - app - WARNING - Failed login attempt for email: seidmekuriaw3@gmail.com
+2026-05-14 06:13:29,859 - app - INFO - New user registered: seidmekuriaw3@gmail.com
+2026-05-14 06:13:29,859 - app - INFO - Welcome email would be sent to seidmekuriaw3@gmail.com
