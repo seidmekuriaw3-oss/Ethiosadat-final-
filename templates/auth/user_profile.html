@@ -259,7 +259,7 @@
         border-left: 3px solid #1a73e8;
     }
     .info-field.span2 { grid-column: 1 / -1; }
-    .info-field lbl {
+    .info-field .field-label {
         display: block;
         font-size: 11px;
         font-weight: 700;
@@ -268,13 +268,13 @@
         letter-spacing: 0.6px;
         margin-bottom: 5px;
     }
-    .info-field val {
+    .info-field .field-value {
         display: block;
         font-size: 15px;
         font-weight: 600;
         color: var(--text-color, #222);
     }
-    .info-field val.muted {
+    .info-field .field-value.muted {
         font-weight: 400;
         color: #aaa;
         font-style: italic;
@@ -548,28 +548,28 @@
             </div>
             <div class="info-grid">
                 <div class="info-field">
-                    <lbl>Full Name</lbl>
-                    <val>{{ user.full_name or '' }}<span class="muted" style="{% if user.full_name %}display:none{% endif %}">Not set</span></val>
+                    <span class="field-label">Full Name</span>
+                    <span class="field-value{% if not user.full_name %} muted{% endif %}">{{ user.full_name or 'Not set' }}</span>
                 </div>
                 <div class="info-field">
-                    <lbl>Email Address</lbl>
-                    <val>{{ user.email }}</val>
+                    <span class="field-label">Email Address</span>
+                    <span class="field-value">{{ user.email }}</span>
                 </div>
                 <div class="info-field">
-                    <lbl>Phone Number</lbl>
-                    <val {% if not user.phone %}class="muted"{% endif %}>{{ user.phone or 'Not set' }}</val>
+                    <span class="field-label">Phone Number</span>
+                    <span class="field-value{% if not user.phone %} muted{% endif %}">{{ user.phone or 'Not set' }}</span>
                 </div>
                 <div class="info-field">
-                    <lbl>City</lbl>
-                    <val {% if not user.city %}class="muted"{% endif %}>{{ user.city or 'Not set' }}</val>
+                    <span class="field-label">City</span>
+                    <span class="field-value{% if not user.city %} muted{% endif %}">{{ user.city or 'Not set' }}</span>
                 </div>
                 <div class="info-field span2">
-                    <lbl>Address</lbl>
-                    <val {% if not user.address %}class="muted"{% endif %}>{{ user.address or 'Not set' }}</val>
+                    <span class="field-label">Address</span>
+                    <span class="field-value{% if not user.address %} muted{% endif %}">{{ user.address or 'Not set' }}</span>
                 </div>
                 <div class="info-field" style="border-left-color:#aaa;">
-                    <lbl>Member Since</lbl>
-                    <val>{{ user.created_at.strftime('%B %d, %Y') if user.created_at else 'N/A' }}</val>
+                    <span class="field-label">Member Since</span>
+                    <span class="field-value">{{ user.created_at.strftime('%B %d, %Y') if user.created_at else 'N/A' }}</span>
                 </div>
             </div>
         </div>
