@@ -18604,3 +18604,9 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'user_l
 werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'user_login' with values ['next']. Did you mean 'customer.user_login' instead?
 
 2026-05-14 10:45:44,561 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-14 17:24:35,785 - app - WARNING - 404 Error: http://localhost:5000/api/products?limit=5
+2026-05-14 17:24:51,655 - app - WARNING - 404 Error: http://localhost:5000/api/filter-products?limit=5
+2026-05-14 17:24:51,722 - app - WARNING - 404 Error: http://localhost:5000/api/search?q=sofa
+2026-05-14 17:24:58,503 - app - WARNING - 404 Error: http://localhost:5000/api/filter-products
+2026-05-14 17:25:55,612 - app - WARNING - 404 Error: http://localhost:5000/api/search-products
+2026-05-14 17:26:20,871 - app - WARNING - 404 Error: http://localhost:5000/api/search-products

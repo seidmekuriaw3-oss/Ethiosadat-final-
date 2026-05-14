@@ -59064,3 +59064,24 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'user_l
 2026-05-14 15:25:09,575 - app - INFO - Initializing Ethiosadat Furniture Application
 2026-05-14 15:25:09,788 - app - INFO - Database initialized successfully
 2026-05-14 15:25:09,788 - app - INFO - Application initialized successfully
+2026-05-14 17:21:21,530 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:21:23,354 - app - INFO - Database initialized successfully
+2026-05-14 17:21:23,355 - app - INFO - Application initialized successfully
+2026-05-14 17:22:57,086 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:22:57,130 - app - INFO - Database initialized successfully
+2026-05-14 17:22:57,130 - app - INFO - Application initialized successfully
+2026-05-14 17:24:24,131 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:24:24,164 - app - INFO - Database initialized successfully
+2026-05-14 17:24:24,165 - app - INFO - Application initialized successfully
+2026-05-14 17:24:35,785 - app - WARNING - 404 Error: http://localhost:5000/api/products?limit=5
+2026-05-14 17:24:51,655 - app - WARNING - 404 Error: http://localhost:5000/api/filter-products?limit=5
+2026-05-14 17:24:51,722 - app - WARNING - 404 Error: http://localhost:5000/api/search?q=sofa
+2026-05-14 17:24:58,503 - app - WARNING - 404 Error: http://localhost:5000/api/filter-products
+2026-05-14 17:24:59,749 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:24:59,827 - app - INFO - Database initialized successfully
+2026-05-14 17:24:59,828 - app - INFO - Application initialized successfully
+2026-05-14 17:25:55,612 - app - WARNING - 404 Error: http://localhost:5000/api/search-products
+2026-05-14 17:26:20,871 - app - WARNING - 404 Error: http://localhost:5000/api/search-products
+2026-05-14 17:27:01,766 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:27:01,795 - app - INFO - Database initialized successfully
+2026-05-14 17:27:01,795 - app - INFO - Application initialized successfully

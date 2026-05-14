@@ -69,6 +69,7 @@ def api_search_products():
 
 
 @api_bp.route('/products/filter')
+@api_bp.route('/search-products')
 def api_filter_products():
     """Filter products by category, price range, etc."""
     category_id = request.args.get('category_id', type=int)

@@ -484,7 +484,7 @@
     });
     
     function fetchProducts() {
-        fetch('/api/search-products')
+        fetch('/api/products/filter')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
