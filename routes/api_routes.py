@@ -162,6 +162,7 @@ def api_filter_products():
             'discount': discount,
             'thumbnail': p['thumbnail'],
             'stock_quantity': p['stock_quantity'],
+            'category_id': p['category_id'],
             'category_name': p['category_name'],
             'is_featured': bool(p['is_featured']),
             'is_new': bool(p['is_new'])
