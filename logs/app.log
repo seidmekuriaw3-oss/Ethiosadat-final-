@@ -59100,3 +59100,534 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'user_l
 2026-05-14 17:36:06,258 - app - INFO - Initializing Ethiosadat Furniture Application
 2026-05-14 17:36:06,288 - app - INFO - Database initialized successfully
 2026-05-14 17:36:06,288 - app - INFO - Application initialized successfully
+2026-05-14 17:41:02,317 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:02,374 - app - INFO - Database initialized successfully
+2026-05-14 17:41:02,375 - app - INFO - Application initialized successfully
+2026-05-14 17:41:03,401 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:03,429 - app - INFO - Database initialized successfully
+2026-05-14 17:41:03,429 - app - INFO - Application initialized successfully
+2026-05-14 17:41:06,980 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:07,009 - app - INFO - Database initialized successfully
+2026-05-14 17:41:07,009 - app - INFO - Application initialized successfully
+2026-05-14 17:41:10,587 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:10,616 - app - INFO - Database initialized successfully
+2026-05-14 17:41:10,617 - app - INFO - Application initialized successfully
+2026-05-14 17:41:14,096 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:14,122 - app - INFO - Database initialized successfully
+2026-05-14 17:41:14,122 - app - INFO - Application initialized successfully
+2026-05-14 17:41:17,600 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:17,627 - app - INFO - Database initialized successfully
+2026-05-14 17:41:17,627 - app - INFO - Application initialized successfully
+2026-05-14 17:41:21,164 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:21,208 - app - INFO - Database initialized successfully
+2026-05-14 17:41:21,209 - app - INFO - Application initialized successfully
+2026-05-14 17:41:24,697 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:24,721 - app - INFO - Database initialized successfully
+2026-05-14 17:41:24,722 - app - INFO - Application initialized successfully
+2026-05-14 17:41:28,233 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:28,261 - app - INFO - Database initialized successfully
+2026-05-14 17:41:28,262 - app - INFO - Application initialized successfully
+2026-05-14 17:41:31,801 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:31,828 - app - INFO - Database initialized successfully
+2026-05-14 17:41:31,829 - app - INFO - Application initialized successfully
+2026-05-14 17:41:35,337 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:35,365 - app - INFO - Database initialized successfully
+2026-05-14 17:41:35,365 - app - INFO - Application initialized successfully
+2026-05-14 17:41:38,888 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:38,919 - app - INFO - Database initialized successfully
+2026-05-14 17:41:38,919 - app - INFO - Application initialized successfully
+2026-05-14 17:41:42,443 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:42,471 - app - INFO - Database initialized successfully
+2026-05-14 17:41:42,471 - app - INFO - Application initialized successfully
+2026-05-14 17:41:45,963 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:45,990 - app - INFO - Database initialized successfully
+2026-05-14 17:41:45,990 - app - INFO - Application initialized successfully
+2026-05-14 17:41:49,465 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:49,495 - app - INFO - Database initialized successfully
+2026-05-14 17:41:49,495 - app - INFO - Application initialized successfully
+2026-05-14 17:41:52,945 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:52,974 - app - INFO - Database initialized successfully
+2026-05-14 17:41:52,975 - app - INFO - Application initialized successfully
+2026-05-14 17:41:56,550 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:41:56,583 - app - INFO - Database initialized successfully
+2026-05-14 17:41:56,583 - app - INFO - Application initialized successfully
+2026-05-14 17:42:00,168 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:00,196 - app - INFO - Database initialized successfully
+2026-05-14 17:42:00,197 - app - INFO - Application initialized successfully
+2026-05-14 17:42:03,745 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:03,774 - app - INFO - Database initialized successfully
+2026-05-14 17:42:03,774 - app - INFO - Application initialized successfully
+2026-05-14 17:42:07,305 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:07,365 - app - INFO - Database initialized successfully
+2026-05-14 17:42:07,366 - app - INFO - Application initialized successfully
+2026-05-14 17:42:10,911 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:10,939 - app - INFO - Database initialized successfully
+2026-05-14 17:42:10,939 - app - INFO - Application initialized successfully
+2026-05-14 17:42:14,448 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:14,478 - app - INFO - Database initialized successfully
+2026-05-14 17:42:14,478 - app - INFO - Application initialized successfully
+2026-05-14 17:42:17,940 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:17,968 - app - INFO - Database initialized successfully
+2026-05-14 17:42:17,968 - app - INFO - Application initialized successfully
+2026-05-14 17:42:21,530 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:21,556 - app - INFO - Database initialized successfully
+2026-05-14 17:42:21,557 - app - INFO - Application initialized successfully
+2026-05-14 17:42:25,039 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:25,068 - app - INFO - Database initialized successfully
+2026-05-14 17:42:25,068 - app - INFO - Application initialized successfully
+2026-05-14 17:42:28,531 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:28,562 - app - INFO - Database initialized successfully
+2026-05-14 17:42:28,562 - app - INFO - Application initialized successfully
+2026-05-14 17:42:32,123 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:32,153 - app - INFO - Database initialized successfully
+2026-05-14 17:42:32,154 - app - INFO - Application initialized successfully
+2026-05-14 17:42:35,696 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:35,724 - app - INFO - Database initialized successfully
+2026-05-14 17:42:35,724 - app - INFO - Application initialized successfully
+2026-05-14 17:42:39,228 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:39,259 - app - INFO - Database initialized successfully
+2026-05-14 17:42:39,259 - app - INFO - Application initialized successfully
+2026-05-14 17:42:42,809 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:42,846 - app - INFO - Database initialized successfully
+2026-05-14 17:42:42,846 - app - INFO - Application initialized successfully
+2026-05-14 17:42:46,367 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:46,400 - app - INFO - Database initialized successfully
+2026-05-14 17:42:46,402 - app - INFO - Application initialized successfully
+2026-05-14 17:42:49,872 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:49,902 - app - INFO - Database initialized successfully
+2026-05-14 17:42:49,903 - app - INFO - Application initialized successfully
+2026-05-14 17:42:53,379 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:53,404 - app - INFO - Database initialized successfully
+2026-05-14 17:42:53,404 - app - INFO - Application initialized successfully
+2026-05-14 17:42:57,054 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:42:57,108 - app - INFO - Database initialized successfully
+2026-05-14 17:42:57,108 - app - INFO - Application initialized successfully
+2026-05-14 17:43:00,596 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:00,623 - app - INFO - Database initialized successfully
+2026-05-14 17:43:00,624 - app - INFO - Application initialized successfully
+2026-05-14 17:43:04,084 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:04,109 - app - INFO - Database initialized successfully
+2026-05-14 17:43:04,109 - app - INFO - Application initialized successfully
+2026-05-14 17:43:07,589 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:07,619 - app - INFO - Database initialized successfully
+2026-05-14 17:43:07,620 - app - INFO - Application initialized successfully
+2026-05-14 17:43:11,088 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:11,148 - app - INFO - Database initialized successfully
+2026-05-14 17:43:11,148 - app - INFO - Application initialized successfully
+2026-05-14 17:43:14,677 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:14,703 - app - INFO - Database initialized successfully
+2026-05-14 17:43:14,704 - app - INFO - Application initialized successfully
+2026-05-14 17:43:18,191 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:18,221 - app - INFO - Database initialized successfully
+2026-05-14 17:43:18,222 - app - INFO - Application initialized successfully
+2026-05-14 17:43:21,757 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:21,786 - app - INFO - Database initialized successfully
+2026-05-14 17:43:21,786 - app - INFO - Application initialized successfully
+2026-05-14 17:43:25,312 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:25,340 - app - INFO - Database initialized successfully
+2026-05-14 17:43:25,341 - app - INFO - Application initialized successfully
+2026-05-14 17:43:28,830 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:28,858 - app - INFO - Database initialized successfully
+2026-05-14 17:43:28,858 - app - INFO - Application initialized successfully
+2026-05-14 17:43:32,363 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:32,387 - app - INFO - Database initialized successfully
+2026-05-14 17:43:32,388 - app - INFO - Application initialized successfully
+2026-05-14 17:43:35,894 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:35,922 - app - INFO - Database initialized successfully
+2026-05-14 17:43:35,923 - app - INFO - Application initialized successfully
+2026-05-14 17:43:39,462 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:39,491 - app - INFO - Database initialized successfully
+2026-05-14 17:43:39,491 - app - INFO - Application initialized successfully
+2026-05-14 17:43:43,017 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:43,047 - app - INFO - Database initialized successfully
+2026-05-14 17:43:43,047 - app - INFO - Application initialized successfully
+2026-05-14 17:43:46,621 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:46,650 - app - INFO - Database initialized successfully
+2026-05-14 17:43:46,650 - app - INFO - Application initialized successfully
+2026-05-14 17:43:50,166 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:50,195 - app - INFO - Database initialized successfully
+2026-05-14 17:43:50,195 - app - INFO - Application initialized successfully
+2026-05-14 17:43:53,719 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:53,747 - app - INFO - Database initialized successfully
+2026-05-14 17:43:53,747 - app - INFO - Application initialized successfully
+2026-05-14 17:43:57,319 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:43:57,346 - app - INFO - Database initialized successfully
+2026-05-14 17:43:57,346 - app - INFO - Application initialized successfully
+2026-05-14 17:44:00,883 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:00,908 - app - INFO - Database initialized successfully
+2026-05-14 17:44:00,909 - app - INFO - Application initialized successfully
+2026-05-14 17:44:04,387 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:04,416 - app - INFO - Database initialized successfully
+2026-05-14 17:44:04,416 - app - INFO - Application initialized successfully
+2026-05-14 17:44:07,982 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:08,011 - app - INFO - Database initialized successfully
+2026-05-14 17:44:08,011 - app - INFO - Application initialized successfully
+2026-05-14 17:44:11,767 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:11,806 - app - INFO - Database initialized successfully
+2026-05-14 17:44:11,807 - app - INFO - Application initialized successfully
+2026-05-14 17:44:15,373 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:15,441 - app - INFO - Database initialized successfully
+2026-05-14 17:44:15,443 - app - INFO - Application initialized successfully
+2026-05-14 17:44:19,051 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:19,086 - app - INFO - Database initialized successfully
+2026-05-14 17:44:19,086 - app - INFO - Application initialized successfully
+2026-05-14 17:44:22,707 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:22,745 - app - INFO - Database initialized successfully
+2026-05-14 17:44:22,746 - app - INFO - Application initialized successfully
+2026-05-14 17:44:26,277 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:26,312 - app - INFO - Database initialized successfully
+2026-05-14 17:44:26,313 - app - INFO - Application initialized successfully
+2026-05-14 17:44:29,818 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:29,846 - app - INFO - Database initialized successfully
+2026-05-14 17:44:29,846 - app - INFO - Application initialized successfully
+2026-05-14 17:44:33,386 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:33,413 - app - INFO - Database initialized successfully
+2026-05-14 17:44:33,414 - app - INFO - Application initialized successfully
+2026-05-14 17:44:37,017 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:37,048 - app - INFO - Database initialized successfully
+2026-05-14 17:44:37,048 - app - INFO - Application initialized successfully
+2026-05-14 17:44:40,593 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:40,631 - app - INFO - Database initialized successfully
+2026-05-14 17:44:40,631 - app - INFO - Application initialized successfully
+2026-05-14 17:44:44,229 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:44,257 - app - INFO - Database initialized successfully
+2026-05-14 17:44:44,257 - app - INFO - Application initialized successfully
+2026-05-14 17:44:47,727 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:47,756 - app - INFO - Database initialized successfully
+2026-05-14 17:44:47,756 - app - INFO - Application initialized successfully
+2026-05-14 17:44:51,315 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:51,343 - app - INFO - Database initialized successfully
+2026-05-14 17:44:51,344 - app - INFO - Application initialized successfully
+2026-05-14 17:44:54,834 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:54,860 - app - INFO - Database initialized successfully
+2026-05-14 17:44:54,860 - app - INFO - Application initialized successfully
+2026-05-14 17:44:58,370 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:44:58,396 - app - INFO - Database initialized successfully
+2026-05-14 17:44:58,397 - app - INFO - Application initialized successfully
+2026-05-14 17:45:01,928 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:01,960 - app - INFO - Database initialized successfully
+2026-05-14 17:45:01,961 - app - INFO - Application initialized successfully
+2026-05-14 17:45:05,491 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:05,520 - app - INFO - Database initialized successfully
+2026-05-14 17:45:05,521 - app - INFO - Application initialized successfully
+2026-05-14 17:45:09,081 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:09,111 - app - INFO - Database initialized successfully
+2026-05-14 17:45:09,111 - app - INFO - Application initialized successfully
+2026-05-14 17:45:12,687 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:12,716 - app - INFO - Database initialized successfully
+2026-05-14 17:45:12,717 - app - INFO - Application initialized successfully
+2026-05-14 17:45:16,307 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:16,339 - app - INFO - Database initialized successfully
+2026-05-14 17:45:16,340 - app - INFO - Application initialized successfully
+2026-05-14 17:45:19,828 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:19,894 - app - INFO - Database initialized successfully
+2026-05-14 17:45:19,894 - app - INFO - Application initialized successfully
+2026-05-14 17:45:23,411 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:23,441 - app - INFO - Database initialized successfully
+2026-05-14 17:45:23,442 - app - INFO - Application initialized successfully
+2026-05-14 17:45:27,019 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:27,048 - app - INFO - Database initialized successfully
+2026-05-14 17:45:27,049 - app - INFO - Application initialized successfully
+2026-05-14 17:45:30,535 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:30,562 - app - INFO - Database initialized successfully
+2026-05-14 17:45:30,563 - app - INFO - Application initialized successfully
+2026-05-14 17:45:34,109 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:34,137 - app - INFO - Database initialized successfully
+2026-05-14 17:45:34,138 - app - INFO - Application initialized successfully
+2026-05-14 17:45:37,628 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:37,655 - app - INFO - Database initialized successfully
+2026-05-14 17:45:37,656 - app - INFO - Application initialized successfully
+2026-05-14 17:45:41,239 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:41,269 - app - INFO - Database initialized successfully
+2026-05-14 17:45:41,270 - app - INFO - Application initialized successfully
+2026-05-14 17:45:44,771 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:44,799 - app - INFO - Database initialized successfully
+2026-05-14 17:45:44,799 - app - INFO - Application initialized successfully
+2026-05-14 17:45:48,279 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:48,305 - app - INFO - Database initialized successfully
+2026-05-14 17:45:48,306 - app - INFO - Application initialized successfully
+2026-05-14 17:45:51,830 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:51,856 - app - INFO - Database initialized successfully
+2026-05-14 17:45:51,856 - app - INFO - Application initialized successfully
+2026-05-14 17:45:55,426 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:55,455 - app - INFO - Database initialized successfully
+2026-05-14 17:45:55,455 - app - INFO - Application initialized successfully
+2026-05-14 17:45:58,965 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:45:58,995 - app - INFO - Database initialized successfully
+2026-05-14 17:45:58,995 - app - INFO - Application initialized successfully
+2026-05-14 17:46:02,569 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:02,597 - app - INFO - Database initialized successfully
+2026-05-14 17:46:02,597 - app - INFO - Application initialized successfully
+2026-05-14 17:46:06,126 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:06,155 - app - INFO - Database initialized successfully
+2026-05-14 17:46:06,155 - app - INFO - Application initialized successfully
+2026-05-14 17:46:09,713 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:09,741 - app - INFO - Database initialized successfully
+2026-05-14 17:46:09,741 - app - INFO - Application initialized successfully
+2026-05-14 17:46:13,265 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:13,294 - app - INFO - Database initialized successfully
+2026-05-14 17:46:13,294 - app - INFO - Application initialized successfully
+2026-05-14 17:46:16,803 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:16,831 - app - INFO - Database initialized successfully
+2026-05-14 17:46:16,831 - app - INFO - Application initialized successfully
+2026-05-14 17:46:20,374 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:20,401 - app - INFO - Database initialized successfully
+2026-05-14 17:46:20,401 - app - INFO - Application initialized successfully
+2026-05-14 17:46:23,951 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:23,981 - app - INFO - Database initialized successfully
+2026-05-14 17:46:23,981 - app - INFO - Application initialized successfully
+2026-05-14 17:46:27,446 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:27,475 - app - INFO - Database initialized successfully
+2026-05-14 17:46:27,475 - app - INFO - Application initialized successfully
+2026-05-14 17:46:30,956 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:30,982 - app - INFO - Database initialized successfully
+2026-05-14 17:46:30,983 - app - INFO - Application initialized successfully
+2026-05-14 17:46:34,569 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:34,601 - app - INFO - Database initialized successfully
+2026-05-14 17:46:34,602 - app - INFO - Application initialized successfully
+2026-05-14 17:46:38,091 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:38,118 - app - INFO - Database initialized successfully
+2026-05-14 17:46:38,118 - app - INFO - Application initialized successfully
+2026-05-14 17:46:41,632 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:41,657 - app - INFO - Database initialized successfully
+2026-05-14 17:46:41,657 - app - INFO - Application initialized successfully
+2026-05-14 17:46:45,204 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:45,232 - app - INFO - Database initialized successfully
+2026-05-14 17:46:45,232 - app - INFO - Application initialized successfully
+2026-05-14 17:46:48,701 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:48,728 - app - INFO - Database initialized successfully
+2026-05-14 17:46:48,728 - app - INFO - Application initialized successfully
+2026-05-14 17:46:52,334 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:52,364 - app - INFO - Database initialized successfully
+2026-05-14 17:46:52,365 - app - INFO - Application initialized successfully
+2026-05-14 17:46:55,939 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:55,968 - app - INFO - Database initialized successfully
+2026-05-14 17:46:55,968 - app - INFO - Application initialized successfully
+2026-05-14 17:46:59,512 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:46:59,538 - app - INFO - Database initialized successfully
+2026-05-14 17:46:59,541 - app - INFO - Application initialized successfully
+2026-05-14 17:47:03,019 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:03,045 - app - INFO - Database initialized successfully
+2026-05-14 17:47:03,046 - app - INFO - Application initialized successfully
+2026-05-14 17:47:06,576 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:06,605 - app - INFO - Database initialized successfully
+2026-05-14 17:47:06,605 - app - INFO - Application initialized successfully
+2026-05-14 17:47:10,069 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:10,097 - app - INFO - Database initialized successfully
+2026-05-14 17:47:10,097 - app - INFO - Application initialized successfully
+2026-05-14 17:47:13,667 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:13,693 - app - INFO - Database initialized successfully
+2026-05-14 17:47:13,693 - app - INFO - Application initialized successfully
+2026-05-14 17:47:17,178 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:17,208 - app - INFO - Database initialized successfully
+2026-05-14 17:47:17,208 - app - INFO - Application initialized successfully
+2026-05-14 17:47:20,783 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:20,812 - app - INFO - Database initialized successfully
+2026-05-14 17:47:20,812 - app - INFO - Application initialized successfully
+2026-05-14 17:47:24,315 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:24,373 - app - INFO - Database initialized successfully
+2026-05-14 17:47:24,373 - app - INFO - Application initialized successfully
+2026-05-14 17:47:27,932 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:27,962 - app - INFO - Database initialized successfully
+2026-05-14 17:47:27,962 - app - INFO - Application initialized successfully
+2026-05-14 17:47:31,518 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:31,544 - app - INFO - Database initialized successfully
+2026-05-14 17:47:31,545 - app - INFO - Application initialized successfully
+2026-05-14 17:47:35,123 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:35,156 - app - INFO - Database initialized successfully
+2026-05-14 17:47:35,156 - app - INFO - Application initialized successfully
+2026-05-14 17:47:38,746 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:38,802 - app - INFO - Database initialized successfully
+2026-05-14 17:47:38,802 - app - INFO - Application initialized successfully
+2026-05-14 17:47:42,325 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:42,351 - app - INFO - Database initialized successfully
+2026-05-14 17:47:42,351 - app - INFO - Application initialized successfully
+2026-05-14 17:47:45,900 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:45,943 - app - INFO - Database initialized successfully
+2026-05-14 17:47:45,943 - app - INFO - Application initialized successfully
+2026-05-14 17:47:49,642 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:49,671 - app - INFO - Database initialized successfully
+2026-05-14 17:47:49,673 - app - INFO - Application initialized successfully
+2026-05-14 17:47:53,254 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:53,286 - app - INFO - Database initialized successfully
+2026-05-14 17:47:53,286 - app - INFO - Application initialized successfully
+2026-05-14 17:47:56,882 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:47:56,913 - app - INFO - Database initialized successfully
+2026-05-14 17:47:56,913 - app - INFO - Application initialized successfully
+2026-05-14 17:48:00,481 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:00,511 - app - INFO - Database initialized successfully
+2026-05-14 17:48:00,511 - app - INFO - Application initialized successfully
+2026-05-14 17:48:04,001 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:04,030 - app - INFO - Database initialized successfully
+2026-05-14 17:48:04,031 - app - INFO - Application initialized successfully
+2026-05-14 17:48:07,549 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:07,607 - app - INFO - Database initialized successfully
+2026-05-14 17:48:07,608 - app - INFO - Application initialized successfully
+2026-05-14 17:48:11,172 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:11,201 - app - INFO - Database initialized successfully
+2026-05-14 17:48:11,202 - app - INFO - Application initialized successfully
+2026-05-14 17:48:14,673 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:14,699 - app - INFO - Database initialized successfully
+2026-05-14 17:48:14,700 - app - INFO - Application initialized successfully
+2026-05-14 17:48:18,245 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:18,274 - app - INFO - Database initialized successfully
+2026-05-14 17:48:18,274 - app - INFO - Application initialized successfully
+2026-05-14 17:48:21,758 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:21,797 - app - INFO - Database initialized successfully
+2026-05-14 17:48:21,797 - app - INFO - Application initialized successfully
+2026-05-14 17:48:25,336 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:25,377 - app - INFO - Database initialized successfully
+2026-05-14 17:48:25,377 - app - INFO - Application initialized successfully
+2026-05-14 17:48:28,872 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:28,932 - app - INFO - Database initialized successfully
+2026-05-14 17:48:28,932 - app - INFO - Application initialized successfully
+2026-05-14 17:48:32,389 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:32,415 - app - INFO - Database initialized successfully
+2026-05-14 17:48:32,415 - app - INFO - Application initialized successfully
+2026-05-14 17:48:35,972 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:36,002 - app - INFO - Database initialized successfully
+2026-05-14 17:48:36,002 - app - INFO - Application initialized successfully
+2026-05-14 17:48:39,537 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:39,573 - app - INFO - Database initialized successfully
+2026-05-14 17:48:39,573 - app - INFO - Application initialized successfully
+2026-05-14 17:48:43,084 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:43,112 - app - INFO - Database initialized successfully
+2026-05-14 17:48:43,113 - app - INFO - Application initialized successfully
+2026-05-14 17:48:46,688 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:46,714 - app - INFO - Database initialized successfully
+2026-05-14 17:48:46,714 - app - INFO - Application initialized successfully
+2026-05-14 17:48:50,247 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:50,275 - app - INFO - Database initialized successfully
+2026-05-14 17:48:50,276 - app - INFO - Application initialized successfully
+2026-05-14 17:48:53,847 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:53,877 - app - INFO - Database initialized successfully
+2026-05-14 17:48:53,877 - app - INFO - Application initialized successfully
+2026-05-14 17:48:57,381 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:48:57,410 - app - INFO - Database initialized successfully
+2026-05-14 17:48:57,410 - app - INFO - Application initialized successfully
+2026-05-14 17:49:00,914 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:00,939 - app - INFO - Database initialized successfully
+2026-05-14 17:49:00,940 - app - INFO - Application initialized successfully
+2026-05-14 17:49:04,530 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:04,556 - app - INFO - Database initialized successfully
+2026-05-14 17:49:04,556 - app - INFO - Application initialized successfully
+2026-05-14 17:49:08,096 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:08,129 - app - INFO - Database initialized successfully
+2026-05-14 17:49:08,129 - app - INFO - Application initialized successfully
+2026-05-14 17:49:11,667 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:11,696 - app - INFO - Database initialized successfully
+2026-05-14 17:49:11,697 - app - INFO - Application initialized successfully
+2026-05-14 17:49:15,285 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:15,312 - app - INFO - Database initialized successfully
+2026-05-14 17:49:15,312 - app - INFO - Application initialized successfully
+2026-05-14 17:49:18,787 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:18,816 - app - INFO - Database initialized successfully
+2026-05-14 17:49:18,817 - app - INFO - Application initialized successfully
+2026-05-14 17:49:22,326 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:22,355 - app - INFO - Database initialized successfully
+2026-05-14 17:49:22,355 - app - INFO - Application initialized successfully
+2026-05-14 17:49:25,899 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:25,932 - app - INFO - Database initialized successfully
+2026-05-14 17:49:25,932 - app - INFO - Application initialized successfully
+2026-05-14 17:49:29,412 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:29,467 - app - INFO - Database initialized successfully
+2026-05-14 17:49:29,468 - app - INFO - Application initialized successfully
+2026-05-14 17:49:32,974 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:33,001 - app - INFO - Database initialized successfully
+2026-05-14 17:49:33,001 - app - INFO - Application initialized successfully
+2026-05-14 17:49:36,490 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:36,523 - app - INFO - Database initialized successfully
+2026-05-14 17:49:36,523 - app - INFO - Application initialized successfully
+2026-05-14 17:49:40,040 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:40,071 - app - INFO - Database initialized successfully
+2026-05-14 17:49:40,071 - app - INFO - Application initialized successfully
+2026-05-14 17:49:43,553 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:43,582 - app - INFO - Database initialized successfully
+2026-05-14 17:49:43,582 - app - INFO - Application initialized successfully
+2026-05-14 17:49:47,066 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:47,094 - app - INFO - Database initialized successfully
+2026-05-14 17:49:47,094 - app - INFO - Application initialized successfully
+2026-05-14 17:49:50,598 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:50,626 - app - INFO - Database initialized successfully
+2026-05-14 17:49:50,626 - app - INFO - Application initialized successfully
+2026-05-14 17:49:54,131 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:54,159 - app - INFO - Database initialized successfully
+2026-05-14 17:49:54,159 - app - INFO - Application initialized successfully
+2026-05-14 17:49:57,615 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:49:57,640 - app - INFO - Database initialized successfully
+2026-05-14 17:49:57,641 - app - INFO - Application initialized successfully
+2026-05-14 17:50:01,098 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:01,124 - app - INFO - Database initialized successfully
+2026-05-14 17:50:01,124 - app - INFO - Application initialized successfully
+2026-05-14 17:50:04,668 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:04,696 - app - INFO - Database initialized successfully
+2026-05-14 17:50:04,696 - app - INFO - Application initialized successfully
+2026-05-14 17:50:08,220 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:08,249 - app - INFO - Database initialized successfully
+2026-05-14 17:50:08,249 - app - INFO - Application initialized successfully
+2026-05-14 17:50:11,815 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:11,844 - app - INFO - Database initialized successfully
+2026-05-14 17:50:11,844 - app - INFO - Application initialized successfully
+2026-05-14 17:50:15,543 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:15,578 - app - INFO - Database initialized successfully
+2026-05-14 17:50:15,578 - app - INFO - Application initialized successfully
+2026-05-14 17:50:19,190 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:19,220 - app - INFO - Database initialized successfully
+2026-05-14 17:50:19,221 - app - INFO - Application initialized successfully
+2026-05-14 17:50:22,744 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:22,772 - app - INFO - Database initialized successfully
+2026-05-14 17:50:22,773 - app - INFO - Application initialized successfully
+2026-05-14 17:50:26,237 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:26,263 - app - INFO - Database initialized successfully
+2026-05-14 17:50:26,264 - app - INFO - Application initialized successfully
+2026-05-14 17:50:29,796 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:29,831 - app - INFO - Database initialized successfully
+2026-05-14 17:50:29,832 - app - INFO - Application initialized successfully
+2026-05-14 17:50:33,399 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:33,459 - app - INFO - Database initialized successfully
+2026-05-14 17:50:33,460 - app - INFO - Application initialized successfully
+2026-05-14 17:50:36,956 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:36,983 - app - INFO - Database initialized successfully
+2026-05-14 17:50:36,983 - app - INFO - Application initialized successfully
+2026-05-14 17:50:40,541 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:40,571 - app - INFO - Database initialized successfully
+2026-05-14 17:50:40,571 - app - INFO - Application initialized successfully
+2026-05-14 17:50:44,070 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:44,100 - app - INFO - Database initialized successfully
+2026-05-14 17:50:44,101 - app - INFO - Application initialized successfully
+2026-05-14 17:50:47,668 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:47,697 - app - INFO - Database initialized successfully
+2026-05-14 17:50:47,698 - app - INFO - Application initialized successfully
+2026-05-14 17:50:51,172 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:51,200 - app - INFO - Database initialized successfully
+2026-05-14 17:50:51,200 - app - INFO - Application initialized successfully
+2026-05-14 17:50:54,762 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:54,794 - app - INFO - Database initialized successfully
+2026-05-14 17:50:54,794 - app - INFO - Application initialized successfully
+2026-05-14 17:50:58,307 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:50:58,332 - app - INFO - Database initialized successfully
+2026-05-14 17:50:58,332 - app - INFO - Application initialized successfully
+2026-05-14 17:51:01,811 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:51:01,841 - app - INFO - Database initialized successfully
+2026-05-14 17:51:01,841 - app - INFO - Application initialized successfully
+2026-05-14 17:51:05,421 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:51:05,453 - app - INFO - Database initialized successfully
+2026-05-14 17:51:05,453 - app - INFO - Application initialized successfully
+2026-05-14 17:51:08,992 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:51:09,019 - app - INFO - Database initialized successfully
+2026-05-14 17:51:09,019 - app - INFO - Application initialized successfully
+2026-05-14 17:51:12,569 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-14 17:51:12,601 - app - INFO - Database initialized successfully
+2026-05-14 17:51:12,601 - app - INFO - Application initialized successfully
+2026-05-15 02:37:28,001 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-15 02:37:28,625 - app - INFO - Database initialized successfully
+2026-05-15 02:37:28,625 - app - INFO - Application initialized successfully
+2026-05-15 02:39:02,564 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-15 02:39:18,416 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-15 02:39:18,473 - app - INFO - Database initialized successfully
+2026-05-15 02:39:18,473 - app - INFO - Application initialized successfully
+2026-05-15 02:39:41,953 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-15 02:39:41,980 - app - INFO - Database initialized successfully
+2026-05-15 02:39:41,981 - app - INFO - Application initialized successfully
+2026-05-15 02:40:11,887 - app - WARNING - 404 Error: http://5f3e96cd-4cb4-4971-9fb5-dcf1c34cec56-00-11oi4cmd5q5mj.janeway.replit.dev/go/cart/add/2?qty=1
+2026-05-15 02:40:12,497 - app - WARNING - 404 Error: http://5f3e96cd-4cb4-4971-9fb5-dcf1c34cec56-00-11oi4cmd5q5mj.janeway.replit.dev/favicon.ico

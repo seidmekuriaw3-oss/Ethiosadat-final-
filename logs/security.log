@@ -18610,3 +18610,6 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'user_l
 2026-05-14 17:24:58,503 - app - WARNING - 404 Error: http://localhost:5000/api/filter-products
 2026-05-14 17:25:55,612 - app - WARNING - 404 Error: http://localhost:5000/api/search-products
 2026-05-14 17:26:20,871 - app - WARNING - 404 Error: http://localhost:5000/api/search-products
+2026-05-15 02:39:02,564 - app - WARNING - 404 Error: http://localhost:5000/favicon.ico
+2026-05-15 02:40:11,887 - app - WARNING - 404 Error: http://5f3e96cd-4cb4-4971-9fb5-dcf1c34cec56-00-11oi4cmd5q5mj.janeway.replit.dev/go/cart/add/2?qty=1
+2026-05-15 02:40:12,497 - app - WARNING - 404 Error: http://5f3e96cd-4cb4-4971-9fb5-dcf1c34cec56-00-11oi4cmd5q5mj.janeway.replit.dev/favicon.ico

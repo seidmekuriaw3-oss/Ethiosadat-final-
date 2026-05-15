@@ -314,8 +314,8 @@
         <!-- Login Form -->
         <form method="post" action="{{ url_for('admin.admin_login') }}" id="loginForm" onsubmit="return handleSubmit(event)">
             <div class="input-group">
-                 <label for="email">Email</label>
-                 <input type="email" id="email" name="email" required placeholder="Enter admin email">
+                 <label for="email">Username</label>
+                 <input type="text" id="email" name="username" required placeholder="Enter admin username">
                 </div>
             <div class="input-group">
                 <label>🔒 Password</label>
@@ -341,8 +341,8 @@
             cursor: pointer;
         " onclick="fillAdminDemo()" title="Click to auto-fill">
             <p style="margin: 0 0 6px; font-weight: 600; color: #333;">🔑 Admin Credentials <span style="font-weight:normal;">(click to fill)</span></p>
-            <p style="margin: 2px 0;"><strong>Email:</strong> <code style="background:#e0e0e0;padding:1px 5px;border-radius:4px;">admin@ethiosadat.com</code></p>
-            <p style="margin: 2px 0;"><strong>Password:</strong> <code style="background:#e0e0e0;padding:1px 5px;border-radius:4px;">Admin@2026</code></p>
+            <p style="margin: 2px 0;"><strong>Username:</strong> <code style="background:#e0e0e0;padding:1px 5px;border-radius:4px;">admin</code></p>
+            <p style="margin: 2px 0;"><strong>Password:</strong> <code style="background:#e0e0e0;padding:1px 5px;border-radius:4px;">1234</code></p>
         </div>
 
         <div class="footer-links">
@@ -436,8 +436,8 @@
         function fillAdminDemo() {
             const emailEl = document.getElementById('email');
             const passEl = document.getElementById('password');
-            if (emailEl) emailEl.value = 'admin@ethiosadat.com';
-            if (passEl) passEl.value = 'Admin@2026';
+            if (emailEl) emailEl.value = 'admin';
+            if (passEl) passEl.value = '1234';
             [emailEl, passEl].forEach(el => {
                 if (!el) return;
                 el.style.transition = 'background 0.4s';
