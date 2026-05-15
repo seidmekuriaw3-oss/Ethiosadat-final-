@@ -473,32 +473,24 @@
 </div>
 
 <script>
-    let allProducts = [];
+    // Products loaded directly from server — no fetch needed
+    let allProducts = {{ products | tojson }};
+    // Enrich with discount field for client-side use
+    allProducts = allProducts.map(function(p) {
+        if (p.compare_price && p.compare_price > p.price) {
+            p.discount = Math.round((p.compare_price - p.price) / p.compare_price * 100);
+        } else {
+            p.discount = null;
+        }
+        return p;
+    });
     let filteredProducts = [];
     let currentPage = 1;
     const productsPerPage = 12;
-    
-    // Fetch products on page load
+
     document.addEventListener('DOMContentLoaded', function() {
-        fetchProducts();
+        applyFilters();
     });
-    
-    function fetchProducts() {
-        fetch('/api/products/filter')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    allProducts = data.products;
-                    applyFilters();
-                } else {
-                    document.getElementById('productsGrid').innerHTML = '<div style="text-align: center; padding: 40px;">Error loading products</div>';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching products:', error);
-                document.getElementById('productsGrid').innerHTML = '<div style="text-align: center; padding: 40px;">Error loading products</div>';
-            });
-    }
     
     function applyFilters() {
         const category = document.querySelector('input[name="category"]:checked')?.value || 'all';

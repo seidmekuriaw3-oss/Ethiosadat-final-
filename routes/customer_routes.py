@@ -126,27 +126,25 @@ def products():
         conn.row_factory = __import__('sqlite3').Row
         cursor = conn.cursor()
 
-        cursor.execute("SELECT COUNT(*) FROM products WHERE is_active = 1")
-        total = cursor.fetchone()[0]
-
-        offset = (page - 1) * per_page
         cursor.execute("""
-            SELECT p.*, c.name as category_name, c.name_am as category_name_am
+            SELECT p.*, c.name as category_name, c.name_am as category_name_am,
+                   c.id as cat_id
             FROM products p LEFT JOIN categories c ON p.category_id = c.id
-            WHERE p.is_active = 1 ORDER BY p.id DESC LIMIT ? OFFSET ?
-        """, (per_page, offset))
+            WHERE p.is_active = 1 ORDER BY p.id DESC
+        """)
         products_rows = cursor.fetchall()
 
         cursor.execute("SELECT * FROM categories WHERE is_active = 1 ORDER BY sort_order ASC")
         categories = cursor.fetchall()
 
+        total = len(products_rows)
         products_list = [dict(p) for p in products_rows] if products_rows else []
         categories_list = [dict(cat) for cat in categories] if categories else []
-        total_pages = (total + per_page - 1) // per_page
+        total_pages = 1
 
         return render_template('customer/product_grid.html',
                                products=products_list, categories=categories_list,
-                               page=page, total_pages=total_pages, total=total, lang=lang)
+                               page=1, total_pages=total_pages, total=total, lang=lang)
     except Exception as e:
         print(f"Products page error: {e}")
         return render_template('customer/product_grid.html',
