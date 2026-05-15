@@ -13,6 +13,7 @@ from middleware.auth import user_login_required
 from middleware.platform import get_platform, is_android_app
 from database.db import get_db
 from werkzeug.security import generate_password_hash, check_password_hash
+from services.whatsapp_service import WhatsAppService
 import re
 import os
 import urllib.parse
@@ -783,10 +784,33 @@ def order_confirmation(order_id):
             WHERE oi.order_id = ?
         """, (order_id,))
         items = cursor.fetchall()
+        items_list = [dict(i) for i in items] if items else []
+
+        order_dict = dict(order)
+        customer_name = session.get('user_name', 'Customer')
+        customer_phone = order_dict.get('shipping_phone') or session.get('user_phone', '')
+
+        wa_items = [
+            {
+                'name': it.get('name', 'Product'),
+                'quantity': it.get('quantity', 1),
+                'price': it.get('price_at_time', 0),
+                'discounted_price': it.get('price_at_time', 0),
+            }
+            for it in items_list
+        ]
+        whatsapp_url = WhatsAppService.send_order_message(
+            customer_name=customer_name,
+            customer_phone=customer_phone,
+            items=wa_items,
+            total=order_dict.get('total', 0),
+            order_number=order_dict.get('order_number', '')
+        )
 
         return render_template('auth/order_confirmation.html',
-                               order=dict(order),
-                               items=[dict(i) for i in items] if items else [])
+                               order=order_dict,
+                               items=items_list,
+                               whatsapp_url=whatsapp_url)
     except Exception as e:
         print(f"Order confirmation error: {e}")
         flash('Error loading order.', 'error')
