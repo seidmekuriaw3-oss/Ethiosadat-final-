@@ -129,6 +129,38 @@ def view_cart():
 
 # ==================== ADD TO CART ====================
 
+@cart_bp.route('/go/add/<int:product_id>', methods=['GET'])
+def go_add_to_cart(product_id):
+    """GET-friendly fallback: add to cart then redirect to cart page"""
+    quantity = int(request.args.get('qty', 1))
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT id, stock_quantity FROM products WHERE id = ? AND is_active = 1", (product_id,))
+    product = cursor.fetchone()
+    if not product:
+        flash('Product not found!', 'danger')
+        return redirect(url_for('customer.index'))
+    if session.get('user_id'):
+        cursor.execute("SELECT id, quantity FROM cart_items WHERE user_id = ? AND product_id = ?",
+                       (session['user_id'], product_id))
+        existing = cursor.fetchone()
+        if existing:
+            cursor.execute("UPDATE cart_items SET quantity = ? WHERE id = ?",
+                           (existing['quantity'] + quantity, existing['id']))
+        else:
+            cursor.execute("INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?, ?, ?)",
+                           (session['user_id'], product_id, quantity))
+        db.commit()
+    else:
+        cart = session.get('cart', {})
+        cart_key = str(product_id)
+        cart[cart_key] = cart.get(cart_key, 0) + quantity
+        session['cart'] = cart
+        session.modified = True
+    flash('Product added to cart!', 'success')
+    return redirect(url_for('cart.view_cart'))
+
+
 @cart_bp.route('/add/<int:product_id>', methods=['POST'])
 def add_to_cart(product_id):
     """Add product to cart"""

@@ -59635,3 +59635,8 @@ werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'user_l
 2026-05-15 02:50:18,250 - app - INFO - Initializing Ethiosadat Furniture Application
 2026-05-15 02:50:18,311 - app - INFO - Database initialized successfully
 2026-05-15 02:50:18,311 - app - INFO - Application initialized successfully
+2026-05-15 02:50:56,067 - app - WARNING - 404 Error: http://5f3e96cd-4cb4-4971-9fb5-dcf1c34cec56-00-11oi4cmd5q5mj.janeway.replit.dev/go/cart/add/4?qty=1
+2026-05-15 02:51:37,532 - app - WARNING - 404 Error: http://5f3e96cd-4cb4-4971-9fb5-dcf1c34cec56-00-11oi4cmd5q5mj.janeway.replit.dev/go/cart/add/4?qty=1
+2026-05-15 02:53:57,120 - app - INFO - Initializing Ethiosadat Furniture Application
+2026-05-15 02:53:57,171 - app - INFO - Database initialized successfully
+2026-05-15 02:53:57,171 - app - INFO - Application initialized successfully

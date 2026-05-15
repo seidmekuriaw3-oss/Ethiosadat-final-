@@ -236,7 +236,7 @@ class CartManager {
         this.isLoading = true;
         const pid = parseInt(productId);
         const qty = parseInt(quantity);
-        const fallback = () => { window.location.href = '/go/cart/add/' + pid + '?qty=' + qty; };
+        const fallback = () => { window.location.href = '/cart/go/add/' + pid + '?qty=' + qty; };
         const url = CART_API.add + '?product_id=' + pid + '&quantity=' + qty;
         return fetch(url, { method: 'GET', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then(res => res.text())
